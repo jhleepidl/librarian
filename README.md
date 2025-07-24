@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-# librarian
-=======
 # 🛠️ Librarian - Tool Recommendation System
 
 A comprehensive tool recommendation system based on ToolBench's retriever technology. Librarian helps users find the most suitable tools for their needs using semantic similarity, keyword matching, and advanced machine learning techniques.
