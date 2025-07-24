@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # librarian
 =======
 # 🛠️ Librarian - Tool Recommendation System
@@ -549,6 +550,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For questions and support, please open an issue on GitHub.
 >>>>>>> 8f84237... Add files via upload
 =======
+=======
+>>>>>>> 811af200323f7ae83d3cd4cd4c2a5718242357d9
 # Task Description Based API Retriever
 
 이 프로젝트는 Task Description을 기반으로 쿼리에 관련된 API들을 검색하는 시스템입니다. GPT를 활용하여 쿼리와 task description을 매칭하고, 해당 task에 연결된 API 리스트를 반환합니다.
@@ -1037,5 +1040,9 @@ python quantitative_evaluation.py
 
 ---
 
+<<<<<<< HEAD
 **참고**: 이 프로젝트는 Task Description 기반 API 검색 시스템의 프로토타입이며, 현재 성능은 매우 낮은 상태입니다. 지속적인 개선이 필요합니다.
 >>>>>>> 811af20... Add files via upload
+=======
+**참고**: 이 프로젝트는 Task Description 기반 API 검색 시스템의 프로토타입이며, 현재 성능은 매우 낮은 상태입니다. 지속적인 개선이 필요합니다.
+>>>>>>> 811af200323f7ae83d3cd4cd4c2a5718242357d9
