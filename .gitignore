@@ -212,3 +212,7 @@ real_toolbench_dataset/
 sample_data/
 new_dataset/
 graph_info.json
+
+# Checkpoints
+checkpoints/
+trained_toolbench_retriever_best/
