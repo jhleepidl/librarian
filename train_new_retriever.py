@@ -300,23 +300,136 @@ class ToolbenchRetrieverDataset(Dataset):
 def l2_normalize(x, dim=-1, eps=1e-8):
     return x / (x.norm(dim=dim, keepdim=True) + eps)
 
-def custom_retriever_loss(query_emb, pos_api_embs, neg_api_embs):
-    # pos_api_embs: (batch, n_pos, dim)
-    # neg_api_embs: (batch, n_neg, dim)
+def generate_negative_samples_dynamic(relevant_apis, all_apis_in_batch, num_negatives=1):
+    """
+    Generate a single negative sample per query with mixed strategy:
+    - 70%: Different category APIs (completely different domain)
+    - 20%: Same category, different tool APIs (similar but different tool)
+    - 10%: Same tool, different API APIs (hard negatives)
+    
+    Args:
+        relevant_apis: List of relevant APIs for current sample
+        all_apis_in_batch: List of all APIs from all samples in the batch
+        num_negatives: Number of negative samples to generate (should be 1)
+    
+    Returns:
+        List of selected negative APIs (single API)
+    """
+    import random
+    
+    # Get relevant categories and tools for current sample
+    relevant_categories = set(api.get('category_name', '') for api in relevant_apis)
+    relevant_tools = set(api.get('tool_name', '') for api in relevant_apis)
+    relevant_api_names = set(api.get('api_name', '') for api in relevant_apis)
+    
+    # Get all irrelevant APIs (not in relevant_apis)
+    irrelevant_apis = [api for api in all_apis_in_batch if (api.get('tool_name'), api.get('api_name')) not in 
+                      [(r.get('tool_name'), r.get('api_name')) for r in relevant_apis]]
+    
+    # Categorize irrelevant APIs
+    different_category_apis = []
+    same_category_diff_tool_apis = []
+    same_tool_diff_api_apis = []
+    
+    for api in irrelevant_apis:
+        category = api.get('category_name', '')
+        tool_name = api.get('tool_name', '')
+        api_name = api.get('api_name', '')
+        
+        if category not in relevant_categories:
+            # Different category (70%)
+            different_category_apis.append(api)
+        elif tool_name not in relevant_tools:
+            # Same category, different tool (20%)
+            same_category_diff_tool_apis.append(api)
+        elif api_name not in relevant_api_names:
+            # Same tool, different API (10%)
+            same_tool_diff_api_apis.append(api)
+    
+    # Select one negative sample based on probability distribution
+    selected_negative = None
+    
+    # Generate random number to determine category
+    rand_val = random.random()
+    
+    if rand_val < 0.7 and different_category_apis:
+        # 70% chance: Different category
+        selected_negative = random.choice(different_category_apis)
+    elif rand_val < 0.9 and same_category_diff_tool_apis:
+        # 20% chance: Same category, different tool
+        selected_negative = random.choice(same_category_diff_tool_apis)
+    elif same_tool_diff_api_apis:
+        # 10% chance: Same tool, different API
+        selected_negative = random.choice(same_tool_diff_api_apis)
+    else:
+        # Fallback: pick from any available irrelevant APIs
+        if irrelevant_apis:
+            selected_negative = random.choice(irrelevant_apis)
+    
+    return [selected_negative] if selected_negative else []
+
+def custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_emb, alpha=0.7, beta=0.3):
+    """
+    Modified loss function for single negative sample with weighted L2 distances
+    
+    Args:
+        query_emb: Query embedding (not normalized)
+        pos_api_embs: Positive API embeddings (batch, n_pos, dim)
+        neg_api_emb: Single negative API embedding (batch, dim)
+        alpha: Weight for positive distance (default: 0.7)
+        beta: Weight for negative distance (default: 0.3)
+    """
+    # Normalize API embeddings
     pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
     pos_sum = pos_api_embs_norm.sum(dim=1)  # (batch, dim)
-    neg_api_embs_norm = F.normalize(neg_api_embs, p=2, dim=-1)
-    neg_sum = neg_api_embs_norm.sum(dim=1)  # (batch, dim)
-    pos_dist = F.pairwise_distance(query_emb, pos_sum)
-    neg_dist = F.pairwise_distance(query_emb, neg_sum)
-    loss = pos_dist - neg_dist
+    neg_api_emb_norm = F.normalize(neg_api_emb, p=2, dim=-1)  # (batch, dim)
+    
+    # Calculate L2 distances
+    # Positive: use original query embedding (not normalized)
+    pos_dist = F.pairwise_distance(query_emb, pos_sum)  # (batch,)
+    
+    # Negative: use normalized query embedding to prevent it from growing too large
+    query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
+    neg_dist = F.pairwise_distance(query_emb_norm, neg_api_emb_norm)  # (batch,)
+    
+    # Loss: weighted combination of positive and negative distances
+    # We want alpha * pos_dist to be small and beta * neg_dist to be large
+    margin = 0.1
+    loss = torch.clamp(alpha * pos_dist - beta * neg_dist + margin, min=0)
     return loss.mean()
 
 def collate_fn(batch):
     # batch: list of dicts
     queries = [item['query'] for item in batch]
+    
+    # Process positive APIs
     pos_api_texts = [[f"{api['tool_name']} {api['api_name']} {api.get('api_description','')}" for api in item['relevant_apis']] for item in batch]
-    neg_api_texts = [[f"{api['tool_name']} {api['api_name']} {api.get('api_description','')}" for api in item['irrelevant_apis'][:len(item['relevant_apis'])]] for item in batch]
+    
+    # Collect all APIs from the batch for dynamic negative sampling
+    all_apis_in_batch = []
+    for item in batch:
+        # Use relevant_apis + irrelevant_apis as all available APIs
+        all_apis_in_batch.extend(item['relevant_apis'])
+        all_apis_in_batch.extend(item['irrelevant_apis'])
+    
+    # Process negative APIs with single negative sample per query
+    neg_api_texts = []
+    for item in batch:
+        # Generate single negative sample dynamically from all APIs in the batch
+        selected_negatives = generate_negative_samples_dynamic(
+            item['relevant_apis'], 
+            all_apis_in_batch, 
+            num_negatives=1
+        )
+        
+        # Convert to text format (single negative)
+        if selected_negatives:
+            neg_texts = [f"{api['tool_name']} {api['api_name']} {api.get('api_description','')}" for api in selected_negatives]
+        else:
+            # Fallback: use first irrelevant API if no negative found
+            neg_texts = [f"{item['irrelevant_apis'][0]['tool_name']} {item['irrelevant_apis'][0]['api_name']} {item['irrelevant_apis'][0].get('api_description','')}"] if item['irrelevant_apis'] else [""]
+        neg_api_texts.append(neg_texts)
+    
     return queries, pos_api_texts, neg_api_texts
 
 def get_embeddings(model, texts, device):
@@ -341,9 +454,40 @@ def get_embeddings(model, texts, device):
         return out["sentence_embedding"]
 
 
+def process_api_embeddings_single_negative(model, api_texts, device):
+    """
+    Process API embeddings for single negative samples
+    
+    Args:
+        model: SentenceTransformer model
+        api_texts: List of API text lists (each list contains single API text)
+        device: Device (cuda/cpu)
+    
+    Returns:
+        torch.Tensor: Processed embedding tensor (batch, dim)
+    """
+    embeddings = []
+    for apis in api_texts:
+        if len(apis) == 0 or apis[0] == "":
+            # Create zero embedding if no API
+            emb = torch.zeros(768, device=device)
+        else:
+            # Single API text
+            emb = get_embeddings(model, apis, device)
+            # Ensure it's 1D (single embedding)
+            if len(emb.shape) > 1:
+                emb = emb.squeeze(0)  # Remove batch dimension if present
+            # Ensure it has the right dimension
+            if emb.shape[0] != 768:
+                emb = emb.expand(768)
+        
+        embeddings.append(emb)
+    
+    return torch.stack(embeddings)  # (batch, dim)
+
 def process_api_embeddings(model, api_texts, device, max_len=None):
     """
-    공통 API 임베딩 처리 함수
+    공통 API 임베딩 처리 함수 (for positive APIs)
     
     Args:
         model: SentenceTransformer 모델
@@ -392,8 +536,8 @@ def evaluate(model, val_loader, device):
             with torch.amp.autocast('cuda') if torch.cuda.is_available() else torch.enable_grad():
                 query_emb = get_embeddings(model, queries, device)
                 pos_api_embs = process_api_embeddings(model, pos_api_texts, device)
-                neg_api_embs = process_api_embeddings(model, neg_api_texts, device)
-            loss = custom_retriever_loss(query_emb, pos_api_embs, neg_api_embs)
+                neg_api_embs = process_api_embeddings_single_negative(model, neg_api_texts, device)
+            loss = custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_embs)
             total_loss += loss.item() * len(queries)
             count += len(queries)
     model.train()
@@ -433,7 +577,7 @@ def analyze_dataset_and_calculate_batch_size(train_dataset, val_dataset, device,
                 
                 query_emb = get_embeddings(model, queries, device)
                 pos_api_embs = process_api_embeddings(model, pos_api_texts, device)
-                neg_api_embs = process_api_embeddings(model, neg_api_texts, device)
+                neg_api_embs = process_api_embeddings_single_negative(model, neg_api_texts, device)
                 
                 # 메모리 사용량 확인
                 max_memory_used = torch.cuda.max_memory_allocated() / (1024**3)  # GB
@@ -535,9 +679,9 @@ def train(resume_from=None):
                 with torch.amp.autocast('cuda') if torch.cuda.is_available() else torch.enable_grad():
                     query_emb = get_embeddings(model, queries, device)
                     pos_api_embs = process_api_embeddings(model, pos_api_texts, device)
-                    neg_api_embs = process_api_embeddings(model, neg_api_texts, device)
+                    neg_api_embs = process_api_embeddings_single_negative(model, neg_api_texts, device)
                 
-                loss = custom_retriever_loss(query_emb, pos_api_embs, neg_api_embs)
+                loss = custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_embs)
                 # Gradient accumulation
                 loss = loss / accumulation_steps
                 loss.backward()
