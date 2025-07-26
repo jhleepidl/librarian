@@ -368,35 +368,47 @@ def generate_negative_samples_dynamic(relevant_apis, all_apis_in_batch, num_nega
     
     return [selected_negative] if selected_negative else []
 
-def custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_emb, alpha=0.7, beta=0.3):
+def improved_retriever_loss_v9(query_emb, pos_api_embs, neg_api_emb, alpha=0.5, beta=0.5):
     """
-    Modified loss function for single negative sample with weighted L2 distances
+    Normalized positive distance loss function
     
     Args:
-        query_emb: Query embedding (not normalized)
+        query_emb: Query embedding (batch, dim)
         pos_api_embs: Positive API embeddings (batch, n_pos, dim)
         neg_api_emb: Single negative API embedding (batch, dim)
-        alpha: Weight for positive distance (default: 0.7)
-        beta: Weight for negative distance (default: 0.3)
+        alpha: Weight for positive distance (default: 0.5)
+        beta: Weight for negative distance (default: 0.5)
     """
-    # Normalize API embeddings
-    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
-    pos_sum = pos_api_embs_norm.sum(dim=1)  # (batch, dim)
-    neg_api_emb_norm = F.normalize(neg_api_emb, p=2, dim=-1)  # (batch, dim)
-    
-    # Calculate L2 distances
-    # Positive: use original query embedding (not normalized)
-    pos_dist = F.pairwise_distance(query_emb, pos_sum)  # (batch,)
-    
-    # Negative: use normalized query embedding to prevent it from growing too large
+    # Normalize all embeddings
     query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
-    neg_dist = F.pairwise_distance(query_emb_norm, neg_api_emb_norm)  # (batch,)
+    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
+    neg_api_emb_norm = F.normalize(neg_api_emb, p=2, dim=-1)
     
-    # Loss: weighted combination of positive and negative distances
-    # We want alpha * pos_dist to be small and beta * neg_dist to be large
-    margin = 0.1
-    loss = torch.clamp(alpha * pos_dist - beta * neg_dist + margin, min=0)
+    # Calculate positive API embeddings sum
+    pos_sum = pos_api_embs_norm.sum(dim=1)  # (batch, dim)
+    pos_sum_norm = F.normalize(pos_sum, p=2, dim=-1)
+    
+    # Calculate distances
+    pos_dist = 1 - F.cosine_similarity(query_emb_norm, pos_sum_norm, dim=-1)  # (batch,)
+    neg_dist = 1 - F.cosine_similarity(query_emb_norm, neg_api_emb_norm, dim=-1)  # (batch,)
+    
+    # Calculate the magnitude of positive API embeddings sum
+    pos_sum_magnitude = torch.norm(pos_sum, p=2, dim=-1)  # (batch,)
+    
+    # Normalize positive distance by positive magnitude
+    normalized_pos_dist = pos_dist / (pos_sum_magnitude + 1e-8)  # Add small epsilon to avoid division by zero
+    
+    # Balanced loss with normalized positive distance
+    loss = alpha * normalized_pos_dist + beta * neg_dist
+    
     return loss.mean()
+
+
+def custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_emb, alpha=0.7, beta=0.3):
+    """
+    Legacy loss function (kept for compatibility)
+    """
+    return improved_retriever_loss_v9(query_emb, pos_api_embs, neg_api_emb, alpha=0.5, beta=0.5)
 
 def collate_fn(batch):
     # batch: list of dicts

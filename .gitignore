@@ -219,6 +219,9 @@ old_checkpoints/
 trained_toolbench_retriever_best/
 trained_toolbench_retriever/
 old_trained_toolbench_retriever/
+query_checkpoints/
+trained_query_model/
 
 # Databases
 *_database*/
+vector_db*/
