@@ -300,20 +300,309 @@ class ToolbenchRetrieverDataset(Dataset):
 def l2_normalize(x, dim=-1, eps=1e-8):
     return x / (x.norm(dim=dim, keepdim=True) + eps)
 
-def generate_negative_samples_dynamic(relevant_apis, all_apis_in_batch, num_negatives=1):
+def embedding_diversity_loss(embeddings, temperature=0.1):
     """
-    Generate a single negative sample per query with mixed strategy:
-    - 70%: Different category APIs (completely different domain)
-    - 20%: Same category, different tool APIs (similar but different tool)
-    - 10%: Same tool, different API APIs (hard negatives)
+    Compute diversity loss to encourage embeddings to be more diverse
+    
+    Args:
+        embeddings: Tensor of shape (batch, n_embeddings, dim)
+        temperature: Temperature for similarity calculation
+    
+    Returns:
+        diversity_loss: Scalar tensor
+    """
+    # Normalize embeddings
+    embeddings_norm = F.normalize(embeddings, p=2, dim=-1)
+    
+    # Compute pairwise similarities
+    similarities = torch.matmul(embeddings_norm, embeddings_norm.transpose(-2, -1)) / temperature
+    
+    # Remove diagonal (self-similarities)
+    mask = torch.eye(similarities.size(-1), device=embeddings.device).bool()
+    similarities = similarities.masked_fill(mask, 0)
+    
+    # Compute diversity loss (minimize average similarity)
+    diversity_loss = similarities.mean()
+    
+    return diversity_loss
+
+def improved_retriever_loss_v11(query_emb, pos_api_embs, neg_api_embs, temperature=0.1, margin=0.3, diversity_weight=0.1):
+    """
+    Improved loss function with contrastive learning, triplet loss, and diversity regularization
+    
+    Args:
+        query_emb: Query embedding (batch, dim)
+        pos_api_embs: Positive API embeddings (batch, n_pos, dim)
+        neg_api_embs: Negative API embeddings (batch, n_neg, dim)
+        temperature: Temperature for contrastive learning
+        margin: Margin for triplet loss
+        diversity_weight: Weight for diversity loss
+    """
+    # Normalize all embeddings
+    query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
+    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
+    neg_api_embs_norm = F.normalize(neg_api_embs, p=2, dim=-1)
+    
+    # Calculate positive distances (multiple positive samples)
+    pos_distances = []
+    for i in range(pos_api_embs_norm.size(1)):
+        pos_dist = 1 - F.cosine_similarity(query_emb_norm, pos_api_embs_norm[:, i, :], dim=-1)
+        pos_distances.append(pos_dist)
+    
+    # Calculate negative distances (multiple negative samples)
+    neg_distances = []
+    for i in range(neg_api_embs_norm.size(1)):
+        neg_dist = 1 - F.cosine_similarity(query_emb_norm, neg_api_embs_norm[:, i, :], dim=-1)
+        neg_distances.append(neg_dist)
+    
+    # Contrastive loss with hard negative mining
+    pos_distances = torch.stack(pos_distances, dim=1)  # (batch, n_pos)
+    neg_distances = torch.stack(neg_distances, dim=1)  # (batch, n_neg)
+    
+    # Find hardest negative for each positive
+    hardest_neg_distances = torch.min(neg_distances, dim=1)[0]  # (batch,)
+    
+    # Triplet loss with margin
+    pos_mean_dist = torch.mean(pos_distances, dim=1)  # (batch,)
+    triplet_loss = F.relu(pos_mean_dist - hardest_neg_distances + margin)
+    
+    # Contrastive loss component
+    logits = torch.cat([
+        torch.sum(query_emb_norm.unsqueeze(1) * pos_api_embs_norm, dim=-1) / temperature,
+        torch.sum(query_emb_norm.unsqueeze(1) * neg_api_embs_norm, dim=-1) / temperature
+    ], dim=1)  # (batch, n_pos + n_neg)
+    
+    labels = torch.arange(pos_api_embs_norm.size(1), device=query_emb.device)
+    contrastive_loss = F.cross_entropy(logits, labels)
+    
+    # Diversity loss for all embeddings
+    all_embeddings = torch.cat([pos_api_embs_norm, neg_api_embs_norm], dim=1)  # (batch, n_pos + n_neg, dim)
+    diversity_loss = embedding_diversity_loss(all_embeddings, temperature)
+    
+    # Combine losses
+    total_loss = triplet_loss.mean() + 0.5 * contrastive_loss + diversity_weight * diversity_loss
+    
+    return total_loss
+
+def improved_retriever_loss_v12(query_emb, pos_api_embs, neg_api_embs, temperature=0.1, margin=0.3, diversity_weight=0.1, magnitude_weight=0.2):
+    """
+    Improved loss function with contrastive learning, triplet loss, diversity regularization, and magnitude learning
+    
+    Args:
+        query_emb: Query embedding (batch, dim) - UNNORMALIZED for magnitude learning
+        pos_api_embs: Positive API embeddings (batch, n_pos, dim)
+        neg_api_embs: Negative API embeddings (batch, n_neg, dim)
+        temperature: Temperature for contrastive learning
+        margin: Margin for triplet loss
+        diversity_weight: Weight for diversity loss
+        magnitude_weight: Weight for magnitude learning loss
+    """
+    # Normalize positive and negative embeddings for contrastive learning
+    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
+    neg_api_embs_norm = F.normalize(neg_api_embs, p=2, dim=-1)
+    
+    # For contrastive learning, normalize query embeddings
+    query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
+    
+    # Calculate positive distances (multiple positive samples)
+    pos_distances = []
+    for i in range(pos_api_embs_norm.size(1)):
+        pos_dist = 1 - F.cosine_similarity(query_emb_norm, pos_api_embs_norm[:, i, :], dim=-1)
+        pos_distances.append(pos_dist)
+    
+    # Calculate negative distances (multiple negative samples)
+    neg_distances = []
+    for i in range(neg_api_embs_norm.size(1)):
+        neg_dist = 1 - F.cosine_similarity(query_emb_norm, neg_api_embs_norm[:, i, :], dim=-1)
+        neg_distances.append(neg_dist)
+    
+    # Contrastive loss with hard negative mining
+    pos_distances = torch.stack(pos_distances, dim=1)  # (batch, n_pos)
+    neg_distances = torch.stack(neg_distances, dim=1)  # (batch, n_neg)
+    
+    # Find hardest negative for each positive
+    hardest_neg_distances = torch.min(neg_distances, dim=1)[0]  # (batch,)
+    
+    # Triplet loss with margin
+    pos_mean_dist = torch.mean(pos_distances, dim=1)  # (batch,)
+    triplet_loss = F.relu(pos_mean_dist - hardest_neg_distances + margin)
+    
+    # Contrastive loss component
+    logits = torch.cat([
+        torch.sum(query_emb_norm.unsqueeze(1) * pos_api_embs_norm, dim=-1) / temperature,
+        torch.sum(query_emb_norm.unsqueeze(1) * neg_api_embs_norm, dim=-1) / temperature
+    ], dim=1)  # (batch, n_pos + n_neg)
+    
+    labels = torch.arange(pos_api_embs_norm.size(1), device=query_emb.device)
+    contrastive_loss = F.cross_entropy(logits, labels)
+    
+    # Diversity loss for all embeddings
+    all_embeddings = torch.cat([pos_api_embs_norm, neg_api_embs_norm], dim=1)  # (batch, n_pos + n_neg, dim)
+    diversity_loss = embedding_diversity_loss(all_embeddings, temperature)
+    
+    # MAGNITUDE LEARNING LOSS: Unnormalized query embedding vs sum of normalized positive embeddings
+    # Sum of normalized positive embeddings
+    pos_sum_norm = pos_api_embs_norm.sum(dim=1)  # (batch, dim)
+    pos_sum_norm = F.normalize(pos_sum_norm, p=2, dim=-1)  # Keep normalized
+    
+    # L2 distance between unnormalized query embedding and normalized positive sum
+    magnitude_loss = F.mse_loss(query_emb, pos_sum_norm)
+    
+    # Alternative: L2 distance with learned scaling factor
+    # query_magnitude = torch.norm(query_emb, p=2, dim=-1, keepdim=True)  # (batch, 1)
+    # pos_sum_magnitude = torch.norm(pos_sum_norm, p=2, dim=-1, keepdim=True)  # (batch, 1)
+    # magnitude_loss = F.mse_loss(query_magnitude, pos_sum_magnitude)
+    
+    # Combine losses
+    total_loss = triplet_loss.mean() + 0.5 * contrastive_loss + diversity_weight * diversity_loss + magnitude_weight * magnitude_loss
+    
+    return total_loss
+
+def improved_retriever_loss_v13(query_emb, pos_api_embs, neg_api_embs, temperature=0.1, margin=0.3, diversity_weight=0.1, magnitude_weight=0.2):
+    """
+    Alternative magnitude learning approach: Learn query embedding magnitude to match positive API embeddings
+    """
+    # Normalize positive and negative embeddings
+    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
+    neg_api_embs_norm = F.normalize(neg_api_embs, p=2, dim=-1)
+    
+    # For contrastive learning, normalize query embeddings
+    query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
+    
+    # Calculate positive distances
+    pos_distances = []
+    for i in range(pos_api_embs_norm.size(1)):
+        pos_dist = 1 - F.cosine_similarity(query_emb_norm, pos_api_embs_norm[:, i, :], dim=-1)
+        pos_distances.append(pos_dist)
+    
+    # Calculate negative distances
+    neg_distances = []
+    for i in range(neg_api_embs_norm.size(1)):
+        neg_dist = 1 - F.cosine_similarity(query_emb_norm, neg_api_embs_norm[:, i, :], dim=-1)
+        neg_distances.append(neg_dist)
+    
+    # Contrastive loss with hard negative mining
+    pos_distances = torch.stack(pos_distances, dim=1)
+    neg_distances = torch.stack(neg_distances, dim=1)
+    hardest_neg_distances = torch.min(neg_distances, dim=1)[0]
+    
+    # Triplet loss
+    pos_mean_dist = torch.mean(pos_distances, dim=1)
+    triplet_loss = F.relu(pos_mean_dist - hardest_neg_distances + margin)
+    
+    # Contrastive loss
+    logits = torch.cat([
+        torch.sum(query_emb_norm.unsqueeze(1) * pos_api_embs_norm, dim=-1) / temperature,
+        torch.sum(query_emb_norm.unsqueeze(1) * neg_api_embs_norm, dim=-1) / temperature
+    ], dim=1)
+    
+    labels = torch.arange(pos_api_embs_norm.size(1), device=query_emb.device)
+    contrastive_loss = F.cross_entropy(logits, labels)
+    
+    # Diversity loss
+    all_embeddings = torch.cat([pos_api_embs_norm, neg_api_embs_norm], dim=1)
+    diversity_loss = embedding_diversity_loss(all_embeddings, temperature)
+    
+    # MAGNITUDE LEARNING: Learn query embedding magnitude to match positive API embeddings
+    # Calculate the magnitude of positive API embeddings sum
+    pos_sum = pos_api_embs_norm.sum(dim=1)  # (batch, dim)
+    pos_sum_magnitude = torch.norm(pos_sum, p=2, dim=-1)  # (batch,)
+    
+    # Calculate query embedding magnitude
+    query_magnitude = torch.norm(query_emb, p=2, dim=-1)  # (batch,)
+    
+    # Magnitude loss: encourage query magnitude to match positive sum magnitude
+    magnitude_loss = F.mse_loss(query_magnitude, pos_sum_magnitude)
+    
+    # Combine losses
+    total_loss = triplet_loss.mean() + 0.5 * contrastive_loss + diversity_weight * diversity_loss + magnitude_weight * magnitude_loss
+    
+    return total_loss
+
+def improved_retriever_loss_v14(query_emb, pos_api_embs, neg_api_embs, temperature=0.1, margin=0.3, diversity_weight=0.05, magnitude_weight=0.1):
+    """
+    Combined approach: Both direction and magnitude learning with adjusted weights
+    """
+    # Normalize positive and negative embeddings
+    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
+    neg_api_embs_norm = F.normalize(neg_api_embs, p=2, dim=-1)
+    
+    # For contrastive learning, normalize query embeddings
+    query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
+    
+    # Calculate positive distances
+    pos_distances = []
+    for i in range(pos_api_embs_norm.size(1)):
+        pos_dist = 1 - F.cosine_similarity(query_emb_norm, pos_api_embs_norm[:, i, :], dim=-1)
+        pos_distances.append(pos_dist)
+    
+    # Calculate negative distances
+    neg_distances = []
+    for i in range(neg_api_embs_norm.size(1)):
+        neg_dist = 1 - F.cosine_similarity(query_emb_norm, neg_api_embs_norm[:, i, :], dim=-1)
+        neg_distances.append(neg_dist)
+    
+    # Contrastive loss with hard negative mining
+    pos_distances = torch.stack(pos_distances, dim=1)
+    neg_distances = torch.stack(neg_distances, dim=1)
+    hardest_neg_distances = torch.min(neg_distances, dim=1)[0]
+    
+    # Triplet loss
+    pos_mean_dist = torch.mean(pos_distances, dim=1)
+    triplet_loss = F.relu(pos_mean_dist - hardest_neg_distances + margin)
+    
+    # Contrastive loss - Fixed to handle variable batch sizes
+    logits = torch.cat([
+        torch.sum(query_emb_norm.unsqueeze(1) * pos_api_embs_norm, dim=-1) / temperature,
+        torch.sum(query_emb_norm.unsqueeze(1) * neg_api_embs_norm, dim=-1) / temperature
+    ], dim=1)
+    
+    # Create labels for each batch item (first positive API for each query)
+    batch_size = query_emb.size(0)
+    labels = torch.zeros(batch_size, dtype=torch.long, device=query_emb.device)
+    contrastive_loss = F.cross_entropy(logits, labels)
+    
+    # Diversity loss
+    all_embeddings = torch.cat([pos_api_embs_norm, neg_api_embs_norm], dim=1)
+    diversity_loss = embedding_diversity_loss(all_embeddings, temperature)
+    
+    # MAGNITUDE LEARNING: Combined approach with scaling
+    # 1. Direction learning: unnormalized query should point towards normalized positive sum
+    pos_sum_norm = pos_api_embs_norm.sum(dim=1)
+    pos_sum_norm = F.normalize(pos_sum_norm, p=2, dim=-1)
+    
+    # Scale query embedding to match normalized positive sum magnitude
+    query_magnitude = torch.norm(query_emb, p=2, dim=-1, keepdim=True)
+    pos_sum_magnitude = torch.norm(pos_sum_norm, p=2, dim=-1, keepdim=True)
+    scaled_query = query_emb * (pos_sum_magnitude / (query_magnitude + 1e-8))
+    
+    direction_loss = F.mse_loss(scaled_query, pos_sum_norm)
+    
+    # 2. Magnitude learning: query magnitude should match positive sum magnitude
+    pos_sum = pos_api_embs_norm.sum(dim=1)
+    pos_sum_magnitude = torch.norm(pos_sum, p=2, dim=-1)
+    query_magnitude = torch.norm(query_emb, p=2, dim=-1)
+    magnitude_loss = F.mse_loss(query_magnitude, pos_sum_magnitude)
+    
+    # Combine magnitude losses with reduced weight
+    combined_magnitude_loss = 0.5 * direction_loss + 0.5 * magnitude_loss
+    
+    # Combine all losses with adjusted weights
+    total_loss = triplet_loss.mean() + 0.3 * contrastive_loss + diversity_weight * diversity_loss + magnitude_weight * combined_magnitude_loss
+    
+    return total_loss
+
+def generate_negative_samples_improved(relevant_apis, all_apis_in_batch, num_negatives=3):
+    """
+    Generate multiple negative samples with diverse strategies
     
     Args:
         relevant_apis: List of relevant APIs for current sample
         all_apis_in_batch: List of all APIs from all samples in the batch
-        num_negatives: Number of negative samples to generate (should be 1)
+        num_negatives: Number of negative samples to generate
     
     Returns:
-        List of selected negative APIs (single API)
+        List of selected negative APIs
     """
     import random
     
@@ -322,9 +611,12 @@ def generate_negative_samples_dynamic(relevant_apis, all_apis_in_batch, num_nega
     relevant_tools = set(api.get('tool_name', '') for api in relevant_apis)
     relevant_api_names = set(api.get('api_name', '') for api in relevant_apis)
     
-    # Get all irrelevant APIs (not in relevant_apis)
+    # Get all irrelevant APIs
     irrelevant_apis = [api for api in all_apis_in_batch if (api.get('tool_name'), api.get('api_name')) not in 
                       [(r.get('tool_name'), r.get('api_name')) for r in relevant_apis]]
+    
+    if not irrelevant_apis:
+        return []
     
     # Categorize irrelevant APIs
     different_category_apis = []
@@ -337,81 +629,42 @@ def generate_negative_samples_dynamic(relevant_apis, all_apis_in_batch, num_nega
         api_name = api.get('api_name', '')
         
         if category not in relevant_categories:
-            # Different category (70%)
             different_category_apis.append(api)
         elif tool_name not in relevant_tools:
-            # Same category, different tool (20%)
             same_category_diff_tool_apis.append(api)
         elif api_name not in relevant_api_names:
-            # Same tool, different API (10%)
             same_tool_diff_api_apis.append(api)
     
-    # Select one negative sample based on probability distribution
-    selected_negative = None
+    selected_negatives = []
     
-    # Generate random number to determine category
-    rand_val = random.random()
+    # Strategy 1: Different category (40%)
+    num_diff_category = min(num_negatives // 2, len(different_category_apis))
+    if num_diff_category > 0:
+        selected_negatives.extend(random.sample(different_category_apis, num_diff_category))
     
-    if rand_val < 0.7 and different_category_apis:
-        # 70% chance: Different category
-        selected_negative = random.choice(different_category_apis)
-    elif rand_val < 0.9 and same_category_diff_tool_apis:
-        # 20% chance: Same category, different tool
-        selected_negative = random.choice(same_category_diff_tool_apis)
-    elif same_tool_diff_api_apis:
-        # 10% chance: Same tool, different API
-        selected_negative = random.choice(same_tool_diff_api_apis)
-    else:
-        # Fallback: pick from any available irrelevant APIs
-        if irrelevant_apis:
-            selected_negative = random.choice(irrelevant_apis)
+    # Strategy 2: Same category, different tool (30%)
+    num_same_category = min(num_negatives // 3, len(same_category_diff_tool_apis))
+    if num_same_category > 0:
+        selected_negatives.extend(random.sample(same_category_diff_tool_apis, num_same_category))
     
-    return [selected_negative] if selected_negative else []
+    # Strategy 3: Same tool, different API (20%)
+    num_same_tool = min(num_negatives // 5, len(same_tool_diff_api_apis))
+    if num_same_tool > 0:
+        selected_negatives.extend(random.sample(same_tool_diff_api_apis, num_same_tool))
+    
+    # Strategy 4: Random from remaining (10%)
+    remaining_needed = num_negatives - len(selected_negatives)
+    if remaining_needed > 0:
+        remaining_apis = [api for api in irrelevant_apis if api not in selected_negatives]
+        if remaining_apis:
+            selected_negatives.extend(random.sample(remaining_apis, min(remaining_needed, len(remaining_apis))))
+    
+    return selected_negatives
 
-def improved_retriever_loss_v9(query_emb, pos_api_embs, neg_api_emb, alpha=0.5, beta=0.5):
+def collate_fn_improved(batch):
     """
-    Normalized positive distance loss function
-    
-    Args:
-        query_emb: Query embedding (batch, dim)
-        pos_api_embs: Positive API embeddings (batch, n_pos, dim)
-        neg_api_emb: Single negative API embedding (batch, dim)
-        alpha: Weight for positive distance (default: 0.5)
-        beta: Weight for negative distance (default: 0.5)
+    Improved collate function with multiple negative samples
     """
-    # Normalize all embeddings
-    query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
-    pos_api_embs_norm = F.normalize(pos_api_embs, p=2, dim=-1)
-    neg_api_emb_norm = F.normalize(neg_api_emb, p=2, dim=-1)
-    
-    # Calculate positive API embeddings sum
-    pos_sum = pos_api_embs_norm.sum(dim=1)  # (batch, dim)
-    pos_sum_norm = F.normalize(pos_sum, p=2, dim=-1)
-    
-    # Calculate distances
-    pos_dist = 1 - F.cosine_similarity(query_emb_norm, pos_sum_norm, dim=-1)  # (batch,)
-    neg_dist = 1 - F.cosine_similarity(query_emb_norm, neg_api_emb_norm, dim=-1)  # (batch,)
-    
-    # Calculate the magnitude of positive API embeddings sum
-    pos_sum_magnitude = torch.norm(pos_sum, p=2, dim=-1)  # (batch,)
-    
-    # Normalize positive distance by positive magnitude
-    normalized_pos_dist = pos_dist / (pos_sum_magnitude + 1e-8)  # Add small epsilon to avoid division by zero
-    
-    # Balanced loss with normalized positive distance
-    loss = alpha * normalized_pos_dist + beta * neg_dist
-    
-    return loss.mean()
-
-
-def custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_emb, alpha=0.7, beta=0.3):
-    """
-    Legacy loss function (kept for compatibility)
-    """
-    return improved_retriever_loss_v9(query_emb, pos_api_embs, neg_api_emb, alpha=0.5, beta=0.5)
-
-def collate_fn(batch):
-    # batch: list of dicts
     queries = [item['query'] for item in batch]
     
     # Process positive APIs
@@ -420,26 +673,25 @@ def collate_fn(batch):
     # Collect all APIs from the batch for dynamic negative sampling
     all_apis_in_batch = []
     for item in batch:
-        # Use relevant_apis + irrelevant_apis as all available APIs
         all_apis_in_batch.extend(item['relevant_apis'])
         all_apis_in_batch.extend(item['irrelevant_apis'])
     
-    # Process negative APIs with single negative sample per query
+    # Process negative APIs with multiple negative samples per query
     neg_api_texts = []
     for item in batch:
-        # Generate single negative sample dynamically from all APIs in the batch
-        selected_negatives = generate_negative_samples_dynamic(
+        # Generate multiple negative samples dynamically
+        selected_negatives = generate_negative_samples_improved(
             item['relevant_apis'], 
             all_apis_in_batch, 
-            num_negatives=1
+            num_negatives=3  # Multiple negatives
         )
         
-        # Convert to text format (single negative)
+        # Convert to text format
         if selected_negatives:
             neg_texts = [f"{api['tool_name']} {api['api_name']} {api.get('api_description','')}" for api in selected_negatives]
         else:
-            # Fallback: use first irrelevant API if no negative found
-            neg_texts = [f"{item['irrelevant_apis'][0]['tool_name']} {item['irrelevant_apis'][0]['api_name']} {item['irrelevant_apis'][0].get('api_description','')}"] if item['irrelevant_apis'] else [""]
+            # Fallback: use irrelevant APIs
+            neg_texts = [f"{api['tool_name']} {api['api_name']} {api.get('api_description','')}" for api in item['irrelevant_apis'][:3]]
         neg_api_texts.append(neg_texts)
     
     return queries, pos_api_texts, neg_api_texts
@@ -466,36 +718,43 @@ def get_embeddings(model, texts, device):
         return out["sentence_embedding"]
 
 
-def process_api_embeddings_single_negative(model, api_texts, device):
+def process_api_embeddings_multiple_negatives(model, api_texts, device):
     """
-    Process API embeddings for single negative samples
+    Process API embeddings for multiple negative samples
     
     Args:
         model: SentenceTransformer model
-        api_texts: List of API text lists (each list contains single API text)
+        api_texts: List of API text lists (each list contains multiple API texts)
         device: Device (cuda/cpu)
     
     Returns:
-        torch.Tensor: Processed embedding tensor (batch, dim)
+        torch.Tensor: Processed embedding tensor (batch, n_neg, dim)
     """
     embeddings = []
+    max_negatives = max(len(apis) for apis in api_texts)
+    
     for apis in api_texts:
-        if len(apis) == 0 or apis[0] == "":
-            # Create zero embedding if no API
-            emb = torch.zeros(768, device=device)
+        if len(apis) == 0:
+            # Create zero embeddings if no APIs
+            emb = torch.zeros(max_negatives, 768, device=device)
         else:
-            # Single API text
+            # Multiple API texts
             emb = get_embeddings(model, apis, device)
-            # Ensure it's 1D (single embedding)
-            if len(emb.shape) > 1:
-                emb = emb.squeeze(0)  # Remove batch dimension if present
-            # Ensure it has the right dimension
-            if emb.shape[0] != 768:
-                emb = emb.expand(768)
+            # Ensure it's 2D (batch, dim)
+            if len(emb.shape) == 1:
+                emb = emb.unsqueeze(0)
+            
+            # Pad to max_negatives
+            if len(emb) < max_negatives:
+                padding_size = max_negatives - len(emb)
+                zero_pad = torch.zeros(padding_size, 768, device=device, dtype=emb.dtype)
+                emb = torch.cat([emb, zero_pad], dim=0)
+            elif len(emb) > max_negatives:
+                emb = emb[:max_negatives]
         
         embeddings.append(emb)
     
-    return torch.stack(embeddings)  # (batch, dim)
+    return torch.stack(embeddings)  # (batch, n_neg, dim)
 
 def process_api_embeddings(model, api_texts, device, max_len=None):
     """
@@ -548,8 +807,8 @@ def evaluate(model, val_loader, device):
             with torch.amp.autocast('cuda') if torch.cuda.is_available() else torch.enable_grad():
                 query_emb = get_embeddings(model, queries, device)
                 pos_api_embs = process_api_embeddings(model, pos_api_texts, device)
-                neg_api_embs = process_api_embeddings_single_negative(model, neg_api_texts, device)
-            loss = custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_embs)
+                neg_api_embs = process_api_embeddings_multiple_negatives(model, neg_api_texts, device)
+            loss = improved_retriever_loss_v14(query_emb, pos_api_embs, neg_api_embs)
             total_loss += loss.item() * len(queries)
             count += len(queries)
     model.train()
@@ -573,7 +832,7 @@ def analyze_dataset_and_calculate_batch_size(train_dataset, val_dataset, device,
     
     # 샘플 데이터로 메모리 사용량 테스트
     sample_batch_size = 4
-    test_loader = DataLoader(train_dataset, batch_size=sample_batch_size, shuffle=False, collate_fn=collate_fn)
+    test_loader = DataLoader(train_dataset, batch_size=sample_batch_size, shuffle=False, collate_fn=collate_fn_improved)
     
     # 첫 번째 배치로 메모리 사용량 측정
     model = SentenceTransformer('ToolBench/ToolBench_IR_bert_based_uncased')
@@ -589,7 +848,7 @@ def analyze_dataset_and_calculate_batch_size(train_dataset, val_dataset, device,
                 
                 query_emb = get_embeddings(model, queries, device)
                 pos_api_embs = process_api_embeddings(model, pos_api_texts, device)
-                neg_api_embs = process_api_embeddings_single_negative(model, neg_api_texts, device)
+                neg_api_embs = process_api_embeddings_multiple_negatives(model, neg_api_texts, device)
                 
                 # 메모리 사용량 확인
                 max_memory_used = torch.cuda.max_memory_allocated() / (1024**3)  # GB
@@ -624,6 +883,155 @@ def analyze_dataset_and_calculate_batch_size(train_dataset, val_dataset, device,
     
     return optimal_batch_size
 
+def get_warmup_cosine_scheduler(optimizer, num_warmup_steps, num_training_steps):
+    """
+    Create a learning rate scheduler with warmup and cosine decay
+    """
+    from torch.optim.lr_scheduler import LambdaLR
+    import math
+    
+    def lr_lambda(current_step):
+        if current_step < num_warmup_steps:
+            return float(current_step) / float(max(1, num_warmup_steps))
+        progress = float(current_step - num_warmup_steps) / float(max(1, num_training_steps - num_warmup_steps))
+        return max(0.0, 0.5 * (1.0 + math.cos(math.pi * progress)))
+    
+    return LambdaLR(optimizer, lr_lambda)
+
+def initialize_embeddings_with_diversity(model, device):
+    """
+    Initialize model embeddings with better diversity to prevent clustering
+    """
+    print("🔧 Initializing embeddings with diversity...")
+    
+    # Get the embedding layer (usually the first layer)
+    for name, module in model.named_modules():
+        if 'embeddings' in name and hasattr(module, 'weight'):
+            # Check if weight is 2D or higher for orthogonal initialization
+            if len(module.weight.shape) >= 2:
+                # Initialize with orthogonal weights for better diversity
+                torch.nn.init.orthogonal_(module.weight)
+                print(f"✅ Initialized {name} with orthogonal weights")
+            else:
+                # For 1D weights, use normal initialization
+                torch.nn.init.normal_(module.weight, mean=0.0, std=0.02)
+                print(f"✅ Initialized {name} with normal weights (1D tensor)")
+        elif 'weight' in name and 'embeddings' not in name:
+            # For other layers, use normal initialization but with smaller variance
+            if len(module.weight.shape) > 1:
+                torch.nn.init.xavier_uniform_(module.weight, gain=0.5)
+    
+    print("✅ Embedding initialization complete")
+
+def monitor_embedding_diversity(model, device, sample_size=1000):
+    """
+    Monitor embedding diversity during training
+    
+    Args:
+        model: The model to monitor
+        device: Device to use
+        sample_size: Number of embeddings to sample for diversity calculation
+    
+    Returns:
+        diversity_score: Float indicating embedding diversity
+    """
+    model.eval()
+    
+    # Sample random embeddings from the model
+    embeddings = []
+    with torch.no_grad():
+        # Create random input tokens
+        batch_size = min(32, sample_size // 32)
+        num_batches = sample_size // batch_size
+        
+        for _ in range(num_batches):
+            # Create random input
+            input_ids = torch.randint(0, 30000, (batch_size, 128), device=device)
+            attention_mask = torch.ones_like(input_ids)
+            
+            # Get embeddings
+            with torch.amp.autocast('cuda') if torch.cuda.is_available() else torch.enable_grad():
+                outputs = model({"input_ids": input_ids, "attention_mask": attention_mask})
+                if "sentence_embedding" in outputs:
+                    batch_embeddings = outputs["sentence_embedding"]
+                else:
+                    # Fallback: use the last hidden state mean
+                    batch_embeddings = outputs["token_embeddings"].mean(dim=1)
+                
+                embeddings.append(batch_embeddings)
+    
+    # Concatenate all embeddings
+    all_embeddings = torch.cat(embeddings, dim=0)
+    
+    # Normalize embeddings
+    all_embeddings_norm = F.normalize(all_embeddings, p=2, dim=-1)
+    
+    # Compute pairwise similarities
+    similarities = torch.matmul(all_embeddings_norm, all_embeddings_norm.transpose(-2, -1))
+    
+    # Remove diagonal
+    mask = torch.eye(similarities.size(-1), device=device).bool()
+    similarities = similarities.masked_fill(mask, 0)
+    
+    # Compute diversity metrics
+    mean_similarity = similarities.mean().item()
+    max_similarity = similarities.max().item()
+    std_similarity = similarities.std().item()
+    
+    # Diversity score (lower is better)
+    diversity_score = 1.0 - mean_similarity
+    
+    model.train()
+    
+    return {
+        'diversity_score': diversity_score,
+        'mean_similarity': mean_similarity,
+        'max_similarity': max_similarity,
+        'std_similarity': std_similarity
+    }
+
+def monitor_query_magnitudes(model, device, sample_queries=None):
+    """
+    Monitor query embedding magnitudes during training
+    
+    Args:
+        model: The model to monitor
+        device: Device to use
+        sample_queries: List of sample queries to test (optional)
+    
+    Returns:
+        dict: Magnitude statistics
+    """
+    model.eval()
+    
+    if sample_queries is None:
+        sample_queries = [
+            "I need to check the health of the SQUAKE API",
+            "I want to track a package through Correo Argentino",
+            "I'm looking for cocktail recipes and financial data",
+            "Help me find weather information",
+            "I need to convert currency rates"
+        ]
+    
+    magnitudes = []
+    with torch.no_grad():
+        for query in sample_queries:
+            # Get query embedding
+            query_emb = get_embeddings(model, [query], device)
+            
+            # Calculate magnitude
+            magnitude = torch.norm(query_emb, p=2, dim=-1).item()
+            magnitudes.append(magnitude)
+    
+    model.train()
+    
+    return {
+        'mean_magnitude': np.mean(magnitudes),
+        'std_magnitude': np.std(magnitudes),
+        'min_magnitude': np.min(magnitudes),
+        'max_magnitude': np.max(magnitudes),
+        'magnitudes': magnitudes
+    }
 
 def train(resume_from=None):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -641,14 +1049,23 @@ def train(resume_from=None):
     # 최적 배치 크기 계산
     optimal_batch_size = analyze_dataset_and_calculate_batch_size(train_dataset, val_dataset, device, target_vram_gb=20)
     
-    train_loader = DataLoader(train_dataset, batch_size=optimal_batch_size, shuffle=True, collate_fn=collate_fn)
-    val_loader = DataLoader(val_dataset, batch_size=optimal_batch_size, shuffle=False, collate_fn=collate_fn)
+    train_loader = DataLoader(train_dataset, batch_size=optimal_batch_size, shuffle=True, collate_fn=collate_fn_improved)
+    val_loader = DataLoader(val_dataset, batch_size=optimal_batch_size, shuffle=False, collate_fn=collate_fn_improved)
     
     model = SentenceTransformer('ToolBench/ToolBench_IR_bert_based_uncased')
     model = model.to(device)
     print(f"Model device: {next(model.parameters()).device}")
     
-    optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
+    # Initialize embeddings with diversity
+    initialize_embeddings_with_diversity(model, device)
+    
+    # Increased learning rate
+    optimizer = torch.optim.AdamW(model.parameters(), lr=5e-5, weight_decay=0.01)
+    
+    # Learning rate scheduler with warmup
+    num_training_steps = len(train_loader) * 20  # 20 epochs
+    num_warmup_steps = num_training_steps // 10  # 10% warmup
+    scheduler = get_warmup_cosine_scheduler(optimizer, num_warmup_steps, num_training_steps)
     
     # 체크포인트에서 재개
     start_epoch = 0
@@ -660,6 +1077,7 @@ def train(resume_from=None):
         checkpoint = torch.load(resume_from, map_location=device)
         model.load_state_dict(checkpoint['model_state_dict'])
         optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
         start_epoch = checkpoint['epoch'] + 1
         best_val_loss = checkpoint['best_val_loss']
         patience_counter = checkpoint['patience_counter']
@@ -680,6 +1098,10 @@ def train(resume_from=None):
     checkpoint_dir = os.path.join(BASE_DIR, 'checkpoints')
     os.makedirs(checkpoint_dir, exist_ok=True)
     
+    # Monitor embedding diversity and magnitude
+    diversity_history = []
+    magnitude_history = []
+    
     for epoch in range(start_epoch, num_epochs):
         start_time = time.time()
         pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}")
@@ -691,15 +1113,16 @@ def train(resume_from=None):
                 with torch.amp.autocast('cuda') if torch.cuda.is_available() else torch.enable_grad():
                     query_emb = get_embeddings(model, queries, device)
                     pos_api_embs = process_api_embeddings(model, pos_api_texts, device)
-                    neg_api_embs = process_api_embeddings_single_negative(model, neg_api_texts, device)
+                    neg_api_embs = process_api_embeddings_multiple_negatives(model, neg_api_texts, device)
                 
-                loss = custom_retriever_loss_single_negative(query_emb, pos_api_embs, neg_api_embs)
+                loss = improved_retriever_loss_v14(query_emb, pos_api_embs, neg_api_embs)
                 # Gradient accumulation
                 loss = loss / accumulation_steps
                 loss.backward()
                 
                 if (batch_idx + 1) % accumulation_steps == 0:
                     optimizer.step()
+                    scheduler.step()  # Update learning rate
                     optimizer.zero_grad()
                 
                 # 메모리 정리
@@ -710,7 +1133,13 @@ def train(resume_from=None):
                 batches_done = batch_idx + 1
                 batches_total = len(train_loader)
                 eta = (elapsed / batches_done) * (batches_total - batches_done) if batches_done > 0 else 0
-                pbar.set_postfix({'loss': loss.item() * accumulation_steps, 'elapsed': f"{elapsed/60:.1f}m", 'eta': f"{eta/60:.1f}m"})
+                current_lr = scheduler.get_last_lr()[0]
+                pbar.set_postfix({
+                    'loss': f"{loss.item() * accumulation_steps:.4f}", 
+                    'lr': f"{current_lr:.2e}",
+                    'elapsed': f"{elapsed/60:.1f}m", 
+                    'eta': f"{eta/60:.1f}m"
+                })
                 
             except RuntimeError as e:
                 if "out of memory" in str(e):
@@ -727,6 +1156,24 @@ def train(resume_from=None):
         epoch_time = time.time() - start_time
         print(f"Epoch {epoch+1} finished in {epoch_time/60:.2f} minutes")
         
+        # Monitor embedding diversity and magnitude every 5 epochs
+        if (epoch + 1) % 5 == 0:
+            # Diversity monitoring
+            diversity_metrics = monitor_embedding_diversity(model, device)
+            diversity_history.append(diversity_metrics)
+            print(f"📊 Embedding diversity at epoch {epoch+1}:")
+            print(f"   - Diversity score: {diversity_metrics['diversity_score']:.4f}")
+            print(f"   - Mean similarity: {diversity_metrics['mean_similarity']:.4f}")
+            print(f"   - Max similarity: {diversity_metrics['max_similarity']:.4f}")
+            
+            # Magnitude monitoring
+            magnitude_metrics = monitor_query_magnitudes(model, device)
+            magnitude_history.append(magnitude_metrics)
+            print(f"📏 Query magnitude at epoch {epoch+1}:")
+            print(f"   - Mean magnitude: {magnitude_metrics['mean_magnitude']:.4f}")
+            print(f"   - Std magnitude: {magnitude_metrics['std_magnitude']:.4f}")
+            print(f"   - Magnitude range: [{magnitude_metrics['min_magnitude']:.4f}, {magnitude_metrics['max_magnitude']:.4f}]")
+        
         # 검증
         val_loss = evaluate(model, val_loader, device)
         print(f"Validation loss after epoch {epoch+1}: {val_loss:.6f}")
@@ -737,9 +1184,12 @@ def train(resume_from=None):
             'epoch': epoch,
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
+            'scheduler_state_dict': scheduler.state_dict(),
             'best_val_loss': best_val_loss,
             'patience_counter': patience_counter,
-            'val_loss': val_loss
+            'val_loss': val_loss,
+            'diversity_history': diversity_history,
+            'magnitude_history': magnitude_history
         }, checkpoint_path)
         print(f"Checkpoint saved: {checkpoint_path}")
         
@@ -757,9 +1207,12 @@ def train(resume_from=None):
                 'epoch': epoch,
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
+                'scheduler_state_dict': scheduler.state_dict(),
                 'best_val_loss': best_val_loss,
                 'patience_counter': patience_counter,
-                'val_loss': val_loss
+                'val_loss': val_loss,
+                'diversity_history': diversity_history,
+                'magnitude_history': magnitude_history
             }, best_checkpoint_path)
             print(f"Best checkpoint saved: {best_checkpoint_path}")
         else:
@@ -774,6 +1227,17 @@ def train(resume_from=None):
     final_model_path = os.path.join(BASE_DIR, 'trained_toolbench_retriever')
     model.save(final_model_path)
     print(f"Final model saved: {final_model_path}")
+    
+    # Save diversity and magnitude history
+    diversity_path = os.path.join(BASE_DIR, 'diversity_history.json')
+    with open(diversity_path, 'w') as f:
+        json.dump(diversity_history, f, indent=2)
+    print(f"Diversity history saved: {diversity_path}")
+    
+    magnitude_path = os.path.join(BASE_DIR, 'magnitude_history.json')
+    with open(magnitude_path, 'w') as f:
+        json.dump(magnitude_history, f, indent=2)
+    print(f"Magnitude history saved: {magnitude_path}")
 
 
 def main():

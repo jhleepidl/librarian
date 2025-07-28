@@ -362,6 +362,135 @@ class ModelPerformanceComparator:
         
         return predicted_apis
     
+    def iterative_residual_search_with_relevant_apis_sum(self, query: str, relevant_apis: List[Dict[str, Any]], max_iterations: int = 10, residual_threshold: float = 0.5, beam_size: int = 3) -> List[Dict[str, Any]]:
+        """
+        Iterative residual-based search using relevant APIs embedding sum with beam search
+        """
+        # Initialize beam with relevant APIs embedding sum
+        initial_embedding = self.get_relevant_apis_embedding_sum(relevant_apis)
+        
+        # Beam state: (apis, current_embedding, total_similarity_score, is_active)
+        beam = [([], initial_embedding, 0.0, True)]
+        
+        for iteration in range(max_iterations):
+            new_beam = []
+            
+            for apis, current_embedding, total_score, is_active in beam:
+                # Skip inactive beams
+                if not is_active:
+                    new_beam.append((apis, current_embedding, total_score, is_active))
+                    continue
+                
+                # Normalize current embedding for search
+                current_norm = np.linalg.norm(current_embedding, axis=-1, keepdims=True)
+                normalized_embedding = current_embedding / (current_norm + 1e-8)
+                # Search for similar APIs
+                similar_apis = self.search_similar_apis(normalized_embedding, similarity_threshold=0.1)
+                
+                if not similar_apis:
+                    # No more APIs found, mark beam as inactive
+                    new_beam.append((apis, current_embedding, total_score, False))
+                    continue
+                
+                # Get top beam_size candidates
+                top_candidates = similar_apis[:beam_size]
+                beam_has_valid_candidate = False
+                
+                for candidate_api in top_candidates:
+                    # Get the API's embedding
+                    api_text = f"{candidate_api['tool_name']} {candidate_api['api_name']} {candidate_api['api_description']}"
+                    api_embedding = self.toolbench_model.encode([api_text], convert_to_tensor=True, device=self.device)
+                    api_embedding = F.normalize(api_embedding, p=2, dim=-1).cpu().numpy()
+                    
+                    # Calculate residual
+                    residual = current_embedding - api_embedding
+                    residual_norm = np.linalg.norm(residual)
+                    current_norm = np.linalg.norm(current_embedding)
+                    
+                    # Check if residual magnitude is increasing (bad sign)
+                    if residual_norm > current_norm:
+                        continue
+                    
+                    # Valid candidate found
+                    beam_has_valid_candidate = True
+                    
+                    # Calculate new total score (higher similarity = better)
+                    new_total_score = total_score + candidate_api['similarity_score']
+                    
+                    # Add to new beam
+                    new_apis = apis + [candidate_api]
+                    new_beam.append((new_apis, residual, new_total_score, True))
+                
+                # If no valid candidates found, mark beam as inactive
+                if not beam_has_valid_candidate:
+                    new_beam.append((apis, current_embedding, total_score, False))
+            
+            # Keep top beam_size candidates based on total score
+            new_beam.sort(key=lambda x: x[2], reverse=True)
+            beam = new_beam[:beam_size]
+            
+            # Check if all beams are inactive
+            all_inactive = all(not state[3] for state in beam)
+            if all_inactive:
+                break
+            
+            # Check if all residuals are small enough
+            active_beams = [state for state in beam if state[3]]
+            if active_beams:
+                all_small_residuals = all(np.linalg.norm(state[1]) < residual_threshold for state in active_beams)
+                if all_small_residuals:
+                    break
+        
+        # Return the beam with smallest residual magnitude
+        if beam:
+            # Sort by residual magnitude (smallest first)
+            beam.sort(key=lambda x: np.linalg.norm(x[1]))
+            best_apis, best_residual, _, _ = beam[0]
+            return best_apis
+        else:
+            return []
+    
+    def iterative_residual_search_greedy_with_relevant_apis_sum(self, query: str, relevant_apis: List[Dict[str, Any]], max_iterations: int = 10, residual_threshold: float = 0.5) -> List[Dict[str, Any]]:
+        """
+        Greedy iterative residual-based search using relevant APIs embedding sum
+        """
+        predicted_apis = []
+        current_embedding = self.get_relevant_apis_embedding_sum(relevant_apis)
+        
+        for iteration in range(max_iterations):
+            # Search for most similar API
+            similar_apis = self.search_similar_apis(current_embedding, similarity_threshold=0.1)
+            
+            if not similar_apis:
+                break
+            
+            # Get the most similar API
+            best_api = similar_apis[0]
+            predicted_apis.append(best_api)
+            
+            # Get the API's embedding
+            api_text = f"{best_api['tool_name']} {best_api['api_name']} {best_api['api_description']}"
+            api_embedding = self.toolbench_model.encode([api_text], convert_to_tensor=True, device=self.device)
+            api_embedding = F.normalize(api_embedding, p=2, dim=-1).cpu().numpy()
+            
+            # Calculate residual
+            residual = current_embedding - api_embedding
+            residual_norm = np.linalg.norm(residual)
+            current_norm = np.linalg.norm(current_embedding)
+            
+            # Check if residual magnitude is increasing (bad sign)
+            if residual_norm > current_norm:
+                break
+            
+            # Check if residual is small enough
+            if residual_norm < residual_threshold:
+                break
+            
+            # Update current embedding to residual
+            current_embedding = residual
+        
+        return predicted_apis
+    
     def evaluate_predictions(self, predicted_apis: List[Dict[str, Any]], relevant_apis: List[Dict[str, Any]]) -> Dict[str, float]:
         """Evaluate predictions against ground truth"""
         # Create sets of predicted and relevant APIs
@@ -431,29 +560,37 @@ class ModelPerformanceComparator:
         }
     
     def test_trained_model(self, test_samples: List[Dict[str, Any]], sample_id: int, use_beam_search: bool = True) -> Dict[str, Any]:
-        """Test trained model performance using iterative residual search"""
+        """Test performance using relevant APIs embedding sum instead of trained model"""
         search_method = "beam search" if use_beam_search else "greedy search"
-        print(f"\n🧪 Testing trained model (iterative residual {search_method}) for sample {sample_id}...")
+        print(f"\n🧪 Testing relevant APIs embedding sum (iterative residual {search_method}) for sample {sample_id}...")
         
         results = []
-        for i, sample in enumerate(tqdm(test_samples, desc=f"Testing trained model ({search_method}, sample {sample_id})")):
+        for i, sample in enumerate(tqdm(test_samples, desc=f"Testing relevant APIs sum ({search_method}, sample {sample_id})")):
             query = sample['query']
             relevant_apis = sample.get('relevant_apis', [])
             
-            # Use iterative residual search (beam or greedy)
+            if not relevant_apis:
+                # Skip samples without relevant APIs
+                continue
+            
+            # Use iterative residual search with relevant APIs embedding sum
             if use_beam_search:
-                predicted_apis = self.iterative_residual_search(query, beam_size=3)
+                predicted_apis = self.iterative_residual_search_with_relevant_apis_sum(query, relevant_apis, beam_size=3)
             else:
-                predicted_apis = self.iterative_residual_search_greedy(query)
+                predicted_apis = self.iterative_residual_search_greedy_with_relevant_apis_sum(query, relevant_apis)
             
             # Evaluate predictions
             metrics = self.evaluate_predictions(predicted_apis, relevant_apis)
+            
+            # Get relevant APIs embedding sum for analysis
+            relevant_apis_embedding_sum = self.get_relevant_apis_embedding_sum(relevant_apis)
             
             results.append({
                 'query': query,
                 'predicted_apis': predicted_apis,
                 'relevant_apis': relevant_apis,
-                'metrics': metrics
+                'metrics': metrics,
+                'relevant_apis_embedding_sum': relevant_apis_embedding_sum.tolist()
             })
         
         # Calculate aggregate metrics
@@ -486,7 +623,7 @@ class ModelPerformanceComparator:
         toolbench_metrics = toolbench_results['aggregate_metrics']
         trained_metrics = trained_results['aggregate_metrics']
         
-        print(f"{'Metric':<20} {'ToolBench':<15} {'Trained':<15} {'Difference':<15}")
+        print(f"{'Metric':<20} {'ToolBench':<15} {'Relevant APIs Sum':<15} {'Difference':<15}")
         print("-" * 80)
         print(f"{'Precision':<20} {toolbench_metrics['precision']:<15.4f} {trained_metrics['precision']:<15.4f} {trained_metrics['precision'] - toolbench_metrics['precision']:<15.4f}")
         print(f"{'Recall':<20} {toolbench_metrics['recall']:<15.4f} {trained_metrics['recall']:<15.4f} {trained_metrics['recall'] - toolbench_metrics['recall']:<15.4f}")
@@ -500,19 +637,19 @@ class ModelPerformanceComparator:
         print("="*80)
         
         if trained_metrics['f1_score'] > toolbench_metrics['f1_score']:
-            print("🎉 Trained model wins in F1 Score!")
+            print("🎉 Relevant APIs embedding sum wins in F1 Score!")
         elif trained_metrics['f1_score'] < toolbench_metrics['f1_score']:
             print("🎉 ToolBench model wins in F1 Score!")
         else:
             print("🤝 Models are tied in F1 Score!")
         
         if trained_metrics['precision'] > toolbench_metrics['precision']:
-            print("🎯 Trained model has higher precision!")
+            print("🎯 Relevant APIs embedding sum has higher precision!")
         elif trained_metrics['precision'] < toolbench_metrics['precision']:
             print("🎯 ToolBench model has higher precision!")
         
         if trained_metrics['recall'] > toolbench_metrics['recall']:
-            print("📈 Trained model has higher recall!")
+            print("📈 Relevant APIs embedding sum has higher recall!")
         elif trained_metrics['recall'] < toolbench_metrics['recall']:
             print("📈 ToolBench model has higher recall!")
     
@@ -697,40 +834,40 @@ class ModelPerformanceComparator:
         print("="*80)
         
         toolbench_f1_scores = []
-        trained_beam_f1_scores = []
-        trained_greedy_f1_scores = []
+        relevant_apis_beam_f1_scores = []
+        relevant_apis_greedy_f1_scores = []
         
         for result in all_results:
             toolbench_f1_scores.append(result['toolbench_results']['aggregate_metrics']['f1_score'])
-            trained_beam_f1_scores.append(result['trained_beam_results']['aggregate_metrics']['f1_score'])
-            trained_greedy_f1_scores.append(result['trained_greedy_results']['aggregate_metrics']['f1_score'])
+            relevant_apis_beam_f1_scores.append(result['trained_beam_results']['aggregate_metrics']['f1_score'])
+            relevant_apis_greedy_f1_scores.append(result['trained_greedy_results']['aggregate_metrics']['f1_score'])
         
-        print(f"{'Model':<20} {'Avg F1':<15} {'Std F1':<15} {'Min F1':<15} {'Max F1':<15}")
+        print(f"{'Model':<25} {'Avg F1':<15} {'Std F1':<15} {'Min F1':<15} {'Max F1':<15}")
         print("-" * 80)
-        print(f"{'ToolBench':<20} {np.mean(toolbench_f1_scores):<15.4f} {np.std(toolbench_f1_scores):<15.4f} {np.min(toolbench_f1_scores):<15.4f} {np.max(toolbench_f1_scores):<15.4f}")
-        print(f"{'Trained (Beam)':<20} {np.mean(trained_beam_f1_scores):<15.4f} {np.std(trained_beam_f1_scores):<15.4f} {np.min(trained_beam_f1_scores):<15.4f} {np.max(trained_beam_f1_scores):<15.4f}")
-        print(f"{'Trained (Greedy)':<20} {np.mean(trained_greedy_f1_scores):<15.4f} {np.std(trained_greedy_f1_scores):<15.4f} {np.min(trained_greedy_f1_scores):<15.4f} {np.max(trained_greedy_f1_scores):<15.4f}")
+        print(f"{'ToolBench':<25} {np.mean(toolbench_f1_scores):<15.4f} {np.std(toolbench_f1_scores):<15.4f} {np.min(toolbench_f1_scores):<15.4f} {np.max(toolbench_f1_scores):<15.4f}")
+        print(f"{'Relevant APIs (Beam)':<25} {np.mean(relevant_apis_beam_f1_scores):<15.4f} {np.std(relevant_apis_beam_f1_scores):<15.4f} {np.min(relevant_apis_beam_f1_scores):<15.4f} {np.max(relevant_apis_beam_f1_scores):<15.4f}")
+        print(f"{'Relevant APIs (Greedy)':<25} {np.mean(relevant_apis_greedy_f1_scores):<15.4f} {np.std(relevant_apis_greedy_f1_scores):<15.4f} {np.min(relevant_apis_greedy_f1_scores):<15.4f} {np.max(relevant_apis_greedy_f1_scores):<15.4f}")
         
         print(f"\n" + "="*80)
         print("🏆 OVERALL WINNER ANALYSIS")
         print("="*80)
         
         avg_toolbench_f1 = np.mean(toolbench_f1_scores)
-        avg_trained_beam_f1 = np.mean(trained_beam_f1_scores)
-        avg_trained_greedy_f1 = np.mean(trained_greedy_f1_scores)
+        avg_relevant_apis_beam_f1 = np.mean(relevant_apis_beam_f1_scores)
+        avg_relevant_apis_greedy_f1 = np.mean(relevant_apis_greedy_f1_scores)
         
-        best_model = max([avg_toolbench_f1, avg_trained_beam_f1, avg_trained_greedy_f1])
+        best_model = max([avg_toolbench_f1, avg_relevant_apis_beam_f1, avg_relevant_apis_greedy_f1])
         
         if best_model == avg_toolbench_f1:
             print("🎉 ToolBench model has the best average F1 score!")
-        elif best_model == avg_trained_beam_f1:
-            print("🎉 Trained model with beam search has the best average F1 score!")
+        elif best_model == avg_relevant_apis_beam_f1:
+            print("🎉 Relevant APIs embedding sum with beam search has the best average F1 score!")
         else:
-            print("🎉 Trained model with greedy search has the best average F1 score!")
+            print("🎉 Relevant APIs embedding sum with greedy search has the best average F1 score!")
         
         print(f"ToolBench avg F1: {avg_toolbench_f1:.4f}")
-        print(f"Trained (Beam) avg F1: {avg_trained_beam_f1:.4f}")
-        print(f"Trained (Greedy) avg F1: {avg_trained_greedy_f1:.4f}")
+        print(f"Relevant APIs (Beam) avg F1: {avg_relevant_apis_beam_f1:.4f}")
+        print(f"Relevant APIs (Greedy) avg F1: {avg_relevant_apis_greedy_f1:.4f}")
 
     def test_faiss_vs_list_performance(self, test_samples: List[Dict[str, Any]], sample_id: int) -> Dict[str, Any]:
         """Compare FAISS vs List-based search performance"""
@@ -1396,22 +1533,22 @@ class ModelPerformanceComparator:
 
 def main():
     """Main comparison function"""
-    print("🧪 Full Model Performance Comparison")
-    print("=" * 50)
+    print("🧪 ToolBench vs Relevant APIs Embedding Sum Performance Comparison")
+    print("=" * 70)
     
     # Initialize comparator
     comparator = ModelPerformanceComparator()
     
-    # Load models
-    if not comparator.load_models():
-        print("❌ Failed to load models. Exiting.")
+    # Load only ToolBench model (no trained model needed for this comparison)
+    if not comparator.load_models(load_trained_model=False):
+        print("❌ Failed to load ToolBench model. Exiting.")
         return
     
     # Run full comparison using complete ToolBench vector database
-    print(f"\n🔍 Running full model comparison with complete API database...")
+    print(f"\n🔍 Running comparison: ToolBench query embedding vs Relevant APIs embedding sum...")
     comparator.run_full_comparison()
     
-    print("\n✅ Full model comparison completed!")
+    print("\n✅ Comparison completed!")
 
 
 def run_relevant_apis_sum_experiment():

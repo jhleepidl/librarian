@@ -199,6 +199,74 @@ def calculate_precision_recall(recommendations, relevant_items, k=5):
 
 ### 1. Training Experiments
 
+### 2. Model Performance Comparison
+
+The system includes comprehensive performance comparison tools to evaluate the trained retriever against the original ToolBench model.
+
+#### Performance Comparison Scripts
+
+**Main Comparison Script**: `compare_new_retriever_performance.py`
+- Compares ToolBench model vs trained retriever model
+- Supports multiple similarity thresholds and top-k values
+- Generates detailed performance metrics (precision, recall, F1-score)
+- Saves results to JSON files for further analysis
+
+**Execution Script**: `run_performance_comparison.sh`
+- Easy-to-use shell script for running comparisons
+- Supports different comparison modes (default, multi, quick, detailed, custom)
+- Provides GPU memory information and status updates
+
+#### Usage Examples
+
+```bash
+# Run default comparison (threshold=0.5, top_k=10, max_samples=100)
+./run_performance_comparison.sh
+
+# Run multi-threshold comparison
+./run_performance_comparison.sh multi
+
+# Run quick comparison (threshold=0.5, top_k=5, max_samples=50)
+./run_performance_comparison.sh quick
+
+# Run detailed comparison (threshold=0.3, top_k=20, max_samples=200)
+./run_performance_comparison.sh detailed
+
+# Run custom comparison
+./run_performance_comparison.sh custom 0.7 15 150
+```
+
+#### Direct Python Usage
+
+```python
+# Single comparison
+python compare_new_retriever_performance.py 0.5 10 100
+
+# Multi-threshold comparison
+python compare_new_retriever_performance.py multi
+```
+
+#### Output Files
+
+- `new_retriever_comparison_results_single.json`: Single comparison results
+- `new_retriever_comparison_results.json`: Multi-threshold comparison results
+
+#### Comparison Metrics
+
+The comparison evaluates:
+- **Precision**: Accuracy of predicted APIs
+- **Recall**: Coverage of relevant APIs
+- **F1-Score**: Harmonic mean of precision and recall
+- **Average Predicted Count**: Number of APIs returned per query
+- **Average Intersection Count**: Number of correctly predicted APIs
+
+#### Model Loading Strategy
+
+The comparison script automatically loads:
+1. **Best Model**: `trained_toolbench_retriever_best/` (if available)
+2. **Final Model**: `trained_toolbench_retriever/` (fallback)
+3. **ToolBench Model**: Original ToolBench IR model for baseline
+4. **Vector Database**: FAISS index and API metadata for similarity search
+
 #### Experiment 1: Baseline Training
 - **Method**: Fine-tuned Sentence Transformers
 - **Model**: all-MiniLM-L6-v2

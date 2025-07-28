@@ -221,7 +221,13 @@ trained_toolbench_retriever/
 old_trained_toolbench_retriever/
 query_checkpoints/
 trained_query_model/
+query_checkpoints_unnormalized/
+trained_magnitude_model/
+trained_query_model_unnormalized/
 
 # Databases
 *_database*/
 vector_db*/
+
+results/
+*results.json

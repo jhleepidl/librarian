@@ -1,0 +1,4900 @@
+{
+  "total_queries": 100,
+  "queries_analyzed": 100,
+  "avg_relevant_apis_per_query": 2.93,
+  "similarity_stats": [
+    {
+      "query_id": 455,
+      "num_apis": 3,
+      "avg_similarity": 0.42935147881507874,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.5910727977752686,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 456,
+      "num_apis": 3,
+      "avg_similarity": 0.42935147881507874,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.5910727977752686,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 457,
+      "num_apis": 3,
+      "avg_similarity": 0.42935147881507874,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.5910727977752686,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 459,
+      "num_apis": 3,
+      "avg_similarity": 0.42935147881507874,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.5910727977752686,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 460,
+      "num_apis": 3,
+      "avg_similarity": 0.42935147881507874,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.5910727977752686,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 1983,
+      "num_apis": 2,
+      "avg_similarity": 0.3062640428543091,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.3062640428543091,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 1984,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "URL Link Shortener_Get a list of domains",
+        "bitly_shorten"
+      ]
+    },
+    {
+      "query_id": 1985,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 1986,
+      "num_apis": 2,
+      "avg_similarity": 0.3062640428543091,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.3062640428543091,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 1989,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "URL Link Shortener_Get a list of domains",
+        "bitly_shorten"
+      ]
+    },
+    {
+      "query_id": 1991,
+      "num_apis": 2,
+      "avg_similarity": 0.3062640428543091,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.3062640428543091,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 3322,
+      "num_apis": 2,
+      "avg_similarity": 0.44839179515838623,
+      "min_similarity": 0.44839179515838623,
+      "max_similarity": 0.44839179515838623,
+      "api_ids": [
+        "Watchmode_Genres",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 3323,
+      "num_apis": 2,
+      "avg_similarity": 0.44839179515838623,
+      "min_similarity": 0.44839179515838623,
+      "max_similarity": 0.44839179515838623,
+      "api_ids": [
+        "Watchmode_Genres",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 4279,
+      "num_apis": 3,
+      "avg_similarity": 0.5062094926834106,
+      "min_similarity": 0.34869134426116943,
+      "max_similarity": 0.7825777530670166,
+      "api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4280,
+      "num_apis": 3,
+      "avg_similarity": 0.5062094926834106,
+      "min_similarity": 0.34869134426116943,
+      "max_similarity": 0.7825777530670166,
+      "api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4282,
+      "num_apis": 3,
+      "avg_similarity": 0.5062094926834106,
+      "min_similarity": 0.34869134426116943,
+      "max_similarity": 0.7825777530670166,
+      "api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4283,
+      "num_apis": 3,
+      "avg_similarity": 0.5062094926834106,
+      "min_similarity": 0.34869134426116943,
+      "max_similarity": 0.7825777530670166,
+      "api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4285,
+      "num_apis": 3,
+      "avg_similarity": 0.5062094926834106,
+      "min_similarity": 0.34869134426116943,
+      "max_similarity": 0.7825777530670166,
+      "api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4286,
+      "num_apis": 3,
+      "avg_similarity": 0.5062094926834106,
+      "min_similarity": 0.34869134426116943,
+      "max_similarity": 0.7825777530670166,
+      "api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 5863,
+      "num_apis": 2,
+      "avg_similarity": 0.6355229616165161,
+      "min_similarity": 0.6355229616165161,
+      "max_similarity": 0.6355229616165161,
+      "api_ids": [
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_Title Streaming Sources"
+      ]
+    },
+    {
+      "query_id": 5864,
+      "num_apis": 2,
+      "avg_similarity": 0.6355229616165161,
+      "min_similarity": 0.6355229616165161,
+      "max_similarity": 0.6355229616165161,
+      "api_ids": [
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_Title Streaming Sources"
+      ]
+    },
+    {
+      "query_id": 5865,
+      "num_apis": 2,
+      "avg_similarity": 0.6355229616165161,
+      "min_similarity": 0.6355229616165161,
+      "max_similarity": 0.6355229616165161,
+      "api_ids": [
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_Title Streaming Sources"
+      ]
+    },
+    {
+      "query_id": 8031,
+      "num_apis": 3,
+      "avg_similarity": 0.444864422082901,
+      "min_similarity": 0.3887615203857422,
+      "max_similarity": 0.48854172229766846,
+      "api_ids": [
+        "Watchmode_New Titles",
+        "OTT details_Title Details",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 8032,
+      "num_apis": 3,
+      "avg_similarity": 0.4800158441066742,
+      "min_similarity": 0.4317536950111389,
+      "max_similarity": 0.5197522044181824,
+      "api_ids": [
+        "OTT details_Title Details",
+        "Watchmode_Title Cast & Crew",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 8034,
+      "num_apis": 3,
+      "avg_similarity": 0.4800158441066742,
+      "min_similarity": 0.4317536950111389,
+      "max_similarity": 0.5197522044181824,
+      "api_ids": [
+        "OTT details_Title Details",
+        "Watchmode_Title Cast & Crew",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 8334,
+      "num_apis": 3,
+      "avg_similarity": 0.5504980683326721,
+      "min_similarity": 0.43639305233955383,
+      "max_similarity": 0.7181568145751953,
+      "api_ids": [
+        "Watchmode_Autocomplete Search",
+        "Watchmode_Sources",
+        "Streaming Availability_Search By Title (FREE)"
+      ]
+    },
+    {
+      "query_id": 8335,
+      "num_apis": 3,
+      "avg_similarity": 0.5504980683326721,
+      "min_similarity": 0.43639305233955383,
+      "max_similarity": 0.7181568145751953,
+      "api_ids": [
+        "Watchmode_Autocomplete Search",
+        "Watchmode_Sources",
+        "Streaming Availability_Search By Title (FREE)"
+      ]
+    },
+    {
+      "query_id": 8337,
+      "num_apis": 3,
+      "avg_similarity": 0.5504980683326721,
+      "min_similarity": 0.43639305233955383,
+      "max_similarity": 0.7181568145751953,
+      "api_ids": [
+        "Watchmode_Autocomplete Search",
+        "Watchmode_Sources",
+        "Streaming Availability_Search By Title (FREE)"
+      ]
+    },
+    {
+      "query_id": 9332,
+      "num_apis": 2,
+      "avg_similarity": 0.3873594105243683,
+      "min_similarity": 0.3873594105243683,
+      "max_similarity": 0.3873594105243683,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9335,
+      "num_apis": 3,
+      "avg_similarity": 0.48346439003944397,
+      "min_similarity": 0.3873594105243683,
+      "max_similarity": 0.6165005564689636,
+      "api_ids": [
+        "Vimeo_GetAllCategories",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9336,
+      "num_apis": 2,
+      "avg_similarity": 0.3873594105243683,
+      "min_similarity": 0.3873594105243683,
+      "max_similarity": 0.3873594105243683,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9337,
+      "num_apis": 2,
+      "avg_similarity": 0.3873594105243683,
+      "min_similarity": 0.3873594105243683,
+      "max_similarity": 0.3873594105243683,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9339,
+      "num_apis": 2,
+      "avg_similarity": 0.3873594105243683,
+      "min_similarity": 0.3873594105243683,
+      "max_similarity": 0.3873594105243683,
+      "api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9340,
+      "num_apis": 3,
+      "avg_similarity": 0.48346439003944397,
+      "min_similarity": 0.3873594105243683,
+      "max_similarity": 0.6165005564689636,
+      "api_ids": [
+        "Vimeo_GetAllCategories",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9341,
+      "num_apis": 4,
+      "avg_similarity": 0.5323891639709473,
+      "min_similarity": 0.37800276279449463,
+      "max_similarity": 0.7152624130249023,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9343,
+      "num_apis": 4,
+      "avg_similarity": 0.5323891639709473,
+      "min_similarity": 0.37800276279449463,
+      "max_similarity": 0.7152624130249023,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9344,
+      "num_apis": 4,
+      "avg_similarity": 0.5323891639709473,
+      "min_similarity": 0.37800276279449463,
+      "max_similarity": 0.7152624130249023,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9345,
+      "num_apis": 4,
+      "avg_similarity": 0.5323891639709473,
+      "min_similarity": 0.37800276279449463,
+      "max_similarity": 0.7152624130249023,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9346,
+      "num_apis": 4,
+      "avg_similarity": 0.5323891639709473,
+      "min_similarity": 0.37800276279449463,
+      "max_similarity": 0.7152624130249023,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9349,
+      "num_apis": 4,
+      "avg_similarity": 0.5323891639709473,
+      "min_similarity": 0.37800276279449463,
+      "max_similarity": 0.7152624130249023,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 10898,
+      "num_apis": 2,
+      "avg_similarity": 0.39135080575942993,
+      "min_similarity": 0.39135080575942993,
+      "max_similarity": 0.39135080575942993,
+      "api_ids": [
+        "OTT details_Search",
+        "Watchmode_List Titles"
+      ]
+    },
+    {
+      "query_id": 11644,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11645,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11646,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11647,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11648,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11649,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11650,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 12094,
+      "num_apis": 4,
+      "avg_similarity": 0.5930101275444031,
+      "min_similarity": 0.36841005086898804,
+      "max_similarity": 0.9999998807907104,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetAllCategories",
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetAllChannels"
+      ]
+    },
+    {
+      "query_id": 12095,
+      "num_apis": 4,
+      "avg_similarity": 0.5930101275444031,
+      "min_similarity": 0.36841005086898804,
+      "max_similarity": 0.9999998807907104,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetAllCategories",
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetAllChannels"
+      ]
+    },
+    {
+      "query_id": 13441,
+      "num_apis": 3,
+      "avg_similarity": 0.4773615300655365,
+      "min_similarity": 0.3517429232597351,
+      "max_similarity": 0.6184300780296326,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "OTT details_Advanced Search",
+        "Streaming Availability_Search Ultra"
+      ]
+    },
+    {
+      "query_id": 13443,
+      "num_apis": 3,
+      "avg_similarity": 0.4773615300655365,
+      "min_similarity": 0.3517429232597351,
+      "max_similarity": 0.6184300780296326,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "OTT details_Advanced Search",
+        "Streaming Availability_Search Ultra"
+      ]
+    },
+    {
+      "query_id": 13444,
+      "num_apis": 3,
+      "avg_similarity": 0.45735564827919006,
+      "min_similarity": 0.31946849822998047,
+      "max_similarity": 0.7114406824111938,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_New People",
+        "Streaming Availability_Search Pro"
+      ]
+    },
+    {
+      "query_id": 13773,
+      "num_apis": 4,
+      "avg_similarity": 0.5389843583106995,
+      "min_similarity": 0.391690194606781,
+      "max_similarity": 0.7775101661682129,
+      "api_ids": [
+        "OTT details_Basic Info",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 13774,
+      "num_apis": 5,
+      "avg_similarity": 0.5777660012245178,
+      "min_similarity": 0.28322142362594604,
+      "max_similarity": 0.8854073286056519,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "OTT details_Search",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 13776,
+      "num_apis": 5,
+      "avg_similarity": 0.614081621170044,
+      "min_similarity": 0.391690194606781,
+      "max_similarity": 0.8854073286056519,
+      "api_ids": [
+        "Watchmode_Streaming Release Dates",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "OTT details_Search",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 13777,
+      "num_apis": 5,
+      "avg_similarity": 0.554314374923706,
+      "min_similarity": 0.3427145183086395,
+      "max_similarity": 0.8854073286056519,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Ultra"
+      ]
+    },
+    {
+      "query_id": 13779,
+      "num_apis": 5,
+      "avg_similarity": 0.559504508972168,
+      "min_similarity": 0.3427145183086395,
+      "max_similarity": 0.8854073286056519,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 13780,
+      "num_apis": 5,
+      "avg_similarity": 0.554314374923706,
+      "min_similarity": 0.3427145183086395,
+      "max_similarity": 0.8854073286056519,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Ultra"
+      ]
+    },
+    {
+      "query_id": 14485,
+      "num_apis": 2,
+      "avg_similarity": 0.3062640428543091,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.3062640428543091,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 14489,
+      "num_apis": 3,
+      "avg_similarity": 0.49094852805137634,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.7989110946655273,
+      "api_ids": [
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains",
+        "bitly_shorten"
+      ]
+    },
+    {
+      "query_id": 14938,
+      "num_apis": 3,
+      "avg_similarity": 0.4679906666278839,
+      "min_similarity": 0.3783243000507355,
+      "max_similarity": 0.6360158920288086,
+      "api_ids": [
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetRelatedTags",
+        "Vimeo_GetCategoryInfo"
+      ]
+    },
+    {
+      "query_id": 14939,
+      "num_apis": 3,
+      "avg_similarity": 0.4679906666278839,
+      "min_similarity": 0.3783243000507355,
+      "max_similarity": 0.6360158920288086,
+      "api_ids": [
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetRelatedTags",
+        "Vimeo_GetCategoryInfo"
+      ]
+    },
+    {
+      "query_id": 14947,
+      "num_apis": 3,
+      "avg_similarity": 0.4576391279697418,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.6515403985977173,
+      "api_ids": [
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 14948,
+      "num_apis": 4,
+      "avg_similarity": 0.5367814898490906,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.8480093479156494,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 14950,
+      "num_apis": 4,
+      "avg_similarity": 0.5367814898490906,
+      "min_similarity": 0.30962228775024414,
+      "max_similarity": 0.8480093479156494,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 16184,
+      "num_apis": 2,
+      "avg_similarity": 0.38732683658599854,
+      "min_similarity": 0.38732683658599854,
+      "max_similarity": 0.38732683658599854,
+      "api_ids": [
+        "Watchmode_Person",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 18978,
+      "num_apis": 3,
+      "avg_similarity": 0.4273329973220825,
+      "min_similarity": 0.3279026746749878,
+      "max_similarity": 0.5197522044181824,
+      "api_ids": [
+        "OTT details_Title Details",
+        "Streaming Availability_Search Pro",
+        "Watchmode_Title Cast & Crew"
+      ]
+    },
+    {
+      "query_id": 18979,
+      "num_apis": 3,
+      "avg_similarity": 0.4273329973220825,
+      "min_similarity": 0.3279026746749878,
+      "max_similarity": 0.5197522044181824,
+      "api_ids": [
+        "OTT details_Title Details",
+        "Streaming Availability_Search Pro",
+        "Watchmode_Title Cast & Crew"
+      ]
+    },
+    {
+      "query_id": 18980,
+      "num_apis": 3,
+      "avg_similarity": 0.4273329973220825,
+      "min_similarity": 0.3279026746749878,
+      "max_similarity": 0.5197522044181824,
+      "api_ids": [
+        "OTT details_Title Details",
+        "Streaming Availability_Search Pro",
+        "Watchmode_Title Cast & Crew"
+      ]
+    },
+    {
+      "query_id": 18982,
+      "num_apis": 3,
+      "avg_similarity": 0.41273948550224304,
+      "min_similarity": 0.35393160581588745,
+      "max_similarity": 0.49696001410484314,
+      "api_ids": [
+        "Watchmode_Person",
+        "Streaming Availability_Search Pro",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 18984,
+      "num_apis": 3,
+      "avg_similarity": 0.48571181297302246,
+      "min_similarity": 0.4439603090286255,
+      "max_similarity": 0.5303561091423035,
+      "api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18987,
+      "num_apis": 3,
+      "avg_similarity": 0.48571181297302246,
+      "min_similarity": 0.4439603090286255,
+      "max_similarity": 0.5303561091423035,
+      "api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18988,
+      "num_apis": 3,
+      "avg_similarity": 0.48571181297302246,
+      "min_similarity": 0.4439603090286255,
+      "max_similarity": 0.5303561091423035,
+      "api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18990,
+      "num_apis": 3,
+      "avg_similarity": 0.48571181297302246,
+      "min_similarity": 0.4439603090286255,
+      "max_similarity": 0.5303561091423035,
+      "api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18992,
+      "num_apis": 3,
+      "avg_similarity": 0.48571181297302246,
+      "min_similarity": 0.4439603090286255,
+      "max_similarity": 0.5303561091423035,
+      "api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18993,
+      "num_apis": 3,
+      "avg_similarity": 0.48571181297302246,
+      "min_similarity": 0.4439603090286255,
+      "max_similarity": 0.5303561091423035,
+      "api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 19272,
+      "num_apis": 2,
+      "avg_similarity": 0.3762688636779785,
+      "min_similarity": 0.3762688636779785,
+      "max_similarity": 0.3762688636779785,
+      "api_ids": [
+        "Watchmode_Autocomplete Search",
+        "OTT details_Search"
+      ]
+    },
+    {
+      "query_id": 19274,
+      "num_apis": 2,
+      "avg_similarity": 0.3540636897087097,
+      "min_similarity": 0.3540636897087097,
+      "max_similarity": 0.3540636897087097,
+      "api_ids": [
+        "Watchmode_New Titles",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 19275,
+      "num_apis": 3,
+      "avg_similarity": 0.5762719511985779,
+      "min_similarity": 0.3879503011703491,
+      "max_similarity": 0.9431348443031311,
+      "api_ids": [
+        "OTT details_Search",
+        "OTT details_Params",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 19277,
+      "num_apis": 3,
+      "avg_similarity": 0.5762719511985779,
+      "min_similarity": 0.3879503011703491,
+      "max_similarity": 0.9431348443031311,
+      "api_ids": [
+        "OTT details_Search",
+        "OTT details_Params",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 19281,
+      "num_apis": 2,
+      "avg_similarity": 0.343497633934021,
+      "min_similarity": 0.343497633934021,
+      "max_similarity": 0.343497633934021,
+      "api_ids": [
+        "OTT details_Basic Info",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 19282,
+      "num_apis": 3,
+      "avg_similarity": 0.5762719511985779,
+      "min_similarity": 0.3879503011703491,
+      "max_similarity": 0.9431348443031311,
+      "api_ids": [
+        "OTT details_Search",
+        "OTT details_Params",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 20022,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20023,
+      "num_apis": 2,
+      "avg_similarity": 0.3062640428543091,
+      "min_similarity": 0.3062640428543091,
+      "max_similarity": 0.3062640428543091,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 20024,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20026,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20027,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20028,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20029,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20030,
+      "num_apis": 2,
+      "avg_similarity": 0.36767035722732544,
+      "min_similarity": 0.36767035722732544,
+      "max_similarity": 0.36767035722732544,
+      "api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 21682,
+      "num_apis": 4,
+      "avg_similarity": 0.5702031254768372,
+      "min_similarity": 0.42874759435653687,
+      "max_similarity": 0.8491173386573792,
+      "api_ids": [
+        "Streaming Availability_Search Basic (FREE)",
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_New People",
+        "Watchmode_Title Seasons"
+      ]
+    },
+    {
+      "query_id": 23236,
+      "num_apis": 3,
+      "avg_similarity": 0.48436081409454346,
+      "min_similarity": 0.38963186740875244,
+      "max_similarity": 0.6516958475112915,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 23239,
+      "num_apis": 3,
+      "avg_similarity": 0.48436081409454346,
+      "min_similarity": 0.38963186740875244,
+      "max_similarity": 0.6516958475112915,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 23240,
+      "num_apis": 3,
+      "avg_similarity": 0.48436081409454346,
+      "min_similarity": 0.38963186740875244,
+      "max_similarity": 0.6516958475112915,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 25160,
+      "num_apis": 3,
+      "avg_similarity": 0.538237988948822,
+      "min_similarity": 0.34918704628944397,
+      "max_similarity": 0.8241369724273682,
+      "api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25161,
+      "num_apis": 3,
+      "avg_similarity": 0.538237988948822,
+      "min_similarity": 0.34918704628944397,
+      "max_similarity": 0.8241369724273682,
+      "api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25163,
+      "num_apis": 3,
+      "avg_similarity": 0.538237988948822,
+      "min_similarity": 0.34918704628944397,
+      "max_similarity": 0.8241369724273682,
+      "api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25164,
+      "num_apis": 3,
+      "avg_similarity": 0.538237988948822,
+      "min_similarity": 0.34918704628944397,
+      "max_similarity": 0.8241369724273682,
+      "api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25165,
+      "num_apis": 3,
+      "avg_similarity": 0.538237988948822,
+      "min_similarity": 0.34918704628944397,
+      "max_similarity": 0.8241369724273682,
+      "api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    }
+  ],
+  "clustering_results": [
+    {
+      "query_id": 9341,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.44879022240638733,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9343,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.44879022240638733,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9344,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.44879022240638733,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9345,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.44879022240638733,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9346,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.44879022240638733,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9349,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.44879022240638733,
+      "api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 12094,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.5277128219604492,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetAllCategories",
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetAllChannels"
+      ]
+    },
+    {
+      "query_id": 12095,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.5277128219604492,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetAllCategories",
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetAllChannels"
+      ]
+    },
+    {
+      "query_id": 13773,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.3314526081085205,
+      "api_ids": [
+        "OTT details_Basic Info",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 13774,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.49921149015426636,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "OTT details_Search",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 13776,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.4957847595214844,
+      "api_ids": [
+        "Watchmode_Streaming Release Dates",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "OTT details_Search",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 13777,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.44122326374053955,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Ultra"
+      ]
+    },
+    {
+      "query_id": 13779,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.4479426145553589,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 13780,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.44122326374053955,
+      "api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Ultra"
+      ]
+    },
+    {
+      "query_id": 14948,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.4735337495803833,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 14950,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.4735337495803833,
+      "api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 21682,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.39045411348342896,
+      "api_ids": [
+        "Streaming Availability_Search Basic (FREE)",
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_New People",
+        "Watchmode_Title Seasons"
+      ]
+    }
+  ],
+  "nearest_api_analysis": [
+    {
+      "query_id": 455,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8355478644371033
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8247208595275879
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.80974280834198
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.790696918964386
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7883939743041992
+        ]
+      ],
+      "avg_relevant_similarity": 0.7870981097221375,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 456,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8355478644371033
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8247208595275879
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.80974280834198
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.790696918964386
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7883939743041992
+        ]
+      ],
+      "avg_relevant_similarity": 0.7870981097221375,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 457,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8355478644371033
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8247208595275879
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.80974280834198
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.790696918964386
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7883939743041992
+        ]
+      ],
+      "avg_relevant_similarity": 0.7870981097221375,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 459,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8355478644371033
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8247208595275879
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.80974280834198
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.790696918964386
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7883939743041992
+        ]
+      ],
+      "avg_relevant_similarity": 0.7870981097221375,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 460,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8355478644371033
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8247208595275879
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.80974280834198
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.790696918964386
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7883939743041992
+        ]
+      ],
+      "avg_relevant_similarity": 0.7870981097221375,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 1983,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Create a new link",
+          0.8243429660797119
+        ],
+        [
+          "bitly_shorten",
+          0.7913549542427063
+        ],
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.7317163348197937
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22034595906734467
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12808695435523987
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078489303588867,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 1984,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "URL Link Shortener_Get a list of domains",
+        "bitly_shorten"
+      ]
+    },
+    {
+      "query_id": 1985,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 1986,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Create a new link",
+          0.8243429660797119
+        ],
+        [
+          "bitly_shorten",
+          0.7913549542427063
+        ],
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.7317163348197937
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22034595906734467
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12808695435523987
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078489303588867,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 1989,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "URL Link Shortener_Get a list of domains",
+        "bitly_shorten"
+      ]
+    },
+    {
+      "query_id": 1991,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Create a new link",
+          0.8243429660797119
+        ],
+        [
+          "bitly_shorten",
+          0.7913549542427063
+        ],
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.7317163348197937
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22034595906734467
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12808695435523987
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078489303588867,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 3322,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Basic Info",
+          0.8560158610343933
+        ],
+        [
+          "Watchmode_Genres",
+          0.8458991050720215
+        ],
+        [
+          "OTT details_Params",
+          0.8075786828994751
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8051013350486755
+        ],
+        [
+          "OTT details_Search",
+          0.7994647026062012
+        ]
+      ],
+      "avg_relevant_similarity": 0.8509575128555298,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Genres",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 3323,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Basic Info",
+          0.8560158610343933
+        ],
+        [
+          "Watchmode_Genres",
+          0.8458991050720215
+        ],
+        [
+          "OTT details_Params",
+          0.8075786828994751
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8051013350486755
+        ],
+        [
+          "OTT details_Search",
+          0.7994647026062012
+        ]
+      ],
+      "avg_relevant_similarity": 0.8509575128555298,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Genres",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 4279,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8824951648712158
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8705300092697144
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8423919081687927
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7601510286331177
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.7576959133148193
+        ]
+      ],
+      "avg_relevant_similarity": 0.8190100789070129,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4280,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8824951648712158
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8705300092697144
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8423919081687927
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7601510286331177
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.7576959133148193
+        ]
+      ],
+      "avg_relevant_similarity": 0.8190100789070129,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4282,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8824951648712158
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8705300092697144
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8423919081687927
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7601510286331177
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.7576959133148193
+        ]
+      ],
+      "avg_relevant_similarity": 0.8190100789070129,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4283,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8824951648712158
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8705300092697144
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8423919081687927
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7601510286331177
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.7576959133148193
+        ]
+      ],
+      "avg_relevant_similarity": 0.8190100789070129,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4285,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8824951648712158
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8705300092697144
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8423919081687927
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7601510286331177
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.7576959133148193
+        ]
+      ],
+      "avg_relevant_similarity": 0.8190100789070129,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 4286,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_SearchVideos",
+          0.8824951648712158
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8705300092697144
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8423919081687927
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.7601510286331177
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.7576959133148193
+        ]
+      ],
+      "avg_relevant_similarity": 0.8190100789070129,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetRelatedVideos",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 5863,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "Watchmode_Title Streaming Sources",
+          0.908685028553009
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8998208045959473
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8524152040481567
+        ],
+        [
+          "Watchmode_Titles with Changed Sources",
+          0.8009825348854065
+        ],
+        [
+          "Watchmode_Title Details",
+          0.7969802618026733
+        ]
+      ],
+      "avg_relevant_similarity": 0.9042528867721558,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_Title Streaming Sources"
+      ]
+    },
+    {
+      "query_id": 5864,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "Watchmode_Title Streaming Sources",
+          0.908685028553009
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8998208045959473
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8524152040481567
+        ],
+        [
+          "Watchmode_Titles with Changed Sources",
+          0.8009825348854065
+        ],
+        [
+          "Watchmode_Title Details",
+          0.7969802618026733
+        ]
+      ],
+      "avg_relevant_similarity": 0.9042528867721558,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_Title Streaming Sources"
+      ]
+    },
+    {
+      "query_id": 5865,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "Watchmode_Title Streaming Sources",
+          0.908685028553009
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8998208045959473
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8524152040481567
+        ],
+        [
+          "Watchmode_Titles with Changed Sources",
+          0.8009825348854065
+        ],
+        [
+          "Watchmode_Title Details",
+          0.7969802618026733
+        ]
+      ],
+      "avg_relevant_similarity": 0.9042528867721558,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_Title Streaming Sources"
+      ]
+    },
+    {
+      "query_id": 8031,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Title Details",
+          0.820902943611145
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8098952770233154
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.7985447645187378
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7881450653076172
+        ],
+        [
+          "Streaming Availability_Get Basic (FREE)",
+          0.7880502939224243
+        ]
+      ],
+      "avg_relevant_similarity": 0.7936498522758484,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_New Titles",
+        "OTT details_Title Details",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 8032,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Title Details",
+          0.8314053416252136
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8177629709243774
+        ],
+        [
+          "Watchmode_Title Cast & Crew",
+          0.8022571802139282
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.7962958812713623
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7922384738922119
+        ]
+      ],
+      "avg_relevant_similarity": 0.8082820773124695,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Title Details",
+        "Watchmode_Title Cast & Crew",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 8034,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Title Details",
+          0.8314053416252136
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8177629709243774
+        ],
+        [
+          "Watchmode_Title Cast & Crew",
+          0.8022571802139282
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.7962958812713623
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7922384738922119
+        ]
+      ],
+      "avg_relevant_similarity": 0.8082820773124695,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Title Details",
+        "Watchmode_Title Cast & Crew",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 8334,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Watchmode_Sources",
+          0.8861725926399231
+        ],
+        [
+          "Watchmode_Search",
+          0.8849394917488098
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8728598356246948
+        ],
+        [
+          "Watchmode_Autocomplete Search",
+          0.8582572937011719
+        ],
+        [
+          "Watchmode_Networks",
+          0.8481916189193726
+        ]
+      ],
+      "avg_relevant_similarity": 0.8368287682533264,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Autocomplete Search",
+        "Watchmode_Sources",
+        "Streaming Availability_Search By Title (FREE)"
+      ]
+    },
+    {
+      "query_id": 8335,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Watchmode_Sources",
+          0.8861725926399231
+        ],
+        [
+          "Watchmode_Search",
+          0.8849394917488098
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8728598356246948
+        ],
+        [
+          "Watchmode_Autocomplete Search",
+          0.8582572937011719
+        ],
+        [
+          "Watchmode_Networks",
+          0.8481916189193726
+        ]
+      ],
+      "avg_relevant_similarity": 0.8368287682533264,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Autocomplete Search",
+        "Watchmode_Sources",
+        "Streaming Availability_Search By Title (FREE)"
+      ]
+    },
+    {
+      "query_id": 8337,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Watchmode_Sources",
+          0.8861725926399231
+        ],
+        [
+          "Watchmode_Search",
+          0.8849394917488098
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8728598356246948
+        ],
+        [
+          "Watchmode_Autocomplete Search",
+          0.8582572937011719
+        ],
+        [
+          "Watchmode_Networks",
+          0.8481916189193726
+        ]
+      ],
+      "avg_relevant_similarity": 0.8368287682533264,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Autocomplete Search",
+        "Watchmode_Sources",
+        "Streaming Availability_Search By Title (FREE)"
+      ]
+    },
+    {
+      "query_id": 9332,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.8346086740493774
+        ],
+        [
+          "Vimeo_SearchVideos",
+          0.8311316967010498
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.7292061448097229
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.677901029586792
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.65993332862854
+        ]
+      ],
+      "avg_relevant_similarity": 0.8328701853752136,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9335,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetAllCategories",
+          0.8534135818481445
+        ],
+        [
+          "Vimeo_SearchVideos",
+          0.8225089907646179
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.7937002182006836
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7742884159088135
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.753150463104248
+        ]
+      ],
+      "avg_relevant_similarity": 0.8096910119056702,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetAllCategories",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9336,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.8346086740493774
+        ],
+        [
+          "Vimeo_SearchVideos",
+          0.8311316967010498
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.7292061448097229
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.677901029586792
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.65993332862854
+        ]
+      ],
+      "avg_relevant_similarity": 0.8328701853752136,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9337,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.8346086740493774
+        ],
+        [
+          "Vimeo_SearchVideos",
+          0.8311316967010498
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.7292061448097229
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.677901029586792
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.65993332862854
+        ]
+      ],
+      "avg_relevant_similarity": 0.8328701853752136,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9339,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.8346086740493774
+        ],
+        [
+          "Vimeo_SearchVideos",
+          0.8311316967010498
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.7292061448097229
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.677901029586792
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.65993332862854
+        ]
+      ],
+      "avg_relevant_similarity": 0.8328701853752136,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9340,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetAllCategories",
+          0.8534135818481445
+        ],
+        [
+          "Vimeo_SearchVideos",
+          0.8225089907646179
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.7937002182006836
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7742884159088135
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.753150463104248
+        ]
+      ],
+      "avg_relevant_similarity": 0.8096910119056702,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetAllCategories",
+        "Vimeo_SearchVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9341,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelInfo",
+          0.86902916431427
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.8428922891616821
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.836807131767273
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8332458734512329
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8081750869750977
+        ]
+      ],
+      "avg_relevant_similarity": 0.8057745099067688,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9343,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelInfo",
+          0.86902916431427
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.8428922891616821
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.836807131767273
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8332458734512329
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8081750869750977
+        ]
+      ],
+      "avg_relevant_similarity": 0.8057745099067688,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9344,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelInfo",
+          0.86902916431427
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.8428922891616821
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.836807131767273
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8332458734512329
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8081750869750977
+        ]
+      ],
+      "avg_relevant_similarity": 0.8057745099067688,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9345,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelInfo",
+          0.86902916431427
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.8428922891616821
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.836807131767273
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8332458734512329
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8081750869750977
+        ]
+      ],
+      "avg_relevant_similarity": 0.8057745099067688,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9346,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelInfo",
+          0.86902916431427
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.8428922891616821
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.836807131767273
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8332458734512329
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8081750869750977
+        ]
+      ],
+      "avg_relevant_similarity": 0.8057745099067688,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 9349,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelInfo",
+          0.86902916431427
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.8428922891616821
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.836807131767273
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8332458734512329
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8081750869750977
+        ]
+      ],
+      "avg_relevant_similarity": 0.8057745099067688,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelInfo",
+        "Vimeo_GetVideosComment",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 10898,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Search",
+          0.8393028974533081
+        ],
+        [
+          "Watchmode_List Titles",
+          0.8287642002105713
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8286209106445312
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.810186505317688
+        ],
+        [
+          "OTT details_Params",
+          0.8090044856071472
+        ]
+      ],
+      "avg_relevant_similarity": 0.8340335488319397,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Search",
+        "Watchmode_List Titles"
+      ]
+    },
+    {
+      "query_id": 11644,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11645,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11646,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11647,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11648,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11649,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 11650,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431279182434
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070273399353
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978626668453217
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175403594971,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 12094,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetAllChannels",
+          0.9194129705429077
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8473063707351685
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8468466997146606
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.8369790315628052
+        ],
+        [
+          "Vimeo_GetRelatedChannels",
+          0.8351180553436279
+        ]
+      ],
+      "avg_relevant_similarity": 0.8334895372390747,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetAllCategories",
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetAllChannels"
+      ]
+    },
+    {
+      "query_id": 12095,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetAllChannels",
+          0.9194129705429077
+        ],
+        [
+          "Vimeo_GetChannelVideos",
+          0.8473063707351685
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8468466997146606
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.8369790315628052
+        ],
+        [
+          "Vimeo_GetRelatedChannels",
+          0.8351180553436279
+        ]
+      ],
+      "avg_relevant_similarity": 0.8334895372390747,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetAllCategories",
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetAllChannels"
+      ]
+    },
+    {
+      "query_id": 13441,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search Ultra",
+          0.8590569496154785
+        ],
+        [
+          "Streaming Availability_Search Basic (FREE)",
+          0.8378599882125854
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8263896703720093
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8213187456130981
+        ],
+        [
+          "OTT details_Search",
+          0.8128752112388611
+        ]
+      ],
+      "avg_relevant_similarity": 0.807122528553009,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "OTT details_Advanced Search",
+        "Streaming Availability_Search Ultra"
+      ]
+    },
+    {
+      "query_id": 13443,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search Ultra",
+          0.8590569496154785
+        ],
+        [
+          "Streaming Availability_Search Basic (FREE)",
+          0.8378599882125854
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8263896703720093
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8213187456130981
+        ],
+        [
+          "OTT details_Search",
+          0.8128752112388611
+        ]
+      ],
+      "avg_relevant_similarity": 0.807122528553009,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "OTT details_Advanced Search",
+        "Streaming Availability_Search Ultra"
+      ]
+    },
+    {
+      "query_id": 13444,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8584918975830078
+        ],
+        [
+          "Watchmode_New People",
+          0.8498942255973816
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.847991406917572
+        ],
+        [
+          "Watchmode_List Titles",
+          0.8433066010475159
+        ],
+        [
+          "Watchmode_Search",
+          0.8357216119766235
+        ]
+      ],
+      "avg_relevant_similarity": 0.798808753490448,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_New People",
+        "Streaming Availability_Search Pro"
+      ]
+    },
+    {
+      "query_id": 13773,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "OTT details_Params",
+          0.8832588791847229
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8808639049530029
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8759433627128601
+        ],
+        [
+          "OTT details_Search",
+          0.8718380928039551
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8455597758293152
+        ]
+      ],
+      "avg_relevant_similarity": 0.8088391423225403,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 1,
+      "relevant_api_ids": [
+        "OTT details_Basic Info",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 13774,
+      "num_relevant_apis": 5,
+      "top_5_apis": [
+        [
+          "OTT details_Search",
+          0.8967995643615723
+        ],
+        [
+          "OTT details_Params",
+          0.892996072769165
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8822304010391235
+        ],
+        [
+          "OTT details_Title Details",
+          0.8573085069656372
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8564150333404541
+        ]
+      ],
+      "avg_relevant_similarity": 0.8137407302856445,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "OTT details_Search",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 13776,
+      "num_relevant_apis": 5,
+      "top_5_apis": [
+        [
+          "OTT details_Search",
+          0.9097007513046265
+        ],
+        [
+          "OTT details_Params",
+          0.9055644273757935
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8938944339752197
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8725625276565552
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8690969944000244
+        ]
+      ],
+      "avg_relevant_similarity": 0.8313579559326172,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Streaming Release Dates",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_New Arrivals",
+        "OTT details_Search",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 13777,
+      "num_relevant_apis": 5,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.8537161946296692
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8449721932411194
+        ],
+        [
+          "OTT details_Search",
+          0.8409620523452759
+        ],
+        [
+          "OTT details_Params",
+          0.8317943811416626
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8082084655761719
+        ]
+      ],
+      "avg_relevant_similarity": 0.8021338582038879,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Ultra"
+      ]
+    },
+    {
+      "query_id": 13779,
+      "num_relevant_apis": 5,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.846571683883667
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8425996899604797
+        ],
+        [
+          "OTT details_Search",
+          0.8366705775260925
+        ],
+        [
+          "OTT details_Params",
+          0.8317092657089233
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8223905563354492
+        ]
+      ],
+      "avg_relevant_similarity": 0.8047186136245728,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Basic (FREE)"
+      ]
+    },
+    {
+      "query_id": 13780,
+      "num_relevant_apis": 5,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.8537161946296692
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8449721932411194
+        ],
+        [
+          "OTT details_Search",
+          0.8409620523452759
+        ],
+        [
+          "OTT details_Params",
+          0.8317943811416626
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8082084655761719
+        ]
+      ],
+      "avg_relevant_similarity": 0.8021338582038879,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "Watchmode_List Titles",
+        "Watchmode_Title Streaming Sources",
+        "OTT details_Search",
+        "OTT details_Basic Info",
+        "Streaming Availability_Get Ultra"
+      ]
+    },
+    {
+      "query_id": 14485,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Create a new link",
+          0.8243429660797119
+        ],
+        [
+          "bitly_shorten",
+          0.7913549542427063
+        ],
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.7317163348197937
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22034595906734467
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12808695435523987
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078489303588867,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 14489,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.8946431875228882
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.871902585029602
+        ],
+        [
+          "bitly_shorten",
+          0.6713070869445801
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.1863083839416504
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.09978627413511276
+        ]
+      ],
+      "avg_relevant_similarity": 0.8126175999641418,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 3,
+      "relevant_api_ids": [
+        "URL Link Shortener_Create a new link",
+        "URL Link Shortener_Get a list of domains",
+        "bitly_shorten"
+      ]
+    },
+    {
+      "query_id": 14938,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetAllCategories",
+          0.8458834886550903
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.8427965641021729
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8350141048431396
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7587146759033203
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.7486979961395264
+        ]
+      ],
+      "avg_relevant_similarity": 0.8032348155975342,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetRelatedTags",
+        "Vimeo_GetCategoryInfo"
+      ]
+    },
+    {
+      "query_id": 14939,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetAllCategories",
+          0.8458834886550903
+        ],
+        [
+          "Vimeo_GetRelatedTags",
+          0.8427965641021729
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8350141048431396
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7587146759033203
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.7486979961395264
+        ]
+      ],
+      "avg_relevant_similarity": 0.8032348155975342,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "YTStream - Download YouTube Videos_Download/Stream",
+        "Vimeo_GetRelatedTags",
+        "Vimeo_GetCategoryInfo"
+      ]
+    },
+    {
+      "query_id": 14947,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelVideos",
+          0.8614909648895264
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8413538932800293
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.8229063749313354
+        ],
+        [
+          "Vimeo_GetRelatedPeople",
+          0.8220086097717285
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8124001026153564
+        ]
+      ],
+      "avg_relevant_similarity": 0.7989947199821472,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 14948,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelVideos",
+          0.9017040133476257
+        ],
+        [
+          "Vimeo_GetAllChannels",
+          0.8835503458976746
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.871060311794281
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8422925472259521
+        ],
+        [
+          "Vimeo_GetRelatedChannels",
+          0.840164303779602
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078077435493469,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 14950,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelVideos",
+          0.9017040133476257
+        ],
+        [
+          "Vimeo_GetAllChannels",
+          0.8835503458976746
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.871060311794281
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.8422925472259521
+        ],
+        [
+          "Vimeo_GetRelatedChannels",
+          0.840164303779602
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078077435493469,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetAllChannels",
+        "Vimeo_GetChannelVideos",
+        "Vimeo_GetRelatedPeople",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 16184,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Basic Info",
+          0.8371713757514954
+        ],
+        [
+          "Watchmode_Person",
+          0.8285070061683655
+        ],
+        [
+          "OTT details_Params",
+          0.7943618893623352
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.791206955909729
+        ],
+        [
+          "OTT details_Search",
+          0.7872533798217773
+        ]
+      ],
+      "avg_relevant_similarity": 0.8328391909599304,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Person",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 18978,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Title Details",
+          0.829864501953125
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8158953189849854
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7982833385467529
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.7964308261871338
+        ],
+        [
+          "OTT details_Search",
+          0.7919520735740662
+        ]
+      ],
+      "avg_relevant_similarity": 0.7862458229064941,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 1,
+      "relevant_api_ids": [
+        "OTT details_Title Details",
+        "Streaming Availability_Search Pro",
+        "Watchmode_Title Cast & Crew"
+      ]
+    },
+    {
+      "query_id": 18979,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Title Details",
+          0.829864501953125
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8158953189849854
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7982833385467529
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.7964308261871338
+        ],
+        [
+          "OTT details_Search",
+          0.7919520735740662
+        ]
+      ],
+      "avg_relevant_similarity": 0.7862458229064941,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 1,
+      "relevant_api_ids": [
+        "OTT details_Title Details",
+        "Streaming Availability_Search Pro",
+        "Watchmode_Title Cast & Crew"
+      ]
+    },
+    {
+      "query_id": 18980,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Title Details",
+          0.829864501953125
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8158953189849854
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7982833385467529
+        ],
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.7964308261871338
+        ],
+        [
+          "OTT details_Search",
+          0.7919520735740662
+        ]
+      ],
+      "avg_relevant_similarity": 0.7862458229064941,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 1,
+      "relevant_api_ids": [
+        "OTT details_Title Details",
+        "Streaming Availability_Search Pro",
+        "Watchmode_Title Cast & Crew"
+      ]
+    },
+    {
+      "query_id": 18982,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Basic Info",
+          0.8079034090042114
+        ],
+        [
+          "Streaming Availability_Search Basic (FREE)",
+          0.8067160844802856
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8006735444068909
+        ],
+        [
+          "OTT details_Search",
+          0.7984121441841125
+        ],
+        [
+          "Streaming Availability_Search Pro",
+          0.7916676998138428
+        ]
+      ],
+      "avg_relevant_similarity": 0.7800472378730774,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Person",
+        "Streaming Availability_Search Pro",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 18984,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8375312685966492
+        ],
+        [
+          "OTT details_Title Details",
+          0.82972252368927
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8194010853767395
+        ],
+        [
+          "Watchmode_Title Details",
+          0.8110330104827881
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8098045587539673
+        ]
+      ],
+      "avg_relevant_similarity": 0.8106377720832825,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18987,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8375312685966492
+        ],
+        [
+          "OTT details_Title Details",
+          0.82972252368927
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8194010853767395
+        ],
+        [
+          "Watchmode_Title Details",
+          0.8110330104827881
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8098045587539673
+        ]
+      ],
+      "avg_relevant_similarity": 0.8106377720832825,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18988,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8375312685966492
+        ],
+        [
+          "OTT details_Title Details",
+          0.82972252368927
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8194010853767395
+        ],
+        [
+          "Watchmode_Title Details",
+          0.8110330104827881
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8098045587539673
+        ]
+      ],
+      "avg_relevant_similarity": 0.8106377720832825,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18990,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8375312685966492
+        ],
+        [
+          "OTT details_Title Details",
+          0.82972252368927
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8194010853767395
+        ],
+        [
+          "Watchmode_Title Details",
+          0.8110330104827881
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8098045587539673
+        ]
+      ],
+      "avg_relevant_similarity": 0.8106377720832825,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18992,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8375312685966492
+        ],
+        [
+          "OTT details_Title Details",
+          0.82972252368927
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8194010853767395
+        ],
+        [
+          "Watchmode_Title Details",
+          0.8110330104827881
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8098045587539673
+        ]
+      ],
+      "avg_relevant_similarity": 0.8106377720832825,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 18993,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8375312685966492
+        ],
+        [
+          "OTT details_Title Details",
+          0.82972252368927
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8194010853767395
+        ],
+        [
+          "Watchmode_Title Details",
+          0.8110330104827881
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8098045587539673
+        ]
+      ],
+      "avg_relevant_similarity": 0.8106377720832825,
+      "top_1_is_relevant": false,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Ultra",
+        "Watchmode_Title Details",
+        "OTT details_Title Details"
+      ]
+    },
+    {
+      "query_id": 19272,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Search",
+          0.8372446298599243
+        ],
+        [
+          "Watchmode_Autocomplete Search",
+          0.8216715455055237
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.808515191078186
+        ],
+        [
+          "OTT details_Params",
+          0.781097412109375
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7770276069641113
+        ]
+      ],
+      "avg_relevant_similarity": 0.8294581174850464,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Autocomplete Search",
+        "OTT details_Search"
+      ]
+    },
+    {
+      "query_id": 19274,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Basic Info",
+          0.8311592936515808
+        ],
+        [
+          "Watchmode_New Titles",
+          0.8142985701560974
+        ],
+        [
+          "OTT details_Params",
+          0.7951245307922363
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.7933789491653442
+        ],
+        [
+          "OTT details_Title Details",
+          0.7801976799964905
+        ]
+      ],
+      "avg_relevant_similarity": 0.8227289319038391,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_New Titles",
+        "OTT details_Basic Info"
+      ]
+    },
+    {
+      "query_id": 19275,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Params",
+          0.9199649691581726
+        ],
+        [
+          "OTT details_Search",
+          0.916685938835144
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8958203792572021
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8665539026260376
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8364229202270508
+        ]
+      ],
+      "avg_relevant_similarity": 0.847058117389679,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Search",
+        "OTT details_Params",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 19277,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Params",
+          0.9199649691581726
+        ],
+        [
+          "OTT details_Search",
+          0.916685938835144
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8958203792572021
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8665539026260376
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8364229202270508
+        ]
+      ],
+      "avg_relevant_similarity": 0.847058117389679,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Search",
+        "OTT details_Params",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 19281,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "OTT details_Basic Info",
+          0.8238309621810913
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.8209745287895203
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8172463178634644
+        ],
+        [
+          "Watchmode_Sources",
+          0.8153295516967773
+        ],
+        [
+          "OTT details_Params",
+          0.7943263649940491
+        ]
+      ],
+      "avg_relevant_similarity": 0.8195802569389343,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Basic Info",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 19282,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_Params",
+          0.9199649691581726
+        ],
+        [
+          "OTT details_Search",
+          0.916685938835144
+        ],
+        [
+          "OTT details_OTT Providers",
+          0.8958203792572021
+        ],
+        [
+          "OTT details_Advanced Search",
+          0.8665539026260376
+        ],
+        [
+          "OTT details_Basic Info",
+          0.8364229202270508
+        ]
+      ],
+      "avg_relevant_similarity": 0.847058117389679,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "OTT details_Search",
+        "OTT details_Params",
+        "Watchmode_Sources"
+      ]
+    },
+    {
+      "query_id": 20022,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20023,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Create a new link",
+          0.8243429660797119
+        ],
+        [
+          "bitly_shorten",
+          0.7913549542427063
+        ],
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.7317163348197937
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22034595906734467
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12808695435523987
+        ]
+      ],
+      "avg_relevant_similarity": 0.8078489303588867,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Create a new link"
+      ]
+    },
+    {
+      "query_id": 20024,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20026,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20027,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20028,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20029,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 20030,
+      "num_relevant_apis": 2,
+      "top_5_apis": [
+        [
+          "URL Link Shortener_Get a list of domains",
+          0.838736355304718
+        ],
+        [
+          "bitly_shorten",
+          0.8147745728492737
+        ],
+        [
+          "URL Link Shortener_Create a new link",
+          0.677411675453186
+        ],
+        [
+          "YTStream - Download YouTube Videos_Download/Stream",
+          0.22684518992900848
+        ],
+        [
+          "Vimeo_GetVideosComment",
+          0.12493957579135895
+        ]
+      ],
+      "avg_relevant_similarity": 0.8267554640769958,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "bitly_shorten",
+        "URL Link Shortener_Get a list of domains"
+      ]
+    },
+    {
+      "query_id": 21682,
+      "num_relevant_apis": 4,
+      "top_5_apis": [
+        [
+          "Streaming Availability_Search By Title (FREE)",
+          0.8644526600837708
+        ],
+        [
+          "Watchmode_Streaming Release Dates",
+          0.8577171564102173
+        ],
+        [
+          "Watchmode_Title Streaming Sources",
+          0.831489086151123
+        ],
+        [
+          "Streaming Availability_Search Basic (FREE)",
+          0.8270641565322876
+        ],
+        [
+          "Watchmode_Search",
+          0.8150242567062378
+        ]
+      ],
+      "avg_relevant_similarity": 0.823179304599762,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Streaming Availability_Search Basic (FREE)",
+        "Streaming Availability_Search By Title (FREE)",
+        "Watchmode_New People",
+        "Watchmode_Title Seasons"
+      ]
+    },
+    {
+      "query_id": 23236,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelVideos",
+          0.8514227867126465
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8354934453964233
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.8100293874740601
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8060761094093323
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7563523054122925
+        ]
+      ],
+      "avg_relevant_similarity": 0.8100563883781433,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 23239,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelVideos",
+          0.8514227867126465
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8354934453964233
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.8100293874740601
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8060761094093323
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7563523054122925
+        ]
+      ],
+      "avg_relevant_similarity": 0.8100563883781433,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 23240,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "Vimeo_GetChannelVideos",
+          0.8514227867126465
+        ],
+        [
+          "Vimeo_GetCategoryInfo",
+          0.8354934453964233
+        ],
+        [
+          "Vimeo_GetChannelInfo",
+          0.8100293874740601
+        ],
+        [
+          "Vimeo_GetAllCategories",
+          0.8060761094093323
+        ],
+        [
+          "Vimeo_GetRelatedVideos",
+          0.7563523054122925
+        ]
+      ],
+      "avg_relevant_similarity": 0.8100563883781433,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Vimeo_GetCategoryInfo",
+        "Vimeo_GetChannelVideos",
+        "YTStream - Download YouTube Videos_Download/Stream"
+      ]
+    },
+    {
+      "query_id": 25160,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.9096226096153259
+        ],
+        [
+          "OTT details_Params",
+          0.8742731213569641
+        ],
+        [
+          "OTT details_Title Details",
+          0.8728165030479431
+        ],
+        [
+          "OTT details_Search",
+          0.8671174049377441
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8561248779296875
+        ]
+      ],
+      "avg_relevant_similarity": 0.831946849822998,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25161,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.9096226096153259
+        ],
+        [
+          "OTT details_Params",
+          0.8742731213569641
+        ],
+        [
+          "OTT details_Title Details",
+          0.8728165030479431
+        ],
+        [
+          "OTT details_Search",
+          0.8671174049377441
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8561248779296875
+        ]
+      ],
+      "avg_relevant_similarity": 0.831946849822998,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25163,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.9096226096153259
+        ],
+        [
+          "OTT details_Params",
+          0.8742731213569641
+        ],
+        [
+          "OTT details_Title Details",
+          0.8728165030479431
+        ],
+        [
+          "OTT details_Search",
+          0.8671174049377441
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8561248779296875
+        ]
+      ],
+      "avg_relevant_similarity": 0.831946849822998,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25164,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.9096226096153259
+        ],
+        [
+          "OTT details_Params",
+          0.8742731213569641
+        ],
+        [
+          "OTT details_Title Details",
+          0.8728165030479431
+        ],
+        [
+          "OTT details_Search",
+          0.8671174049377441
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8561248779296875
+        ]
+      ],
+      "avg_relevant_similarity": 0.831946849822998,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    },
+    {
+      "query_id": 25165,
+      "num_relevant_apis": 3,
+      "top_5_apis": [
+        [
+          "OTT details_OTT Providers",
+          0.9096226096153259
+        ],
+        [
+          "OTT details_Params",
+          0.8742731213569641
+        ],
+        [
+          "OTT details_Title Details",
+          0.8728165030479431
+        ],
+        [
+          "OTT details_Search",
+          0.8671174049377441
+        ],
+        [
+          "OTT details_Additional Title Details",
+          0.8561248779296875
+        ]
+      ],
+      "avg_relevant_similarity": 0.831946849822998,
+      "top_1_is_relevant": true,
+      "top_5_relevant_count": 2,
+      "relevant_api_ids": [
+        "Watchmode_Search",
+        "OTT details_Title Details",
+        "OTT details_OTT Providers"
+      ]
+    }
+  ],
+  "api_embeddings": {},
+  "avg_similarity_across_queries": 0.4725913107395172,
+  "min_similarity_across_queries": 0.28322142362594604,
+  "max_similarity_across_queries": 0.9999998807907104
+}

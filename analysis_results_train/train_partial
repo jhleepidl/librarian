@@ -1,0 +1,1259 @@
+{
+  "total_queries": 100,
+  "queries_analyzed": 100,
+  "avg_relevant_apis_per_query": 2.4895833333333335,
+  "similarity_stats": [
+    {
+      "query_id": 52289,
+      "num_apis": 4,
+      "avg_similarity": 0.4791964590549469,
+      "min_similarity": 0.09725424647331238,
+      "max_similarity": 0.8701984882354736,
+      "api_ids": [
+        "World of Quotes_Get Authors",
+        "World of Quotes_Get Quotes By Specific Author",
+        "World of Quotes_Get Quotes By Specific Category",
+        "Fake users_v6_Fake user"
+      ]
+    },
+    {
+      "query_id": 45287,
+      "num_apis": 2,
+      "avg_similarity": 0.23754537105560303,
+      "min_similarity": 0.23754537105560303,
+      "max_similarity": 0.23754537105560303,
+      "api_ids": [
+        "Weather by API-Ninjas_/v1/weather",
+        "climate data_Get climate data by lat/lon or Key"
+      ]
+    },
+    {
+      "query_id": 998,
+      "num_apis": 3,
+      "avg_similarity": 0.3904673755168915,
+      "min_similarity": 0.33114510774612427,
+      "max_similarity": 0.47147655487060547,
+      "api_ids": [
+        "Healthcaremailing_Healthcare mailing",
+        "Lake B2B_Email Marketing",
+        "CarbonFootprint_CleanHydroToCarbonFootprint"
+      ]
+    },
+    {
+      "query_id": 75997,
+      "num_apis": 2,
+      "avg_similarity": 0.840548574924469,
+      "min_similarity": 0.840548574924469,
+      "max_similarity": 0.840548574924469,
+      "api_ids": [
+        "Real Estate Records_transactions",
+        "Real Estate Records_detail"
+      ]
+    },
+    {
+      "query_id": 53236,
+      "num_apis": 2,
+      "avg_similarity": 0.06117194890975952,
+      "min_similarity": 0.06117194890975952,
+      "max_similarity": 0.06117194890975952,
+      "api_ids": [
+        "Quotes_v2_Get Random Quote",
+        "Porn Movies_Movies Link And Name"
+      ]
+    },
+    {
+      "query_id": 22851,
+      "num_apis": 3,
+      "avg_similarity": 0.5604804158210754,
+      "min_similarity": 0.41367194056510925,
+      "max_similarity": 0.845553457736969,
+      "api_ids": [
+        "Quotes Diffusion_/topic",
+        "Quotes Diffusion_/random",
+        "Industrypedia Random Articles_Retrieve Random Article"
+      ]
+    },
+    {
+      "query_id": 27063,
+      "num_apis": 2,
+      "avg_similarity": 0.37896043062210083,
+      "min_similarity": 0.37896043062210083,
+      "max_similarity": 0.37896043062210083,
+      "api_ids": [
+        "Halsey Lyric Snippets_random song from a specific {artist} and specified {album}",
+        "Apple Music_Single Track"
+      ]
+    },
+    {
+      "query_id": 14153,
+      "num_apis": 2,
+      "avg_similarity": 0.048446059226989746,
+      "min_similarity": 0.048446059226989746,
+      "max_similarity": 0.048446059226989746,
+      "api_ids": [
+        "ColorMe_RandomColorSet",
+        "Domain Name Search_Domain Search"
+      ]
+    },
+    {
+      "query_id": 51736,
+      "num_apis": 3,
+      "avg_similarity": 0.5417737364768982,
+      "min_similarity": 0.3305683135986328,
+      "max_similarity": 0.9568129777908325,
+      "api_ids": [
+        "Borsa_GARAN",
+        "ODAM_tsv",
+        "ODAM_tsv1"
+      ]
+    },
+    {
+      "query_id": 20542,
+      "num_apis": 2,
+      "avg_similarity": 0.8225494623184204,
+      "min_similarity": 0.8225494623184204,
+      "max_similarity": 0.8225494623184204,
+      "api_ids": [
+        "iRail_Departures",
+        "iRail_Stations list"
+      ]
+    },
+    {
+      "query_id": 24101,
+      "num_apis": 2,
+      "avg_similarity": 0.22798261046409607,
+      "min_similarity": 0.22798261046409607,
+      "max_similarity": 0.22798261046409607,
+      "api_ids": [
+        "Solcast_Simple Radiation Forecast",
+        "climate data_Search location by Name or zip code"
+      ]
+    },
+    {
+      "query_id": 62351,
+      "num_apis": 2,
+      "avg_similarity": 0.659374475479126,
+      "min_similarity": 0.659374475479126,
+      "max_similarity": 0.659374475479126,
+      "api_ids": [
+        "Tripadvisor_Search Flights MultiCity",
+        "Tripadvisor_Get Currency"
+      ]
+    },
+    {
+      "query_id": 24931,
+      "num_apis": 3,
+      "avg_similarity": 0.5557746291160583,
+      "min_similarity": 0.5010097026824951,
+      "max_similarity": 0.6511390209197998,
+      "api_ids": [
+        "Microsoft Translator Text_Languages",
+        "Dicolink_Get Scrabble score",
+        "Dicolink_Get Antonyms"
+      ]
+    },
+    {
+      "query_id": 70634,
+      "num_apis": 2,
+      "avg_similarity": 0.7795788049697876,
+      "min_similarity": 0.7795788049697876,
+      "max_similarity": 0.7795788049697876,
+      "api_ids": [
+        "StockTwits_streams/mentions",
+        "StockTwits_streams/user"
+      ]
+    },
+    {
+      "query_id": 17617,
+      "num_apis": 5,
+      "avg_similarity": 0.6438593864440918,
+      "min_similarity": 0.4850651025772095,
+      "max_similarity": 0.808731198310852,
+      "api_ids": [
+        "Maytapi WhatsApp_getListPhones",
+        "Maytapi WhatsApp_purgeQueue",
+        "Maytapi WhatsApp_getQRCode",
+        "Whatsapp Scraper_Fetch business info",
+        "Whatsapp Scraper_Is registered on whatsapp? (get free token)"
+      ]
+    },
+    {
+      "query_id": 62069,
+      "num_apis": 2,
+      "avg_similarity": 0.053520411252975464,
+      "min_similarity": 0.053520411252975464,
+      "max_similarity": 0.053520411252975464,
+      "api_ids": [
+        "Abir82 Bollywood Recommendations_Fetch Movies",
+        "Movie, TV, music search and download_Search Torrents"
+      ]
+    },
+    {
+      "query_id": 18655,
+      "num_apis": 2,
+      "avg_similarity": 0.38238054513931274,
+      "min_similarity": 0.38238054513931274,
+      "max_similarity": 0.38238054513931274,
+      "api_ids": [
+        "Edamam Nutrition Analysis_/api/nutrition-data",
+        "CarbonFootprint_TreeEquivalent"
+      ]
+    },
+    {
+      "query_id": 23193,
+      "num_apis": 3,
+      "avg_similarity": 0.5945112705230713,
+      "min_similarity": 0.4929550886154175,
+      "max_similarity": 0.7022400498390198,
+      "api_ids": [
+        "TikTok Private_List Comments",
+        "TikTok Private_Trending Challenges",
+        "TikTok Private_Get User"
+      ]
+    },
+    {
+      "query_id": 13875,
+      "num_apis": 2,
+      "avg_similarity": 0.6513400673866272,
+      "min_similarity": 0.6513400673866272,
+      "max_similarity": 0.6513400673866272,
+      "api_ids": [
+        "WonderboyAPI_All Belgian Races",
+        "WonderboyAPI_Date and Time of last update"
+      ]
+    },
+    {
+      "query_id": 55058,
+      "num_apis": 2,
+      "avg_similarity": 0.8579361438751221,
+      "min_similarity": 0.8579361438751221,
+      "max_similarity": 0.8579361438751221,
+      "api_ids": [
+        "OpenWeather_getCurrentWeather",
+        "OpenWeather_getForecastWeather"
+      ]
+    },
+    {
+      "query_id": 287,
+      "num_apis": 2,
+      "avg_similarity": 0.40722185373306274,
+      "min_similarity": 0.40722185373306274,
+      "max_similarity": 0.40722185373306274,
+      "api_ids": [
+        "Programming Memes Reddit_Get All Memes",
+        "Socialgrep_Comment search"
+      ]
+    },
+    {
+      "query_id": 46170,
+      "num_apis": 2,
+      "avg_similarity": 0.2521331310272217,
+      "min_similarity": 0.2521331310272217,
+      "max_similarity": 0.2521331310272217,
+      "api_ids": [
+        "Climate News API_v2_Get All Climate Change Related News",
+        "Webit News Search_Search"
+      ]
+    },
+    {
+      "query_id": 51537,
+      "num_apis": 3,
+      "avg_similarity": 0.7994349598884583,
+      "min_similarity": 0.7397751808166504,
+      "max_similarity": 0.8806339502334595,
+      "api_ids": [
+        "Flowers_Show image",
+        "Flowers_List",
+        "Flowers_Get by id"
+      ]
+    },
+    {
+      "query_id": 56739,
+      "num_apis": 3,
+      "avg_similarity": 0.37647512555122375,
+      "min_similarity": 0.1593327671289444,
+      "max_similarity": 0.7988255023956299,
+      "api_ids": [
+        "Woo-temp_boxes",
+        "Woo-temp_product_category",
+        "Company Domain Finder_Get Company Domain"
+      ]
+    },
+    {
+      "query_id": 19030,
+      "num_apis": 4,
+      "avg_similarity": 0.6195251941680908,
+      "min_similarity": 0.39143943786621094,
+      "max_similarity": 0.8075191378593445,
+      "api_ids": [
+        "Messages_getMsgs",
+        "Maytapi WhatsApp_purgeQueue",
+        "Maytapi WhatsApp_checkNumberStatus",
+        "Maytapi WhatsApp_logs"
+      ]
+    },
+    {
+      "query_id": 6807,
+      "num_apis": 2,
+      "avg_similarity": 0.9455225467681885,
+      "min_similarity": 0.9455225467681885,
+      "max_similarity": 0.9455225467681885,
+      "api_ids": [
+        "sample-app-config.json_sample-app-config_copy",
+        "sample-app-config.json_version"
+      ]
+    },
+    {
+      "query_id": 82378,
+      "num_apis": 2,
+      "avg_similarity": 0.024185415357351303,
+      "min_similarity": 0.024185415357351303,
+      "max_similarity": 0.024185415357351303,
+      "api_ids": [
+        "Soft-cat-quiz_Get Questions and Answers",
+        "Programming Memes Reddit_Get All Memes"
+      ]
+    },
+    {
+      "query_id": 81109,
+      "num_apis": 2,
+      "avg_similarity": 0.552005410194397,
+      "min_similarity": 0.552005410194397,
+      "max_similarity": 0.552005410194397,
+      "api_ids": [
+        "News Network_Get News",
+        "News Network_Available Region List"
+      ]
+    },
+    {
+      "query_id": 52349,
+      "num_apis": 5,
+      "avg_similarity": 0.34940674901008606,
+      "min_similarity": 0.07640699297189713,
+      "max_similarity": 0.7573255300521851,
+      "api_ids": [
+        "Shapeways_GET /orders/cart/v1",
+        "Shapeways_GET /models/{modelId}/v1",
+        "Shapeways_GET /printers/{printerId}/v1",
+        "Testing_Test",
+        "Touchbase_synonyms"
+      ]
+    },
+    {
+      "query_id": 60745,
+      "num_apis": 2,
+      "avg_similarity": 0.2220909595489502,
+      "min_similarity": 0.2220909595489502,
+      "max_similarity": 0.2220909595489502,
+      "api_ids": [
+        "Busy and Popular Times_Search a Place",
+        "MagicEden_URL"
+      ]
+    },
+    {
+      "query_id": 78415,
+      "num_apis": 2,
+      "avg_similarity": 0.8248676061630249,
+      "min_similarity": 0.8248676061630249,
+      "max_similarity": 0.8248676061630249,
+      "api_ids": [
+        "MailCheck_Email",
+        "MailCheck_Domain"
+      ]
+    },
+    {
+      "query_id": 58713,
+      "num_apis": 4,
+      "avg_similarity": 0.7556445598602295,
+      "min_similarity": 0.7019675970077515,
+      "max_similarity": 0.8492010831832886,
+      "api_ids": [
+        "Scraper's Proxy_Tor GET",
+        "Scraper's Proxy_JavaScript Rendered Page GET",
+        "Scraper's Proxy_Standard GET",
+        "Scraper's Proxy_Parser GET"
+      ]
+    },
+    {
+      "query_id": 67423,
+      "num_apis": 3,
+      "avg_similarity": 0.3772061765193939,
+      "min_similarity": 0.12599128484725952,
+      "max_similarity": 0.8170170783996582,
+      "api_ids": [
+        "Finance Social Sentiment For Twitter and StockTwits_/get-sentiment-change/bearish",
+        "Finance Social Sentiment For Twitter and StockTwits_/get-social-notifications",
+        "Pancakeswap API_Get Balance"
+      ]
+    },
+    {
+      "query_id": 40589,
+      "num_apis": 2,
+      "avg_similarity": 0.13649502396583557,
+      "min_similarity": 0.13649502396583557,
+      "max_similarity": 0.13649502396583557,
+      "api_ids": [
+        "PageantDB_All pageant contests",
+        "Winget API_Get complete package list"
+      ]
+    },
+    {
+      "query_id": 7340,
+      "num_apis": 2,
+      "avg_similarity": 0.7015820741653442,
+      "min_similarity": 0.7015820741653442,
+      "max_similarity": 0.7015820741653442,
+      "api_ids": [
+        "Reddit meme_Trending memes",
+        "Reddit meme_Top memes"
+      ]
+    },
+    {
+      "query_id": 22732,
+      "num_apis": 2,
+      "avg_similarity": 0.5863065719604492,
+      "min_similarity": 0.5863065719604492,
+      "max_similarity": 0.5863065719604492,
+      "api_ids": [
+        "World Country_Get Time Zones",
+        "World Country_Get Countries"
+      ]
+    },
+    {
+      "query_id": 18126,
+      "num_apis": 3,
+      "avg_similarity": 0.5306286215782166,
+      "min_similarity": 0.3110898435115814,
+      "max_similarity": 0.9232902526855469,
+      "api_ids": [
+        "Diablo4 Smartable_GetGamesByTopic",
+        "Diablo4 Smartable_GetGames",
+        "World of Tanks Stats_Get Stats"
+      ]
+    },
+    {
+      "query_id": 50150,
+      "num_apis": 3,
+      "avg_similarity": 0.0908680185675621,
+      "min_similarity": 0.07275106757879257,
+      "max_similarity": 0.11447892338037491,
+      "api_ids": [
+        "MESCALC_get_misinformation_score_account__twitter_account__get",
+        "Tiktok full info without watermark_Full info with url",
+        "gwyo-twitch_Get Stream Mature Content Status"
+      ]
+    },
+    {
+      "query_id": 82085,
+      "num_apis": 3,
+      "avg_similarity": 0.7566023468971252,
+      "min_similarity": 0.6854678392410278,
+      "max_similarity": 0.7961664199829102,
+      "api_ids": [
+        "Twitter_v5_Get User Tweets",
+        "Twitter_v5_Get User Followings",
+        "Twitter_v5_Get User Followers"
+      ]
+    },
+    {
+      "query_id": 2572,
+      "num_apis": 3,
+      "avg_similarity": 0.5308540463447571,
+      "min_similarity": 0.42266201972961426,
+      "max_similarity": 0.6298192739486694,
+      "api_ids": [
+        "BraveNewCoin_AssetTicker",
+        "CurrencyAPI.net_Timeframe",
+        "CurrencyAPI.net_Rates"
+      ]
+    },
+    {
+      "query_id": 86457,
+      "num_apis": 3,
+      "avg_similarity": 0.4382486045360565,
+      "min_similarity": 0.2234259992837906,
+      "max_similarity": 0.7838561534881592,
+      "api_ids": [
+        "Islam & AI API_Have a Chat with our Bot",
+        "Islam & AI API_Get an Answer to your Question",
+        "People photo background removal_Get version"
+      ]
+    },
+    {
+      "query_id": 18148,
+      "num_apis": 2,
+      "avg_similarity": 0.862273097038269,
+      "min_similarity": 0.862273097038269,
+      "max_similarity": 0.862273097038269,
+      "api_ids": [
+        "Indian Names_Get Status",
+        "Indian Names_Get Names"
+      ]
+    },
+    {
+      "query_id": 13904,
+      "num_apis": 2,
+      "avg_similarity": 0.9306998252868652,
+      "min_similarity": 0.9306998252868652,
+      "max_similarity": 0.9306998252868652,
+      "api_ids": [
+        "BingoAPI_/us",
+        "BingoAPI_/eu"
+      ]
+    },
+    {
+      "query_id": 83015,
+      "num_apis": 3,
+      "avg_similarity": 0.16327150166034698,
+      "min_similarity": 0.1323987990617752,
+      "max_similarity": 0.18436911702156067,
+      "api_ids": [
+        "Marvel Heroic API: Unlock the MCU Legendary Characters._getCharacterByName",
+        "LightningRoulletteAPI_Get last update",
+        "Memes brasileiros_Memes"
+      ]
+    },
+    {
+      "query_id": 5223,
+      "num_apis": 2,
+      "avg_similarity": 0.9061187505722046,
+      "min_similarity": 0.9061187505722046,
+      "max_similarity": 0.9061187505722046,
+      "api_ids": [
+        "Book Cover API_getBookCoverUrl",
+        "Book Cover API_getBookCoverImage"
+      ]
+    },
+    {
+      "query_id": 30441,
+      "num_apis": 2,
+      "avg_similarity": 0.7093759775161743,
+      "min_similarity": 0.7093759775161743,
+      "max_similarity": 0.7093759775161743,
+      "api_ids": [
+        "AI News - Global_Available Regions",
+        "AI News - Global_Get News"
+      ]
+    },
+    {
+      "query_id": 70552,
+      "num_apis": 3,
+      "avg_similarity": 0.8126564621925354,
+      "min_similarity": 0.7528549432754517,
+      "max_similarity": 0.9038270711898804,
+      "api_ids": [
+        "vatlayer_Single EU VAT Rate",
+        "vatlayer_Request all EU VAT Rates",
+        "vatlayer_Validate VAT Number"
+      ]
+    },
+    {
+      "query_id": 42310,
+      "num_apis": 2,
+      "avg_similarity": 0.6452066898345947,
+      "min_similarity": 0.6452066898345947,
+      "max_similarity": 0.6452066898345947,
+      "api_ids": [
+        "Rapid Translate_Get Languages",
+        "Long Translator_languages"
+      ]
+    },
+    {
+      "query_id": 45053,
+      "num_apis": 2,
+      "avg_similarity": 0.4276827573776245,
+      "min_similarity": 0.4276827573776245,
+      "max_similarity": 0.4276827573776245,
+      "api_ids": [
+        "OpenWeather_getForecastWeather",
+        "OikoWeather_Weather Data"
+      ]
+    },
+    {
+      "query_id": 25604,
+      "num_apis": 3,
+      "avg_similarity": 0.8077278137207031,
+      "min_similarity": 0.7921313643455505,
+      "max_similarity": 0.826339602470398,
+      "api_ids": [
+        "Bing Entity Search_Entities Search",
+        "Bing Image Search_Image Search",
+        "Bing Image Search_Trending"
+      ]
+    },
+    {
+      "query_id": 21190,
+      "num_apis": 2,
+      "avg_similarity": 0.899713933467865,
+      "min_similarity": 0.899713933467865,
+      "max_similarity": 0.899713933467865,
+      "api_ids": [
+        "Anime Voice Waifu Ai Api_Get Speaker List",
+        "Anime Voice Waifu Ai Api_Get Voice"
+      ]
+    },
+    {
+      "query_id": 29733,
+      "num_apis": 3,
+      "avg_similarity": 0.8568664193153381,
+      "min_similarity": 0.8093492984771729,
+      "max_similarity": 0.9187610745429993,
+      "api_ids": [
+        "URL Content Extractor_Search Content",
+        "URL Content Extractor_Get Trending",
+        "URL Content Extractor_Get Content"
+      ]
+    },
+    {
+      "query_id": 48615,
+      "num_apis": 2,
+      "avg_similarity": 0.061474114656448364,
+      "min_similarity": 0.061474114656448364,
+      "max_similarity": 0.061474114656448364,
+      "api_ids": [
+        "Countries_get all",
+        "TimeZoneDB - Find Local Time Zone by Coordinate or Name_Main"
+      ]
+    },
+    {
+      "query_id": 15482,
+      "num_apis": 2,
+      "avg_similarity": 0.18123552203178406,
+      "min_similarity": 0.18123552203178406,
+      "max_similarity": 0.18123552203178406,
+      "api_ids": [
+        "webcams.travel_/webcams/map/{ne_lat},{ne_lng},{sw_lat},{sw_lng},{zoom}",
+        "JSearch_Estimated Salary"
+      ]
+    },
+    {
+      "query_id": 56055,
+      "num_apis": 2,
+      "avg_similarity": 0.39015647768974304,
+      "min_similarity": 0.39015647768974304,
+      "max_similarity": 0.39015647768974304,
+      "api_ids": [
+        "Vouchery.io_Get main campaigns",
+        "Free Coupon Codes_/api/vcodes-api.php?siteid={siteid}"
+      ]
+    },
+    {
+      "query_id": 49024,
+      "num_apis": 2,
+      "avg_similarity": 0.9606232643127441,
+      "min_similarity": 0.9606232643127441,
+      "max_similarity": 0.9606232643127441,
+      "api_ids": [
+        "Ukraine war data_Refugee by country",
+        "Ukraine war data_Refugee by data"
+      ]
+    },
+    {
+      "query_id": 21614,
+      "num_apis": 2,
+      "avg_similarity": 0.3275877833366394,
+      "min_similarity": 0.3275877833366394,
+      "max_similarity": 0.3275877833366394,
+      "api_ids": [
+        "Deezer_Artist",
+        "Numbers_Get math fact"
+      ]
+    },
+    {
+      "query_id": 77234,
+      "num_apis": 4,
+      "avg_similarity": 0.4708888828754425,
+      "min_similarity": 0.0816681832075119,
+      "max_similarity": 0.8604835271835327,
+      "api_ids": [
+        "Distance Calculator_v3_calc",
+        "Dubai Makani_GetMakaniDetails",
+        "Dubai Makani_IsValidMakani",
+        "Dubai Makani_GetMakaniInfoFromCoordination"
+      ]
+    },
+    {
+      "query_id": 77226,
+      "num_apis": 3,
+      "avg_similarity": 0.4603271484375,
+      "min_similarity": 0.24508404731750488,
+      "max_similarity": 0.8815698027610779,
+      "api_ids": [
+        "Pharmacies de garde NC_Health",
+        "World Cities and Countries_ListAllCountries",
+        "World Cities and Countries_SearchCountries"
+      ]
+    },
+    {
+      "query_id": 79055,
+      "num_apis": 2,
+      "avg_similarity": 0.0903330147266388,
+      "min_similarity": 0.0903330147266388,
+      "max_similarity": 0.0903330147266388,
+      "api_ids": [
+        "Geeklist_Get Popular Links",
+        "YouTube Channel Details_YouTube Channel Details"
+      ]
+    },
+    {
+      "query_id": 11244,
+      "num_apis": 3,
+      "avg_similarity": 0.36517736315727234,
+      "min_similarity": 0.060938552021980286,
+      "max_similarity": 0.904446005821228,
+      "api_ids": [
+        "MongoDB Wix_Data By id",
+        "MongoDB Wix_Get Schema By Name",
+        "aaaa_Get all Roles"
+      ]
+    },
+    {
+      "query_id": 25517,
+      "num_apis": 5,
+      "avg_similarity": 0.2836906313896179,
+      "min_similarity": -0.022344239056110382,
+      "max_similarity": 0.8807588815689087,
+      "api_ids": [
+        "Beers List_getAllBeersList",
+        "Beers List_Get beers by single country",
+        "The Mexican Food DB_List of Foods",
+        "The Mexican Food DB_Detailed Food Recipe by ID",
+        "Testing_v3_FindImage"
+      ]
+    },
+    {
+      "query_id": 68821,
+      "num_apis": 2,
+      "avg_similarity": 0.22937354445457458,
+      "min_similarity": 0.22937354445457458,
+      "max_similarity": 0.22937354445457458,
+      "api_ids": [
+        "Visa Requirements_/visa-requirements",
+        "Biggest Cities_Get all cities"
+      ]
+    },
+    {
+      "query_id": 53441,
+      "num_apis": 2,
+      "avg_similarity": 0.029228132218122482,
+      "min_similarity": 0.029228132218122482,
+      "max_similarity": 0.029228132218122482,
+      "api_ids": [
+        "Direct Porn_v2_Search",
+        " Jokester_/jokes"
+      ]
+    },
+    {
+      "query_id": 11213,
+      "num_apis": 2,
+      "avg_similarity": 0.39733147621154785,
+      "min_similarity": 0.39733147621154785,
+      "max_similarity": 0.39733147621154785,
+      "api_ids": [
+        "Microsoft Translator Text_Languages",
+        "Bing Autosuggest_Suggestions"
+      ]
+    },
+    {
+      "query_id": 15616,
+      "num_apis": 3,
+      "avg_similarity": 0.5536353588104248,
+      "min_similarity": 0.36364632844924927,
+      "max_similarity": 0.9276700615882874,
+      "api_ids": [
+        "Open Brewery DB_Get a brewery",
+        "Open Brewery DB_Breweries",
+        "Places_Places list by radius (Nearby Search) "
+      ]
+    },
+    {
+      "query_id": 75173,
+      "num_apis": 3,
+      "avg_similarity": 0.5026320815086365,
+      "min_similarity": 0.28238439559936523,
+      "max_similarity": 0.9166834354400635,
+      "api_ids": [
+        "Climate News API_v2_Get All Climate Change Related News",
+        "Kubric: The Comprehensive Movie News API_News",
+        "Kubric: The Comprehensive Movie News API_Sources"
+      ]
+    },
+    {
+      "query_id": 65752,
+      "num_apis": 3,
+      "avg_similarity": 0.8407284617424011,
+      "min_similarity": 0.8296689987182617,
+      "max_similarity": 0.8546500205993652,
+      "api_ids": [
+        "ImmersiveRouletteAPI_Statistics",
+        "ImmersiveRouletteAPI_latest-outcome",
+        "ImmersiveRouletteAPI_history"
+      ]
+    },
+    {
+      "query_id": 165,
+      "num_apis": 2,
+      "avg_similarity": 0.10307380557060242,
+      "min_similarity": 0.10307380557060242,
+      "max_similarity": 0.10307380557060242,
+      "api_ids": [
+        "US Counties_Get metadata",
+        "Referential DB_Countries"
+      ]
+    },
+    {
+      "query_id": 1750,
+      "num_apis": 3,
+      "avg_similarity": 0.6214703917503357,
+      "min_similarity": 0.4536800980567932,
+      "max_similarity": 0.886293888092041,
+      "api_ids": [
+        "Coin Flip_Heads / Tails",
+        "BraveNewCoin_Asset",
+        "BraveNewCoin_AssetTicker"
+      ]
+    },
+    {
+      "query_id": 6211,
+      "num_apis": 2,
+      "avg_similarity": 0.42256617546081543,
+      "min_similarity": 0.42256617546081543,
+      "max_similarity": 0.42256617546081543,
+      "api_ids": [
+        "CurrencyAPI.net_Timeframe",
+        "Coinranking_Get coins"
+      ]
+    },
+    {
+      "query_id": 5520,
+      "num_apis": 2,
+      "avg_similarity": 0.8809499144554138,
+      "min_similarity": 0.8809499144554138,
+      "max_similarity": 0.8809499144554138,
+      "api_ids": [
+        "Steam Market and Store_Retrieve Buy/Sell informations by ID",
+        "Steam Market and Store_Get Items IDs by query"
+      ]
+    },
+    {
+      "query_id": 57538,
+      "num_apis": 2,
+      "avg_similarity": 0.7314258813858032,
+      "min_similarity": 0.7314258813858032,
+      "max_similarity": 0.7314258813858032,
+      "api_ids": [
+        "NameForge_Double name medium",
+        "NameForge_Single name long"
+      ]
+    },
+    {
+      "query_id": 4288,
+      "num_apis": 2,
+      "avg_similarity": 0.827735185623169,
+      "min_similarity": 0.827735185623169,
+      "max_similarity": 0.827735185623169,
+      "api_ids": [
+        "SEO Checker_Analyze",
+        "SEO Checker_Summary"
+      ]
+    },
+    {
+      "query_id": 6588,
+      "num_apis": 3,
+      "avg_similarity": 0.534174382686615,
+      "min_similarity": 0.4045618176460266,
+      "max_similarity": 0.7484055161476135,
+      "api_ids": [
+        "Deezer_Album",
+        "Shazam_songs/v2/get-details",
+        "Shazam_artists/get-details"
+      ]
+    },
+    {
+      "query_id": 5855,
+      "num_apis": 3,
+      "avg_similarity": 0.39813199639320374,
+      "min_similarity": 0.24655663967132568,
+      "max_similarity": 0.6992759108543396,
+      "api_ids": [
+        "Tank01 Fantasy Stats_Get Daily Scoreboard - Live - Real Time",
+        "Tank01 Fantasy Stats_Get Teams",
+        "v3rankings_Basketballv3"
+      ]
+    },
+    {
+      "query_id": 20745,
+      "num_apis": 2,
+      "avg_similarity": 0.1600150614976883,
+      "min_similarity": 0.1600150614976883,
+      "max_similarity": 0.1600150614976883,
+      "api_ids": [
+        "Programming Memes Images_v1/memes",
+        "manatee jokes_find all"
+      ]
+    },
+    {
+      "query_id": 12086,
+      "num_apis": 3,
+      "avg_similarity": 0.1007656529545784,
+      "min_similarity": 0.04261980205774307,
+      "max_similarity": 0.13475660979747772,
+      "api_ids": [
+        "USDA_/AmberWaves Retrieve Paged Collection",
+        "Dictionary Translation Hablaa_Example sentences",
+        "Numbers_Get math fact"
+      ]
+    },
+    {
+      "query_id": 41697,
+      "num_apis": 2,
+      "avg_similarity": 0.05374599248170853,
+      "min_similarity": 0.05374599248170853,
+      "max_similarity": 0.05374599248170853,
+      "api_ids": [
+        "Yawin Indian Astrology_Birth Details",
+        "Mathematical Symbolic Expression Manipulator_SimplifyBasic"
+      ]
+    },
+    {
+      "query_id": 39156,
+      "num_apis": 2,
+      "avg_similarity": 0.9107624888420105,
+      "min_similarity": 0.9107624888420105,
+      "max_similarity": 0.9107624888420105,
+      "api_ids": [
+        "League of Legends Stats_Get A Specific Champion's Base Stats",
+        "League of Legends Stats_Get All Champion Base Stats"
+      ]
+    },
+    {
+      "query_id": 86893,
+      "num_apis": 2,
+      "avg_similarity": 0.2073458433151245,
+      "min_similarity": 0.2073458433151245,
+      "max_similarity": 0.2073458433151245,
+      "api_ids": [
+        "Validate Phone by API-Ninjas_/v1/validatephone",
+        "Sagenda Free Booking System_/Events/GetBookableItemList"
+      ]
+    },
+    {
+      "query_id": 9598,
+      "num_apis": 2,
+      "avg_similarity": 0.015121879056096077,
+      "min_similarity": 0.015121879056096077,
+      "max_similarity": 0.015121879056096077,
+      "api_ids": [
+        "European Central Bank - Reference Rates_GetReferenceRates",
+        "Get Live Stock Price By Symbol_Price by Symbol"
+      ]
+    },
+    {
+      "query_id": 14394,
+      "num_apis": 3,
+      "avg_similarity": 0.45385363698005676,
+      "min_similarity": 0.22898605465888977,
+      "max_similarity": 0.897310197353363,
+      "api_ids": [
+        "Pagepeeker_2. Thumbnail ready",
+        "Pagepeeker_1. Shoot thumbnail",
+        "QR Code API_v67_QR Code Image Copy"
+      ]
+    },
+    {
+      "query_id": 59051,
+      "num_apis": 2,
+      "avg_similarity": 0.7955316305160522,
+      "min_similarity": 0.7955316305160522,
+      "max_similarity": 0.7955316305160522,
+      "api_ids": [
+        "TikTok API_Collection Videos/Details",
+        "TikTok API_User's Videos"
+      ]
+    },
+    {
+      "query_id": 46573,
+      "num_apis": 2,
+      "avg_similarity": 0.9423233270645142,
+      "min_similarity": 0.9423233270645142,
+      "max_similarity": 0.9423233270645142,
+      "api_ids": [
+        "QRCode_List image",
+        "QRCode_List all images"
+      ]
+    },
+    {
+      "query_id": 22755,
+      "num_apis": 2,
+      "avg_similarity": 0.5379855632781982,
+      "min_similarity": 0.5379855632781982,
+      "max_similarity": 0.5379855632781982,
+      "api_ids": [
+        "Simple & Elegant Translation Service_To get a list all the supported languages by this API Endpoint",
+        "MyMemory - Translation Memory_search translations"
+      ]
+    },
+    {
+      "query_id": 1818,
+      "num_apis": 2,
+      "avg_similarity": 0.07905729860067368,
+      "min_similarity": 0.07905729860067368,
+      "max_similarity": 0.07905729860067368,
+      "api_ids": [
+        "Bible Search_Random Verse",
+        "Chain49_Get address V2"
+      ]
+    },
+    {
+      "query_id": 21815,
+      "num_apis": 2,
+      "avg_similarity": 0.4096994996070862,
+      "min_similarity": 0.4096994996070862,
+      "max_similarity": 0.4096994996070862,
+      "api_ids": [
+        "SMSAPI.com_/profile/regional_settings",
+        "Maytapi WhatsApp_getStatus"
+      ]
+    },
+    {
+      "query_id": 37159,
+      "num_apis": 2,
+      "avg_similarity": -0.004246877506375313,
+      "min_similarity": -0.004246877506375313,
+      "max_similarity": -0.004246877506375313,
+      "api_ids": [
+        "Be Zips_Search zip codes in mexico",
+        "Heightmap from Latitude and Longitude_get heightmap from two geopoints"
+      ]
+    },
+    {
+      "query_id": 53824,
+      "num_apis": 2,
+      "avg_similarity": 0.2535429000854492,
+      "min_similarity": 0.2535429000854492,
+      "max_similarity": 0.2535429000854492,
+      "api_ids": [
+        "Disney worlds_action movies",
+        "Euro Millions_Get All draws results"
+      ]
+    },
+    {
+      "query_id": 35830,
+      "num_apis": 2,
+      "avg_similarity": 0.8978092074394226,
+      "min_similarity": 0.8978092074394226,
+      "max_similarity": 0.8978092074394226,
+      "api_ids": [
+        "FDJ_Odds",
+        "FDJ_Matches"
+      ]
+    },
+    {
+      "query_id": 52310,
+      "num_apis": 3,
+      "avg_similarity": 0.23883479833602905,
+      "min_similarity": 0.13824805617332458,
+      "max_similarity": 0.3305264413356781,
+      "api_ids": [
+        "GroupDocs.Classification Cloud_GetSupportedFileFormats",
+        "13_getAccountById",
+        "13_productList"
+      ]
+    },
+    {
+      "query_id": 70836,
+      "num_apis": 2,
+      "avg_similarity": 0.5371122360229492,
+      "min_similarity": 0.5371122360229492,
+      "max_similarity": 0.5371122360229492,
+      "api_ids": [
+        "Translate Language_Supported Languages",
+        "Long Translator_languages"
+      ]
+    },
+    {
+      "query_id": 67204,
+      "num_apis": 4,
+      "avg_similarity": 0.5995227694511414,
+      "min_similarity": 0.2812449336051941,
+      "max_similarity": 0.9509196281433105,
+      "api_ids": [
+        "Stock Data_Symbol",
+        "Global Market Indices Data_Indices",
+        "Global Market Indices Data_price",
+        "Global Market Indices Data_Forecast"
+      ]
+    },
+    {
+      "query_id": 59593,
+      "num_apis": 2,
+      "avg_similarity": -0.0025415788404643536,
+      "min_similarity": -0.0025415788404643536,
+      "max_similarity": -0.0025415788404643536,
+      "api_ids": [
+        "Thesaurus by API-Ninjas_/v1/thesaurus",
+        "whatsapp data_Fetch profile picture"
+      ]
+    },
+    {
+      "query_id": 31149,
+      "num_apis": 2,
+      "avg_similarity": 0.7726874351501465,
+      "min_similarity": 0.7726874351501465,
+      "max_similarity": 0.7726874351501465,
+      "api_ids": [
+        "Rest Country API_getByUniqueId",
+        "Rest Country API_allCountries"
+      ]
+    }
+  ],
+  "clustering_results": [
+    {
+      "query_id": 52289,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.5530304312705994,
+      "api_ids": [
+        "World of Quotes_Get Authors",
+        "World of Quotes_Get Quotes By Specific Author",
+        "World of Quotes_Get Quotes By Specific Category",
+        "Fake users_v6_Fake user"
+      ]
+    },
+    {
+      "query_id": 17617,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.4507768750190735,
+      "api_ids": [
+        "Maytapi WhatsApp_getListPhones",
+        "Maytapi WhatsApp_purgeQueue",
+        "Maytapi WhatsApp_getQRCode",
+        "Whatsapp Scraper_Fetch business info",
+        "Whatsapp Scraper_Is registered on whatsapp? (get free token)"
+      ]
+    },
+    {
+      "query_id": 19030,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.5260835289955139,
+      "api_ids": [
+        "Messages_getMsgs",
+        "Maytapi WhatsApp_purgeQueue",
+        "Maytapi WhatsApp_checkNumberStatus",
+        "Maytapi WhatsApp_logs"
+      ]
+    },
+    {
+      "query_id": 52349,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.30496135354042053,
+      "api_ids": [
+        "Shapeways_GET /orders/cart/v1",
+        "Shapeways_GET /models/{modelId}/v1",
+        "Shapeways_GET /printers/{printerId}/v1",
+        "Testing_Test",
+        "Touchbase_synonyms"
+      ]
+    },
+    {
+      "query_id": 58713,
+      "num_clusters": 2,
+      "cluster_labels": [
+        0,
+        1,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.5291439294815063,
+      "api_ids": [
+        "Scraper's Proxy_Tor GET",
+        "Scraper's Proxy_JavaScript Rendered Page GET",
+        "Scraper's Proxy_Standard GET",
+        "Scraper's Proxy_Parser GET"
+      ]
+    },
+    {
+      "query_id": 77234,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.542068600654602,
+      "api_ids": [
+        "Distance Calculator_v3_calc",
+        "Dubai Makani_GetMakaniDetails",
+        "Dubai Makani_IsValidMakani",
+        "Dubai Makani_GetMakaniInfoFromCoordination"
+      ]
+    },
+    {
+      "query_id": 25517,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "avg_cluster_similarity": 0.3486706614494324,
+      "api_ids": [
+        "Beers List_getAllBeersList",
+        "Beers List_Get beers by single country",
+        "The Mexican Food DB_List of Foods",
+        "The Mexican Food DB_Detailed Food Recipe by ID",
+        "Testing_v3_FindImage"
+      ]
+    },
+    {
+      "query_id": 67204,
+      "num_clusters": 2,
+      "cluster_labels": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "avg_cluster_similarity": 0.6010634899139404,
+      "api_ids": [
+        "Stock Data_Symbol",
+        "Global Market Indices Data_Indices",
+        "Global Market Indices Data_price",
+        "Global Market Indices Data_Forecast"
+      ]
+    }
+  ],
+  "nearest_api_analysis": [],
+  "api_embeddings": {},
+  "avg_similarity_across_queries": 0.4863456189632416,
+  "min_similarity_across_queries": -0.022344239056110382,
+  "max_similarity_across_queries": 0.9606232643127441
+}

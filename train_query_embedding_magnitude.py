@@ -51,6 +51,15 @@ class QueryEmbeddingModel(torch.nn.Module):
             torch.nn.Dropout(0.1),
             torch.nn.Linear(768, 768)
         )
+        
+        # Add magnitude prediction layer
+        self.magnitude_predictor = torch.nn.Sequential(
+            torch.nn.Linear(768, 256),
+            torch.nn.ReLU(),
+            torch.nn.Dropout(0.1),
+            torch.nn.Linear(256, 1),
+            torch.nn.Softplus()  # Ensure positive magnitude
+        )
     
     def forward(self, input_ids, attention_mask):
         # Get base embeddings
@@ -61,10 +70,18 @@ class QueryEmbeddingModel(torch.nn.Module):
         # Project to target dimension
         projected = self.projection(base_embeddings)
         
-        # Apply MLP
-        output = self.mlp(projected)
+        # Apply MLP to get raw embedding
+        raw_embedding = self.mlp(projected)  # Raw embedding vector
         
-        return output
+        # Predict magnitude
+        magnitude = self.magnitude_predictor(projected)  # (batch_size, 1)
+        
+        # Combine raw embedding and magnitude
+        # First normalize the raw embedding, then scale by magnitude
+        normalized_embedding = F.normalize(raw_embedding, p=2, dim=-1)
+        output = normalized_embedding * magnitude
+        
+        return output, magnitude
 
 
 class QueryEmbeddingDataset(Dataset):
@@ -114,8 +131,8 @@ class QueryEmbeddingTrainer:
         
         return True
     
-    def get_query_embedding(self, queries: List[str]) -> torch.Tensor:
-        """Get query embeddings using the trainable model"""
+    def get_query_embedding(self, queries: List[str]) -> tuple[torch.Tensor, torch.Tensor]:
+        """Get query embeddings and magnitudes using the trainable model"""
         tokenizer = self.query_model.base_model.tokenizer
         max_length = self.query_model.base_model.get_max_seq_length()
         
@@ -148,7 +165,98 @@ class QueryEmbeddingTrainer:
         
         return f"Tool: {tool_name}, API: {api_name}, Category: {category}, Method: {method}, Description: {api_description}"
     
-
+    def adaptive_magnitude_loss_function(self, query_emb, query_magnitude, pos_api_embs):
+        """
+        Adaptive magnitude loss that considers query complexity and API diversity
+        
+        Args:
+            query_emb: Query embedding (batch, dim)
+            query_magnitude: Predicted magnitude (batch, 1)
+            pos_api_embs: Positive API embeddings (batch, n_pos, dim)
+        """
+        # Calculate API diversity (how spread out the relevant APIs are)
+        pos_centroid = pos_api_embs.mean(dim=1)  # (batch, dim)
+        api_diversity = torch.std(torch.norm(pos_api_embs, p=2, dim=-1), dim=1, keepdim=True)  # (batch, 1)
+        
+        # Target magnitude based on API diversity
+        # More diverse APIs → higher magnitude (more specific query)
+        # Less diverse APIs → lower magnitude (more general query)
+        base_magnitude = torch.norm(pos_centroid, p=2, dim=-1, keepdim=True)
+        diversity_factor = 1.0 + 0.5 * api_diversity  # Scale factor based on diversity
+        target_magnitude = base_magnitude * diversity_factor
+        
+        # Direction loss
+        query_direction = F.normalize(query_emb, p=2, dim=-1)
+        pos_direction = F.normalize(pos_centroid, p=2, dim=-1)
+        direction_loss = 1 - F.cosine_similarity(query_direction, pos_direction, dim=-1)
+        
+        # Adaptive magnitude loss
+        magnitude_loss = F.mse_loss(query_magnitude, target_magnitude, reduction='none').squeeze(-1)
+        
+        # Combined loss
+        total_loss = 0.6 * direction_loss + 0.4 * magnitude_loss
+        
+        return total_loss.mean()
+    
+    def confidence_based_magnitude_loss_function(self, query_emb, query_magnitude, pos_api_embs):
+        """
+        Confidence-based magnitude loss where magnitude reflects prediction confidence
+        
+        Args:
+            query_emb: Query embedding (batch, dim)
+            query_magnitude: Predicted magnitude (batch, 1)
+            pos_api_embs: Positive API embeddings (batch, n_pos, dim)
+        """
+        # Calculate confidence based on how well query aligns with API centroid
+        pos_centroid = pos_api_embs.mean(dim=1)
+        query_direction = F.normalize(query_emb, p=2, dim=-1)
+        pos_direction = F.normalize(pos_centroid, p=2, dim=-1)
+        
+        # Confidence = cosine similarity (higher = more confident)
+        confidence = F.cosine_similarity(query_direction, pos_direction, dim=-1, eps=1e-8)
+        
+        # Target magnitude should be proportional to confidence
+        # High confidence → higher magnitude (stronger prediction)
+        # Low confidence → lower magnitude (weaker prediction)
+        base_magnitude = torch.norm(pos_centroid, p=2, dim=-1)
+        target_magnitude = base_magnitude * confidence.unsqueeze(-1)
+        
+        # Direction loss
+        direction_loss = 1 - confidence
+        
+        # Magnitude loss
+        magnitude_loss = F.mse_loss(query_magnitude, target_magnitude, reduction='none').squeeze(-1)
+        
+        # Combined loss
+        total_loss = 0.7 * direction_loss + 0.3 * magnitude_loss
+        
+        return total_loss.mean()
+    
+    def magnitude_aware_loss_function(self, query_emb, query_magnitude, pos_api_embs):
+        """
+        Loss function that considers both direction and magnitude of query embeddings
+        
+        Args:
+            query_emb: Query embedding (batch, dim) - with learned magnitude
+            query_magnitude: Predicted magnitude (batch, 1)
+            pos_api_embs: Positive API embeddings (batch, n_pos, dim) - normalized
+        """
+        # Calculate target magnitude from positive API embeddings
+        pos_centroid = pos_api_embs.mean(dim=1)  # (batch, dim)
+        target_magnitude = torch.norm(pos_centroid, p=2, dim=-1, keepdim=True)  # (batch, 1)
+        
+        # Direction loss (cosine similarity)
+        query_direction = F.normalize(query_emb, p=2, dim=-1)
+        pos_direction = F.normalize(pos_centroid, p=2, dim=-1)
+        direction_loss = 1 - F.cosine_similarity(query_direction, pos_direction, dim=-1)
+        
+        # Magnitude loss (L2 distance between predicted and target magnitude)
+        magnitude_loss = F.mse_loss(query_magnitude, target_magnitude, reduction='none').squeeze(-1)
+        
+        # Combined loss with weights
+        total_loss = 0.7 * direction_loss + 0.3 * magnitude_loss
+        
+        return total_loss.mean()
     
     def improved_loss_function(self, query_emb, pos_api_embs):
         """
@@ -352,7 +460,7 @@ class QueryEmbeddingTrainer:
               batch_size: int = 64,  # 기본값 64으로 증가
               epochs: int = 20,
               learning_rate: float = 3e-4,  # Increased for LR decay
-              save_path: str = "/home/jhlee/librarian/trained_query_model_unnormalized",
+              save_path: str = "/home/jhlee/librarian/trained_query_model",
               resume_from: str = None):
         """Train the query embedding model"""
         print(f"🚀 Starting query embedding training...")
@@ -424,7 +532,7 @@ class QueryEmbeddingTrainer:
             print(f"✅ Resumed from epoch {start_epoch-1}, best_val_loss: {best_val_loss:.6f}")
         
         # Create checkpoint directory
-        checkpoint_dir = os.path.join(BASE_DIR, 'query_checkpoints_unnormalized')
+        checkpoint_dir = os.path.join(BASE_DIR, 'query_checkpoints')
         os.makedirs(checkpoint_dir, exist_ok=True)
         
         for epoch in range(start_epoch, epochs):
@@ -441,7 +549,7 @@ class QueryEmbeddingTrainer:
             for batch_idx, (queries, pos_api_texts) in enumerate(pbar):
                 try:
                     # Get query embeddings
-                    query_emb = self.get_query_embedding(queries)
+                    query_emb, query_magnitude = self.get_query_embedding(queries)
                     
                     # Get positive API embeddings
                     all_pos_apis = []
@@ -470,7 +578,7 @@ class QueryEmbeddingTrainer:
                     pos_api_embs = torch.stack(padded_pos_embeddings)
                     
                     # Calculate loss
-                    loss = self.simplified_loss_function(query_emb, pos_api_embs)
+                    loss = self.magnitude_aware_loss_function(query_emb, query_magnitude, pos_api_embs)
                     
                     # Gradient accumulation
                     loss = loss / accumulation_steps
@@ -485,7 +593,7 @@ class QueryEmbeddingTrainer:
                     train_count += len(queries)
                     
                     # Memory cleanup
-                    del query_emb, pos_api_emb, pos_api_embs
+                    del query_emb, query_magnitude, pos_api_emb, pos_api_embs
                     torch.cuda.empty_cache()
                     
                     # Progress bar
@@ -579,7 +687,7 @@ class QueryEmbeddingTrainer:
             for queries, pos_api_texts in val_loader:
                 try:
                     # Get query embeddings
-                    query_emb = self.get_query_embedding(queries)
+                    query_emb, query_magnitude = self.get_query_embedding(queries)
                     
                     # Get positive API embeddings
                     all_pos_apis = []
@@ -608,7 +716,7 @@ class QueryEmbeddingTrainer:
                     pos_api_embs = torch.stack(padded_pos_embeddings)
                     
                     # Calculate loss
-                    loss = self.simplified_loss_function(query_emb, pos_api_embs)
+                    loss = self.magnitude_aware_loss_function(query_emb, query_magnitude, pos_api_embs)
                     
                     total_loss += loss.item() * len(queries)
                     count += len(queries)
