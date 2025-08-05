@@ -207,27 +207,17 @@ marimo/_lsp/
 __marimo__/
 
 # Data files (containing secrets)
-data/
-real_toolbench_dataset/
-sample_data/
-new_dataset/
-graph_info.json
+training_data/
 
-# Checkpoints
+# Checkpoints & Trained Models
 checkpoints/
-old_checkpoints/
-trained_toolbench_retriever_best/
-trained_toolbench_retriever/
-old_trained_toolbench_retriever/
-query_checkpoints/
 trained_query_model/
-query_checkpoints_unnormalized/
-trained_magnitude_model/
-trained_query_model_unnormalized/
 
-# Databases
-*_database*/
+# Database
 vector_db*/
 
-results/
-*results.json
+# Outputs
+duplicate_removal_stats.json
+three_method_performance_comparison_hf.json
+beam_size_performance_analysis.json
+multi_vector_db_performance_comparison_hf.json

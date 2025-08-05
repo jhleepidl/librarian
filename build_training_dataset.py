@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Build training dataset for query embedding model
-Extract queries from G1, G2, G3 files and create training data with query text and relevant APIs vector sum as label
+Build training dataset for query embedding model with L2 normalization
+Extract queries from G1, G2, G3 files and create training data with query text and L2-normalized relevant APIs vector sum as label
 """
 
 import json
@@ -15,11 +15,11 @@ import pickle
 
 # Configuration
 TOOLBENCH_MODEL_NAME = "ToolBench/ToolBench_IR_bert_based_uncased"
-DATA_DIR = "ToolBench/data/instruction"
+DATA_DIR = "../ToolBench/data/instruction"
 OUTPUT_DIR = "training_data"
 TRAIN_RATIO = 0.9  # 9:1 train:val split
 
-class TrainingDatasetBuilder:
+class TrainingDatasetBuilderNormalized:
     def __init__(self):
         """Initialize the dataset builder"""
         self.model = SentenceTransformer(TOOLBENCH_MODEL_NAME)
@@ -54,7 +54,7 @@ class TrainingDatasetBuilder:
         return self.api_embeddings_cache[api_id]
     
     def get_relevant_apis_sum_embedding(self, query_data: Dict[str, Any]) -> np.ndarray:
-        """Get the sum of embeddings for all relevant APIs"""
+        """Get the sum of L2-normalized embeddings for all relevant APIs"""
         if 'relevant APIs' not in query_data or not query_data['relevant APIs']:
             return np.zeros(768)  # Return zero vector if no relevant APIs
             
@@ -77,10 +77,14 @@ class TrainingDatasetBuilder:
             
             if target_api:
                 embedding = self.get_api_embedding(target_api)
+                # L2 normalize each API embedding before adding
+                norm = np.linalg.norm(embedding)
+                if norm > 0:  # Avoid division by zero
+                    embedding = embedding / norm
                 api_embeddings.append(embedding)
         
         if api_embeddings:
-            # Sum all relevant API embeddings
+            # Sum all L2-normalized relevant API embeddings
             return np.sum(api_embeddings, axis=0)
         else:
             return np.zeros(768)
@@ -100,7 +104,7 @@ class TrainingDatasetBuilder:
                 
             query_text = query_data['query']
             
-            # Get the sum of relevant APIs embeddings
+            # Get the sum of L2-normalized relevant APIs embeddings
             relevant_apis_sum = self.get_relevant_apis_sum_embedding(query_data)
             
             # Create training sample
@@ -117,7 +121,7 @@ class TrainingDatasetBuilder:
     
     def build_dataset(self):
         """Build the complete training dataset"""
-        print("🔨 Building training dataset...")
+        print("🔨 Building L2-normalized training dataset...")
         
         # Create output directory
         os.makedirs(OUTPUT_DIR, exist_ok=True)
@@ -170,41 +174,47 @@ class TrainingDatasetBuilder:
         # Generate statistics
         self.generate_statistics(train_data, val_data)
         
-        print(f"✅ Dataset saved to {OUTPUT_DIR}")
+        print(f"✅ L2-normalized dataset saved to {OUTPUT_DIR}")
         print(f"📁 Train: {train_path}")
         print(f"📁 Validation: {val_path}")
         print(f"📁 API embeddings cache: {cache_path}")
     
     def generate_statistics(self, train_data: List[Dict[str, Any]], val_data: List[Dict[str, Any]]):
         """Generate and save dataset statistics"""
+        # Handle empty datasets
+        def safe_stats(data_list, key):
+            if not data_list:
+                return {'mean': 0, 'std': 0, 'min': 0, 'max': 0}
+            values = [s[key] for s in data_list]
+            return {
+                'mean': np.mean(values),
+                'std': np.std(values),
+                'min': min(values),
+                'max': max(values)
+            }
+        
+        # Calculate vector norm statistics
+        def vector_norm_stats(data_list):
+            if not data_list:
+                return {'mean': 0, 'std': 0, 'min': 0, 'max': 0}
+            norms = [np.linalg.norm(np.array(s['label_vector'])) for s in data_list]
+            return {
+                'mean': np.mean(norms),
+                'std': np.std(norms),
+                'min': np.min(norms),
+                'max': np.max(norms)
+            }
+        
         stats = {
             'train_samples': len(train_data),
             'val_samples': len(val_data),
             'total_samples': len(train_data) + len(val_data),
-            'train_relevant_apis_stats': {
-                'mean': np.mean([s['relevant_apis_count'] for s in train_data]),
-                'std': np.std([s['relevant_apis_count'] for s in train_data]),
-                'min': min([s['relevant_apis_count'] for s in train_data]),
-                'max': max([s['relevant_apis_count'] for s in train_data])
-            },
-            'val_relevant_apis_stats': {
-                'mean': np.mean([s['relevant_apis_count'] for s in val_data]),
-                'std': np.std([s['relevant_apis_count'] for s in val_data]),
-                'min': min([s['relevant_apis_count'] for s in val_data]),
-                'max': max([s['relevant_apis_count'] for s in val_data])
-            },
-            'train_api_list_stats': {
-                'mean': np.mean([s['api_list_count'] for s in train_data]),
-                'std': np.std([s['api_list_count'] for s in train_data]),
-                'min': min([s['api_list_count'] for s in train_data]),
-                'max': max([s['api_list_count'] for s in train_data])
-            },
-            'val_api_list_stats': {
-                'mean': np.mean([s['api_list_count'] for s in val_data]),
-                'std': np.std([s['api_list_count'] for s in val_data]),
-                'min': min([s['api_list_count'] for s in val_data]),
-                'max': max([s['api_list_count'] for s in val_data])
-            }
+            'train_relevant_apis_stats': safe_stats(train_data, 'relevant_apis_count'),
+            'val_relevant_apis_stats': safe_stats(val_data, 'relevant_apis_count'),
+            'train_api_list_stats': safe_stats(train_data, 'api_list_count'),
+            'val_api_list_stats': safe_stats(val_data, 'api_list_count'),
+            'train_vector_norm_stats': vector_norm_stats(train_data),
+            'val_vector_norm_stats': vector_norm_stats(val_data)
         }
         
         stats_path = os.path.join(OUTPUT_DIR, "dataset_statistics.json")
@@ -214,26 +224,28 @@ class TrainingDatasetBuilder:
         print(f"📊 Statistics saved to {stats_path}")
         
         # Print summary
-        print("\n📈 Dataset Summary:")
+        print("\n📈 L2-Normalized Dataset Summary:")
         print(f"  Total samples: {stats['total_samples']}")
         print(f"  Train samples: {stats['train_samples']}")
         print(f"  Validation samples: {stats['val_samples']}")
         print(f"  Train/Val ratio: {stats['train_samples']/stats['total_samples']:.2f}")
         print(f"  Average relevant APIs per query (train): {stats['train_relevant_apis_stats']['mean']:.2f}")
         print(f"  Average relevant APIs per query (val): {stats['val_relevant_apis_stats']['mean']:.2f}")
+        print(f"  Train vector norm - Mean: {stats['train_vector_norm_stats']['mean']:.4f}, Std: {stats['train_vector_norm_stats']['std']:.4f}")
+        print(f"  Val vector norm - Mean: {stats['val_vector_norm_stats']['mean']:.4f}, Std: {stats['val_vector_norm_stats']['std']:.4f}")
 
 def main():
     """Main function"""
-    print("🚀 Starting training dataset construction...")
+    print("🚀 Starting L2-normalized training dataset construction...")
     
     # Set random seed for reproducibility
     random.seed(42)
     np.random.seed(42)
     
-    builder = TrainingDatasetBuilder()
+    builder = TrainingDatasetBuilderNormalized()
     builder.build_dataset()
     
-    print("✅ Training dataset construction completed!")
+    print("✅ L2-normalized training dataset construction completed!")
 
 if __name__ == "__main__":
     main() 

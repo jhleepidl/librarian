@@ -1,642 +1,524 @@
 #!/usr/bin/env python3
 """
-Train only query embedding model while keeping API embedding model fixed
-Improved version with simplified loss function (no negative sampling) and better utilities
+Dynamic Direction-focused query embedding model training
+Each query gets its own predicted scale factor for better magnitude handling
 """
 
-import sys
-import os
 import json
+import os
 import torch
-import numpy as np
-from typing import List, Dict, Any
-import logging
-from torch.utils.data import Dataset, DataLoader
-from sentence_transformers import SentenceTransformer
+import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import Dataset, DataLoader
+from transformers import AutoModel, AutoConfig, AutoTokenizer, get_linear_schedule_with_warmup
 from tqdm import tqdm
+import numpy as np
+from typing import List, Dict, Any, Tuple
+import random
+import argparse
 import time
-from torch.optim.lr_scheduler import OneCycleLR
+import pickle
 
-# Add current directory to path
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-TRAIN_PATH = os.path.join(BASE_DIR, "data/train.json")
-EVAL_PATH = os.path.join(BASE_DIR, "data/eval.json")
-TEST_PATH = os.path.join(BASE_DIR, "data/test.json")
-
-
-class QueryEmbeddingModel(torch.nn.Module):
-    """
-    Query embedding model that learns to map queries to API embedding space
-    """
-    
-    def __init__(self, base_model_name: str = "sentence-transformers/all-MiniLM-L6-v2"):
-        super().__init__()
-        # Use a pre-trained model as the base
-        self.base_model = SentenceTransformer(base_model_name)
-        
-        # Freeze the base model parameters
-        for param in self.base_model.parameters():
-            param.requires_grad = False
-        
-        # Add a projection layer to map to the same dimension as API embeddings
-        self.projection = torch.nn.Linear(384, 768)  # all-MiniLM-L6-v2 -> ToolBench dimension
-        
-        # Add a small MLP for fine-tuning
-        self.mlp = torch.nn.Sequential(
-            torch.nn.Linear(768, 768),
-            torch.nn.ReLU(),
-            torch.nn.Dropout(0.1),
-            torch.nn.Linear(768, 768)
-        )
-    
-    def forward(self, input_ids, attention_mask):
-        # Get base embeddings
-        with torch.no_grad():
-            base_output = self.base_model({"input_ids": input_ids, "attention_mask": attention_mask})
-            base_embeddings = base_output["sentence_embedding"]
-        
-        # Project to target dimension
-        projected = self.projection(base_embeddings)
-        
-        # Apply MLP
-        output = self.mlp(projected)
-        
-        return output
-
+# Configuration
+TOOLBENCH_MODEL_NAME = "ToolBench/ToolBench_IR_bert_based_uncased"
+TRAIN_DATA_PATH = "training_data/train_dataset.json"
+VAL_DATA_PATH = "training_data/val_dataset.json"
+OUTPUT_DIR = "trained_query_model"
+CHECKPOINT_DIR = "checkpoints"
+BEST_MODEL_PATH = "best_model.pt"
 
 class QueryEmbeddingDataset(Dataset):
-    def __init__(self, data_path):
+    """Dataset for query embedding training"""
+    
+    def __init__(self, data_path: str, tokenizer, max_length: int = 256):
+        self.tokenizer = tokenizer
+        self.max_length = max_length
+        
+        print(f"Loading dataset from {data_path}...")
         with open(data_path, 'r', encoding='utf-8') as f:
-            self.samples = json.load(f)
+            self.data = json.load(f)
+        
+        print(f"Loaded {len(self.data)} samples")
+        
+        # Validate label vectors
+        magnitudes = []
+        for sample in self.data:
+            label_vector = torch.tensor(sample['label_vector'], dtype=torch.float32)
+            magnitude = torch.norm(label_vector, p=2).item()
+            magnitudes.append(magnitude)
+        
+        print(f"Label vector statistics:")
+        print(f"  - Mean magnitude: {np.mean(magnitudes):.4f}")
+        print(f"  - Std magnitude: {np.std(magnitudes):.4f}")
+        print(f"  - Min magnitude: {np.min(magnitudes):.4f}")
+        print(f"  - Max magnitude: {np.max(magnitudes):.4f}")
     
     def __len__(self):
-        return len(self.samples)
+        return len(self.data)
     
     def __getitem__(self, idx):
-        item = self.samples[idx]
+        sample = self.data[idx]
+        query_text = sample['query_text']
+        label_vector = torch.tensor(sample['label_vector'], dtype=torch.float32)
+        
+        # Simple encoding without augmentation
+        encoding = self.tokenizer(
+            query_text,
+            truncation=True,
+            padding='max_length',
+            max_length=self.max_length,
+            return_tensors='pt'
+        )
+        
+        # Handle tensor dimensions
+        for key in ['input_ids', 'attention_mask', 'token_type_ids']:
+            if encoding[key].dim() == 2:
+                encoding[key] = encoding[key][0]
+            if encoding[key].dim() > 1:
+                encoding[key] = encoding[key].squeeze()
+        
         return {
-            'query': item['query'],
-            'relevant_apis': item['relevant_apis']
+            'input_ids': encoding['input_ids'],
+            'attention_mask': encoding['attention_mask'],
+            'token_type_ids': encoding['token_type_ids'],
+            'label_vector': label_vector
         }
 
-
-class QueryEmbeddingTrainer:
-    """
-    Trainer for query embedding model
-    """
+class DirectionFocusedQueryEmbeddingModel(nn.Module):
+    """Dynamic direction-focused model with query-specific scale prediction"""
     
-    def __init__(self):
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.query_model = None
-        self.api_model = None
+    def __init__(self, model_name: str, dropout: float = 0.1):
+        super(DirectionFocusedQueryEmbeddingModel, self).__init__()
         
-    def load_models(self):
-        """Load query and API models"""
-        print("📦 Loading models...")
+        # Single encoder with standard dropout
+        config = AutoConfig.from_pretrained(model_name)
+        config.attention_probs_dropout_prob = dropout
+        config.hidden_dropout_prob = dropout
         
-        # Load query embedding model
-        self.query_model = QueryEmbeddingModel()
-        self.query_model = self.query_model.to(self.device)
-        print("✅ Query embedding model loaded")
+        self.encoder = AutoModel.from_pretrained(model_name, config=config)
         
-        # Load API embedding model (ToolBench, frozen)
-        self.api_model = SentenceTransformer("ToolBench/ToolBench_IR_bert_based_uncased")
-        self.api_model = self.api_model.to(self.device)
-        self.api_model.eval()
-        
-        # Freeze API model parameters
-        for param in self.api_model.parameters():
-            param.requires_grad = False
-        print("✅ API embedding model loaded (frozen)")
-        
-        return True
-    
-    def get_query_embedding(self, queries: List[str]) -> torch.Tensor:
-        """Get query embeddings using the trainable model"""
-        tokenizer = self.query_model.base_model.tokenizer
-        max_length = self.query_model.base_model.get_max_seq_length()
-        
-        features = tokenizer(
-            queries,
-            padding=True,
-            truncation=True,
-            max_length=max_length,
-            return_tensors="pt"
+        # Dynamic scale prediction network - can predict up to infinity
+        self.scale_predictor = nn.Sequential(
+            nn.Linear(768, 256),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(64, 1),
         )
-        features = {k: v.to(self.device) for k, v in features.items()}
         
-        return self.query_model(features["input_ids"], features["attention_mask"])
-    
-    def get_api_embedding(self, api_texts: List[str]) -> torch.Tensor:
-        """Get normalized API embeddings using the frozen ToolBench model"""
-        with torch.no_grad():
-            embeddings = self.api_model.encode(api_texts, convert_to_tensor=True, device=self.device)
-            # Normalize embeddings
-            normalized_embeddings = F.normalize(embeddings, p=2, dim=-1)
-        return normalized_embeddings
-    
-    def format_api_text(self, api: Dict[str, Any]) -> str:
-        """Format API info into text string"""
-        tool_name = api.get('tool_name', '')
-        api_name = api.get('api_name', '')
-        api_description = api.get('api_description', '')
-        category = api.get('category_name', '')
-        method = api.get('method', '')
-        
-        return f"Tool: {tool_name}, API: {api_name}, Category: {category}, Method: {method}, Description: {api_description}"
-    
-
-    
-    def improved_loss_function(self, query_emb, pos_api_embs):
-        """
-        Improved loss function with normalization and cosine similarity
-        Query embedding should be close to the centroid of relevant API embeddings
-        
-        Args:
-            query_emb: Query embedding (batch, dim) - will be normalized
-            pos_api_embs: Positive API embeddings (batch, n_pos, dim) - already normalized
-        """
-        # Normalize query embeddings
-        query_emb_norm = F.normalize(query_emb, p=2, dim=-1)
-        
-        # Calculate centroid of positive API embeddings (mean instead of sum)
-        pos_centroid = pos_api_embs.mean(dim=1)  # (batch, dim) - mean of normalized embeddings
-        
-        # Option 1: Cosine similarity loss (maximize similarity)
-        cosine_sim = F.cosine_similarity(query_emb_norm, pos_centroid, dim=-1)
-        loss_cosine = 1 - cosine_sim  # Convert to loss (0 = perfect similarity)
-        
-        # Option 2: L2 distance between normalized vectors
-        loss_l2 = F.mse_loss(query_emb_norm, pos_centroid, reduction='none').mean(dim=-1)
-        
-        # Combine both losses for better training
-        total_loss = 0.5 * loss_cosine + 0.5 * loss_l2
-        
-        return total_loss.mean()
-    
-    def simplified_loss_function(self, query_emb, pos_api_embs):
-        """
-        Simplified loss function focusing only on positive samples
-        Query embedding should be close to the sum of normalized relevant API embeddings using L2 distance
-        
-        Args:
-            query_emb: Query embedding (batch, dim) - NOT normalized
-            pos_api_embs: Positive API embeddings (batch, n_pos, dim) - NORMALIZED
-        """
-        # Calculate sum of normalized positive API embeddings
-        pos_sum = pos_api_embs.sum(dim=1)  # (batch, dim) - sum of normalized embeddings
-        
-        # Calculate L2 distance between query embedding and positive sum
-        loss = F.mse_loss(query_emb, pos_sum, reduction='none')  # (batch, dim)
-        loss = loss.mean(dim=-1)  # (batch,) - average over dimensions
-        
-        return loss.mean()  # scalar
-    
-    def collate_fn(self, batch):
-        """Custom collate function - only positive APIs"""
-        queries = [item['query'] for item in batch]
-        
-        # Process positive APIs only
-        pos_api_texts = []
-        for item in batch:
-            api_texts = [self.format_api_text(api) for api in item['relevant_apis']]
-            pos_api_texts.append(api_texts)
-        
-        return queries, pos_api_texts
-    
-    def analyze_dataset_and_calculate_batch_size(self, train_dataset, val_dataset, target_vram_gb=20):
-        """
-        Analyze dataset to calculate optimal batch size based on VRAM
-        """
-        print("🔍 Analyzing dataset for optimal batch size...")
-        
-        # Get total VRAM
-        total_vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)  # GB
-        print(f"📊 Total VRAM: {total_vram:.2f} GB")
-        
-        # Use 85% of VRAM for training (더 적극적으로)
-        available_memory = total_vram * 0.85
-        print(f"📊 Available VRAM for training: {available_memory:.2f} GB (85%)")
-        
-        # 더 큰 sample batch size로 시작 (더 정확한 측정을 위해)
-        sample_batch_size = 32  # 4에서 32로 증가
-        test_loader = DataLoader(train_dataset, batch_size=sample_batch_size, shuffle=False, collate_fn=self.collate_fn)
-        
-        # Test memory usage with first batch
-        self.query_model.train()  # eval() 대신 train()으로 (실제 학습과 동일한 메모리 사용)
-        self.api_model.eval()
-        
-        try:
-            for queries, pos_api_texts in test_loader:
-                # Measure memory usage
-                torch.cuda.empty_cache()
-                torch.cuda.reset_peak_memory_stats()
-                
-                # 실제 학습과 동일한 forward pass
-                query_emb = self.get_query_embedding(queries)
-                
-                # Process positive API embeddings
-                all_pos_apis = []
-                for apis in pos_api_texts:
-                    all_pos_apis.extend(apis)
-                
-                pos_api_emb = self.get_api_embedding(all_pos_apis)
-                
-                # Reshape positive embeddings
-                pos_embeddings = []
-                start_idx = 0
-                for apis in pos_api_texts:
-                    end_idx = start_idx + len(apis)
-                    pos_embeddings.append(pos_api_emb[start_idx:end_idx])
-                    start_idx = end_idx
-                
-                # Pad to same length
-                max_len = max(len(emb) for emb in pos_embeddings)
-                padded_pos_embeddings = []
-                for emb in pos_embeddings:
-                    if len(emb) < max_len:
-                        padding = torch.zeros(max_len - len(emb), emb.shape[1], device=self.device)
-                        emb = torch.cat([emb, padding], dim=0)
-                    padded_pos_embeddings.append(emb)
-                
-                pos_api_embs = torch.stack(padded_pos_embeddings)
-                
-                # Calculate loss (실제 학습과 동일)
-                loss = self.simplified_loss_function(query_emb, pos_api_embs)
-                
-                # Backward pass도 시뮬레이션 (메모리 사용량 증가)
-                loss.backward()
-                
-                # Check memory usage
-                max_memory_used = torch.cuda.max_memory_allocated() / (1024**3)  # GB
-                current_memory = torch.cuda.memory_allocated() / (1024**3)  # GB
-                
-                print(f"📊 Memory usage for batch_size={sample_batch_size}:")
-                print(f"   - Peak memory: {max_memory_used:.2f} GB")
-                print(f"   - Current memory: {current_memory:.2f} GB")
-                
-                # Calculate optimal batch size using 85% of available VRAM
-                optimal_batch_size = int(sample_batch_size * (available_memory / max_memory_used))
-                
-                # Limit batch size (더 큰 상한선으로 증가)
-                optimal_batch_size = max(32, min(optimal_batch_size, 512))  # 최소 32, 최대 512
-                
-                print(f"🎯 Calculated optimal batch size: {optimal_batch_size}")
-                print(f"   - Available VRAM: {available_memory:.2f} GB")
-                print(f"   - Estimated memory usage: {max_memory_used * (optimal_batch_size / sample_batch_size):.2f} GB")
-                print(f"   - VRAM utilization: {(max_memory_used * (optimal_batch_size / sample_batch_size) / total_vram) * 100:.1f}%")
-                
-                # Clean up
-                del query_emb, pos_api_emb, pos_api_embs, loss
-                torch.cuda.empty_cache()
-                break
-                
-        except RuntimeError as e:
-            if "out of memory" in str(e):
-                print("⚠️  Sample batch size too large, reducing...")
-                # 더 작은 batch size로 재시도
-                sample_batch_size = 16
-                test_loader = DataLoader(train_dataset, batch_size=sample_batch_size, shuffle=False, collate_fn=self.collate_fn)
-                
-                try:
-                    for queries, pos_api_texts in test_loader:
-                        torch.cuda.empty_cache()
-                        torch.cuda.reset_peak_memory_stats()
-                        
-                        query_emb = self.get_query_embedding(queries)
-                        
-                        all_pos_apis = []
-                        for apis in pos_api_texts:
-                            all_pos_apis.extend(apis)
-                        
-                        pos_api_emb = self.get_api_embedding(all_pos_apis)
-                        
-                        pos_embeddings = []
-                        start_idx = 0
-                        for apis in pos_api_texts:
-                            end_idx = start_idx + len(apis)
-                            pos_embeddings.append(pos_api_emb[start_idx:end_idx])
-                            start_idx = end_idx
-                        
-                        max_len = max(len(emb) for emb in pos_embeddings)
-                        padded_pos_embeddings = []
-                        for emb in pos_embeddings:
-                            if len(emb) < max_len:
-                                padding = torch.zeros(max_len - len(emb), emb.shape[1], device=self.device)
-                                emb = torch.cat([emb, padding], dim=0)
-                            padded_pos_embeddings.append(emb)
-                        
-                        pos_api_embs = torch.stack(padded_pos_embeddings)
-                        loss = self.simplified_loss_function(query_emb, pos_api_embs)
-                        loss.backward()
-                        
-                        max_memory_used = torch.cuda.max_memory_allocated() / (1024**3)
-                        optimal_batch_size = int(sample_batch_size * (available_memory / max_memory_used))
-                        optimal_batch_size = max(16, min(optimal_batch_size, 256))
-                        
-                        print(f"🎯 Recalculated optimal batch size: {optimal_batch_size}")
-                        break
-                        
-                except RuntimeError as e2:
-                    print("⚠️  Still too large, using minimum batch size")
-                    optimal_batch_size = 16
-            else:
-                raise e
-        
-        return optimal_batch_size
-    
-    def train(self, 
-              batch_size: int = 64,  # 기본값 64으로 증가
-              epochs: int = 20,
-              learning_rate: float = 3e-4,  # Increased for LR decay
-              save_path: str = "/home/jhlee/librarian/trained_query_model_unnormalized",
-              resume_from: str = None):
-        """Train the query embedding model"""
-        print(f"🚀 Starting query embedding training...")
-        print(f"📊 Epochs: {epochs}")
-        print(f"📊 Learning rate: {learning_rate}")
-        
-        # Load models
-        if not self.load_models():
-            return False
-        
-        # Load datasets
-        train_dataset = QueryEmbeddingDataset(TRAIN_PATH)
-        val_dataset = QueryEmbeddingDataset(EVAL_PATH)
-        
-        # Calculate optimal batch size if not provided
-        if batch_size is None:
-            batch_size = self.analyze_dataset_and_calculate_batch_size(train_dataset, val_dataset)
-            batch_size = max(batch_size, 16)  # 최소값 16으로 제한
-        
-        print(f"📊 Batch size: {batch_size}")
-        
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=self.collate_fn)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, collate_fn=self.collate_fn)
-        
-        # Setup optimizer (only for query model)
-        optimizer = torch.optim.AdamW(self.query_model.parameters(), lr=learning_rate)
-        
-        # Gradient accumulation for effective larger batch size (더 큰 target으로 증가)
-        target_effective_batch_size = 1024  # 128에서 1024로 증가
-        accumulation_steps = max(1, target_effective_batch_size // batch_size)
-        print(f"📈 Training with batch_size={batch_size}, accumulation_steps={accumulation_steps}")
-        print(f"   - Effective batch size: {batch_size * accumulation_steps}")
-        print(f"   - Target effective batch size: {target_effective_batch_size}")
-        
-        # Setup OneCycleLR scheduler
-        steps_per_epoch = len(train_loader)
-        # Gradient accumulation을 고려한 실제 스케줄러 스텝 수 계산
-        actual_scheduler_steps = epochs * (steps_per_epoch // accumulation_steps)
-        scheduler = OneCycleLR(
-            optimizer,
-            max_lr=0.01,  # 더 큰 max_lr (0.01)
-            total_steps=actual_scheduler_steps,  # 실제 스케줄러 호출 횟수
-            pct_start=0.1,  # 10%에서 max_lr 도달
-            anneal_strategy='cos',
-            div_factor=10,  # 초기 lr = max_lr / 10
-            final_div_factor=1e4  # 마지막 lr = max_lr / 1e4
+    def forward(self, input_ids, attention_mask, token_type_ids):
+        """Forward pass with dynamic scale prediction"""
+        # Get encoder outputs
+        outputs = self.encoder(
+            input_ids, 
+            attention_mask, 
+            token_type_ids, 
+            output_hidden_states=True, 
+            return_dict=True
         )
-        print(f"📊 Learning rate scheduler: OneCycleLR (max_lr: 0.01)")
-        print(f"   - Total steps: {epochs * steps_per_epoch} (optimizer steps)")
-        print(f"   - Scheduler steps: {actual_scheduler_steps} (actual scheduler calls)")
-        print(f"   - Max LR will be reached at step: {int(actual_scheduler_steps * 0.1)}")
         
-        # Training loop
-        best_val_loss = float('inf')
-        patience = 3
-        patience_counter = 0
-        start_epoch = 0
+        # Use CLS token
+        cls_token = outputs.last_hidden_state[:, 0]  # [batch, 768]
         
-        # Resume from checkpoint if provided
-        if resume_from and os.path.exists(resume_from):
-            print(f"📂 Resuming from checkpoint: {resume_from}")
-            checkpoint = torch.load(resume_from, map_location=self.device)
-            self.query_model.load_state_dict(checkpoint['model_state_dict'])
-            optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-            # OneCycleLR은 step 수가 달라질 수 있으므로, 새로 생성
-            start_epoch = checkpoint['epoch'] + 1
-            best_val_loss = checkpoint['best_val_loss']
-            patience_counter = checkpoint['patience_counter']
-            print(f"✅ Resumed from epoch {start_epoch-1}, best_val_loss: {best_val_loss:.6f}")
+        # Predict dynamic scale factor for each query (1 ~ infinity)
+        raw_scale = self.scale_predictor(cls_token)  # [batch, 1]
+        dynamic_scale = F.softplus(raw_scale) + 1.0  # [batch, 1] -> minimum value 1.0
         
-        # Create checkpoint directory
-        checkpoint_dir = os.path.join(BASE_DIR, 'query_checkpoints_unnormalized')
-        os.makedirs(checkpoint_dir, exist_ok=True)
+        # Apply scaling to match target magnitudes
+        # Expand dynamic_scale to [batch, 1] for broadcasting
+        scaled_embedding = dynamic_scale.squeeze(-1).unsqueeze(-1) * F.normalize(cls_token, p=2, dim=1)
         
-        for epoch in range(start_epoch, epochs):
-            start_time = time.time()
+        return scaled_embedding
+
+def direction_loss(pred, target):
+    """Stable direction loss for better embedding alignment"""
+    # Normalize both vectors to unit vectors
+    pred_norm = F.normalize(pred, p=2, dim=1)
+    target_norm = F.normalize(target, p=2, dim=1)
+    
+    # Cosine similarity
+    cosine_sim = torch.sum(pred_norm * target_norm, dim=1)
+    cosine_sim = torch.clamp(cosine_sim, min=-1.0, max=1.0)
+    
+    # Stable loss components
+    
+    # 1. Cosine distance loss (primary)
+    cosine_distance = 1.0 - cosine_sim
+    
+    # 2. Angular distance loss (more sensitive to small angle differences)
+    angular_distance = torch.acos(torch.abs(cosine_sim))
+    
+    # Combine losses with stable weights
+    total_direction_loss = 0.7 * cosine_distance + 0.3 * angular_distance
+    
+    return torch.mean(total_direction_loss)
+
+def magnitude_loss(pred, target):
+    """Stable magnitude loss with better stability"""
+    pred_magnitude = torch.norm(pred, p=2, dim=1)
+    target_magnitude = torch.norm(target, p=2, dim=1)
+    
+    # Use MSE loss for stability
+    return F.mse_loss(pred_magnitude, target_magnitude)
+
+def compute_losses(model, batch, device, direction_weight=2.0, magnitude_weight=1.0):
+    """Compute losses with balanced weighting for stable learning"""
+    input_ids = batch['input_ids'].to(device)
+    attention_mask = batch['attention_mask'].to(device)
+    token_type_ids = batch['token_type_ids'].to(device)
+    label_vectors = batch['label_vector'].to(device)
+    
+    # Forward pass
+    pred_embeddings = model(input_ids, attention_mask, token_type_ids)
+    
+    # Direction loss (balanced focus)
+    dir_loss = direction_loss(pred_embeddings, label_vectors)
+    
+    # Magnitude loss (balanced weight)
+    mag_loss = magnitude_loss(pred_embeddings, label_vectors)
+    
+    # Overall MSE loss
+    mse_loss = F.mse_loss(pred_embeddings, label_vectors)
+    
+    # Total loss with balanced emphasis
+    total_loss = mse_loss + direction_weight * dir_loss + magnitude_weight * mag_loss
+    
+    return {
+        'total_loss': total_loss,
+        'mse_loss': mse_loss,
+        'direction_loss': dir_loss,
+        'magnitude_loss': mag_loss
+    }
+
+def custom_collate_fn(batch):
+    """Custom collate function"""
+    input_ids = []
+    attention_masks = []
+    token_type_ids = []
+    label_vectors = []
+    
+    for item in batch:
+        input_ids.append(item['input_ids'])
+        attention_masks.append(item['attention_mask'])
+        token_type_ids.append(item['token_type_ids'])
+        label_vectors.append(item['label_vector'])
+    
+    return {
+        'input_ids': torch.stack(input_ids),
+        'attention_mask': torch.stack(attention_masks),
+        'token_type_ids': torch.stack(token_type_ids),
+        'label_vector': torch.stack(label_vectors)
+    }
+
+def evaluate_model(model, val_loader, device):
+    """Evaluate model with detailed direction analysis"""
+    model.eval()
+    total_mse = 0.0
+    total_cosine = 0.0
+    total_direction_loss = 0.0
+    total_magnitude_loss = 0.0
+    num_samples = 0
+    
+    with torch.no_grad():
+        for batch in tqdm(val_loader, desc="Evaluating"):
+            input_ids = batch['input_ids'].to(device)
+            attention_mask = batch['attention_mask'].to(device)
+            token_type_ids = batch['token_type_ids'].to(device)
+            label_vectors = batch['label_vector'].to(device)
             
-            # Training
-            self.query_model.train()
-            train_loss = 0
-            train_count = 0
+            # Get model predictions
+            pred_embeddings = model(input_ids, attention_mask, token_type_ids)
             
-            pbar = tqdm(train_loader, desc=f"Epoch {epoch+1}")
+            # MSE loss
+            mse_loss = F.mse_loss(pred_embeddings, label_vectors)
+            total_mse += mse_loss.item()
+            
+            # Cosine similarity
+            pred_norm = F.normalize(pred_embeddings, p=2, dim=1)
+            label_norm = F.normalize(label_vectors, p=2, dim=1)
+            cosine_sim = torch.mean(torch.sum(pred_norm * label_norm, dim=1)).item()
+            total_cosine += cosine_sim
+            
+            # Direction loss
+            direction_loss_val = direction_loss(pred_embeddings, label_vectors)
+            total_direction_loss += direction_loss_val.item()
+            
+            # Magnitude loss
+            magnitude_loss_val = magnitude_loss(pred_embeddings, label_vectors)
+            total_magnitude_loss += magnitude_loss_val.item()
+            
+            num_samples += 1
+    
+    avg_mse = total_mse / num_samples if num_samples > 0 else 0.0
+    avg_cosine = total_cosine / num_samples if num_samples > 0 else 0.0
+    avg_direction_loss = total_direction_loss / num_samples if num_samples > 0 else 0.0
+    avg_magnitude_loss = total_magnitude_loss / num_samples if num_samples > 0 else 0.0
+    
+    return avg_mse, avg_cosine, avg_direction_loss, avg_magnitude_loss
+
+def train_model(args):
+    """Main training function with dynamic scale prediction"""
+    # Set device
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print(f"Using device: {device}")
+    
+    # Set random seeds
+    random.seed(args.seed)
+    np.random.seed(args.seed)
+    torch.manual_seed(args.seed)
+    torch.cuda.manual_seed(args.seed)
+    
+    # Create output directories
+    os.makedirs(args.output_dir, exist_ok=True)
+    os.makedirs(args.checkpoint_dir, exist_ok=True)
+    
+    # Initialize tokenizer and model
+    print("Loading tokenizer and model...")
+    tokenizer = AutoTokenizer.from_pretrained(TOOLBENCH_MODEL_NAME)
+    model = DirectionFocusedQueryEmbeddingModel(TOOLBENCH_MODEL_NAME, dropout=args.dropout)
+    model = model.to(device)
+    
+    # Load datasets
+    print("Loading datasets...")
+    train_dataset = QueryEmbeddingDataset(args.train_data_path, tokenizer, max_length=args.max_length)
+    val_dataset = QueryEmbeddingDataset(args.val_data_path, tokenizer, max_length=args.max_length)
+    
+    train_loader = DataLoader(
+        train_dataset, 
+        batch_size=args.batch_size, 
+        shuffle=True, 
+        num_workers=args.num_workers,
+        collate_fn=custom_collate_fn,
+        persistent_workers=True if args.num_workers > 0 else False,
+        pin_memory=True if torch.cuda.is_available() else False
+    )
+    val_loader = DataLoader(
+        val_dataset, 
+        batch_size=args.batch_size, 
+        shuffle=False, 
+        num_workers=args.num_workers,
+        collate_fn=custom_collate_fn,
+        persistent_workers=True if args.num_workers > 0 else False,
+        pin_memory=True if torch.cuda.is_available() else False
+    )
+    
+    # Optimizer with stable parameters
+    optimizer = torch.optim.AdamW(
+        model.parameters(), 
+        lr=args.learning_rate, 
+        weight_decay=args.weight_decay,
+        betas=(0.9, 0.999),
+        eps=1e-8
+    )
+    
+    print(f"Training strategy: Dynamic direction-focused with AdamW optimizer")
+    print(f"  - Learning rate: {args.learning_rate}")
+    print(f"  - Weight decay: {args.weight_decay}")
+    print(f"  - Direction weight: {args.direction_weight}")
+    print(f"  - Magnitude weight: {args.magnitude_weight}")
+    print(f"  - Total epochs: {args.num_epochs}")
+    
+    # Stable learning rate scheduler with linear warmup and decay
+    total_steps = len(train_loader) * args.num_epochs
+    warmup_steps = int(0.1 * total_steps)  # 10% warmup
+    
+    scheduler = get_linear_schedule_with_warmup(
+        optimizer,
+        num_warmup_steps=warmup_steps,
+        num_training_steps=total_steps
+    )
+    
+    # Load checkpoint if specified
+    start_epoch = args.start_epoch
+    best_score = float('inf')
+    global_step = 0
+    
+    if args.resume_from_checkpoint and os.path.exists(args.resume_from_checkpoint):
+        print(f"Loading checkpoint from {args.resume_from_checkpoint}...")
+        checkpoint = torch.load(args.resume_from_checkpoint, map_location=device, weights_only=False)
+        
+        model.load_state_dict(checkpoint['model_state_dict'])
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        scheduler.load_state_dict(checkpoint['scheduler_state_dict'])
+        
+        start_epoch = checkpoint['epoch'] + 1
+        best_score = checkpoint['best_score']
+        global_step = start_epoch * len(train_loader)
+        
+        print(f"Resumed from epoch {checkpoint['epoch']}, best_score: {best_score:.4f}")
+    else:
+        print("Starting training from scratch...")
+    
+    # Initialize logging
+    log_file = os.path.join(args.output_dir, 'training_log.txt')
+    print(f"Logging to: {log_file}")
+    
+    # Training loop
+    print("Starting dynamic training...")
+    
+    for epoch in range(start_epoch, args.num_epochs):
+        model.train()
+        epoch_losses = []
+        
+        progress_bar = tqdm(train_loader, desc=f"Epoch {epoch+1}/{args.num_epochs}")
+        
+        for batch in progress_bar:
+            # Debug: Check model outputs and label magnitudes
+            if global_step == 0:
+                with torch.no_grad():
+                    input_ids = batch['input_ids'].to(device)
+                    attention_mask = batch['attention_mask'].to(device)
+                    token_type_ids = batch['token_type_ids'].to(device)
+                    label_vectors = batch['label_vector'].to(device)
+                    
+                    pred_embeddings = model(input_ids, attention_mask, token_type_ids)
+                    
+                    pred_magnitudes = torch.norm(pred_embeddings, p=2, dim=1)
+                    label_magnitudes = torch.norm(label_vectors, p=2, dim=1)
+                    
+                    pred_norm = F.normalize(pred_embeddings, p=2, dim=1)
+                    label_norm = F.normalize(label_vectors, p=2, dim=1)
+                    cosine_sim = torch.sum(pred_norm * label_norm, dim=1)
+                    
+                    print(f"\n🔍 DEBUG - First batch:")
+                    print(f"  Pred magnitudes - Mean: {pred_magnitudes.mean().item():.4f}, Std: {pred_magnitudes.std().item():.4f}")
+                    print(f"  Label magnitudes - Mean: {label_magnitudes.mean().item():.4f}, Std: {label_magnitudes.std().item():.4f}")
+                    print(f"  Cosine similarity - Mean: {cosine_sim.mean().item():.4f}, Range: [{cosine_sim.min().item():.4f}, {cosine_sim.max().item():.4f}]")
+                    
+                    # Debug scale factors
+                    cls_token = model.encoder(input_ids, attention_mask, token_type_ids, output_hidden_states=True, return_dict=True).last_hidden_state[:, 0]
+                    raw_scale = model.scale_predictor(cls_token)
+                    dynamic_scale = F.softplus(raw_scale) + 1.0
+                    print(f"  Raw scale outputs - Mean: {raw_scale.mean().item():.4f}, Range: [{raw_scale.min().item():.4f}, {raw_scale.max().item():.4f}]")
+                    print(f"  Dynamic scales - Mean: {dynamic_scale.mean().item():.4f}, Range: [{dynamic_scale.min().item():.4f}, {dynamic_scale.max().item():.4f}]")
+            
+            # Compute losses
+            losses = compute_losses(
+                model, batch, device, 
+                direction_weight=args.direction_weight,
+                magnitude_weight=args.magnitude_weight
+            )
+            total_loss = losses['total_loss']
+            
+            # Backward pass
             optimizer.zero_grad()
+            total_loss.backward()
             
-            for batch_idx, (queries, pos_api_texts) in enumerate(pbar):
-                try:
-                    # Get query embeddings
-                    query_emb = self.get_query_embedding(queries)
-                    
-                    # Get positive API embeddings
-                    all_pos_apis = []
-                    for apis in pos_api_texts:
-                        all_pos_apis.extend(apis)
-                    
-                    pos_api_emb = self.get_api_embedding(all_pos_apis)
-                    
-                    # Reshape positive embeddings
-                    pos_embeddings = []
-                    start_idx = 0
-                    for apis in pos_api_texts:
-                        end_idx = start_idx + len(apis)
-                        pos_embeddings.append(pos_api_emb[start_idx:end_idx])
-                        start_idx = end_idx
-                    
-                    # Pad to same length
-                    max_len = max(len(emb) for emb in pos_embeddings)
-                    padded_pos_embeddings = []
-                    for emb in pos_embeddings:
-                        if len(emb) < max_len:
-                            padding = torch.zeros(max_len - len(emb), emb.shape[1], device=self.device)
-                            emb = torch.cat([emb, padding], dim=0)
-                        padded_pos_embeddings.append(emb)
-                    
-                    pos_api_embs = torch.stack(padded_pos_embeddings)
-                    
-                    # Calculate loss
-                    loss = self.simplified_loss_function(query_emb, pos_api_embs)
-                    
-                    # Gradient accumulation
-                    loss = loss / accumulation_steps
-                    loss.backward()
-                    
-                    if (batch_idx + 1) % accumulation_steps == 0:
-                        optimizer.step()
-                        optimizer.zero_grad()
-                        scheduler.step()  # OneCycleLR step
-                    
-                    train_loss += loss.item() * len(queries) * accumulation_steps
-                    train_count += len(queries)
-                    
-                    # Memory cleanup
-                    del query_emb, pos_api_emb, pos_api_embs
-                    torch.cuda.empty_cache()
-                    
-                    # Progress bar
-                    elapsed = time.time() - start_time
-                    batches_done = batch_idx + 1
-                    batches_total = len(train_loader)
-                    eta = (elapsed / batches_done) * (batches_total - batches_done) if batches_done > 0 else 0
-                    pbar.set_postfix({
-                        'loss': loss.item() * accumulation_steps, 
-                        'elapsed': f"{elapsed/60:.1f}m", 
-                        'eta': f"{eta/60:.1f}m",
-                        'lr': scheduler.get_last_lr()[0]
-                    })
-                    
-                except RuntimeError as e:
-                    if "out of memory" in str(e):
-                        print(f"GPU OOM at batch {batch_idx}, skipping...")
-                        torch.cuda.empty_cache()
-                        continue
-                    else:
-                        raise e
+            # Gradient clipping for stability
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=0.5)
             
-            epoch_time = time.time() - start_time
-            print(f"Epoch {epoch+1} finished in {epoch_time/60:.2f} minutes")
+            optimizer.step()
+            scheduler.step()
             
-            # Validation
-            val_loss = self.evaluate(val_loader)
+            # Log losses
+            epoch_losses.append(total_loss.item())
+            progress_bar.set_postfix({
+                'loss': f"{total_loss.item():.4f}",
+                'mse': f"{losses['mse_loss'].item():.4f}",
+                'direction': f"{losses['direction_loss'].item():.4f}",
+                'magnitude': f"{losses['magnitude_loss'].item():.4f}",
+                'lr': f"{scheduler.get_last_lr()[0]:.2e}"
+            })
             
-            print(f"Epoch {epoch+1}: Train Loss = {train_loss/train_count:.6f}, Val Loss = {val_loss:.6f}")
+            # Log to file
+            if global_step % args.log_steps == 0:
+                log_entry = f"Step {global_step}: total_loss={total_loss.item():.4f}, mse_loss={losses['mse_loss'].item():.4f}, direction_loss={losses['direction_loss'].item():.4f}, magnitude_loss={losses['magnitude_loss'].item():.4f}, lr={scheduler.get_last_lr()[0]:.2e}\n"
+                with open(log_file, 'a') as f:
+                    f.write(log_entry)
             
-            # Save checkpoint every epoch
-            checkpoint_path = os.path.join(checkpoint_dir, f'query_checkpoint_epoch_{epoch+1}.pt')
-            torch.save({
-                'epoch': epoch,
-                'model_state_dict': self.query_model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'best_val_loss': best_val_loss,
-                'patience_counter': patience_counter,
-                'val_loss': val_loss
-            }, checkpoint_path)
-            print(f"💾 Checkpoint saved: {checkpoint_path}")
+            global_step += 1
+        
+        # Evaluate on validation set
+        if (epoch + 1) % args.eval_steps == 0:
+            print(f"\nEvaluating epoch {epoch+1}...")
+            val_mse, val_cosine, val_direction_loss, val_magnitude_loss = evaluate_model(model, val_loader, device)
             
-            # Save best model
-            if val_loss < best_val_loss:
-                best_val_loss = val_loss
-                patience_counter = 0
-                
-                # Save best model
-                os.makedirs(save_path, exist_ok=True)
-                torch.save({
-                                'model_state_dict': self.query_model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-            'epoch': epoch,
-            'val_loss': val_loss
-                }, os.path.join(save_path, 'best_model.pt'))
-                print(f"✅ Best model saved (val_loss: {val_loss:.6f})")
-                
-                # Save best checkpoint
-                best_checkpoint_path = os.path.join(checkpoint_dir, 'best_query_checkpoint.pt')
+            # Log validation scores
+            val_log_entry = f"Epoch {epoch+1}: Validation MSE = {val_mse:.4f}, Cosine similarity = {val_cosine:.4f}, Direction loss = {val_direction_loss:.4f}, Magnitude loss = {val_magnitude_loss:.4f}\n"
+            with open(log_file, 'a') as f:
+                f.write(val_log_entry)
+            
+            print(f"Validation MSE: {val_mse:.4f}, Cosine similarity: {val_cosine:.4f}")
+            print(f"Direction loss: {val_direction_loss:.4f}, Magnitude loss: {val_magnitude_loss:.4f}")
+            
+            # Save best model (using direction loss as primary metric)
+            if val_direction_loss < best_score:
+                best_score = val_direction_loss
+                best_model_path = os.path.join(args.output_dir, BEST_MODEL_PATH)
                 torch.save({
                     'epoch': epoch,
-                    'model_state_dict': self.query_model.state_dict(),
+                    'model_state_dict': model.state_dict(),
                     'optimizer_state_dict': optimizer.state_dict(),
-                    'best_val_loss': best_val_loss,
-                    'patience_counter': patience_counter,
-                    'val_loss': val_loss
-                }, best_checkpoint_path)
-                print(f"💾 Best checkpoint saved: {best_checkpoint_path}")
-            else:
-                patience_counter += 1
-                print(f"No improvement. Patience: {patience_counter}/{patience}")
+                    'scheduler_state_dict': scheduler.state_dict(),
+                    'best_score': best_score,
+                    'args': args
+                }, best_model_path)
+                print(f"New best model saved with direction loss: {best_score:.4f}")
             
-            if patience_counter >= patience:
-                print("Early stopping triggered!")
-                break
+            # Save checkpoint
+            checkpoint_path = os.path.join(args.checkpoint_dir, f'checkpoint_epoch_{epoch+1}.pt')
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'scheduler_state_dict': scheduler.state_dict(),
+                'best_score': best_score,
+                'args': args
+            }, checkpoint_path)
             
-            # OneCycleLR은 step이 batch마다 적용됨 (에포크 끝에서 step 불필요)
-            current_lr = scheduler.get_last_lr()[0]
-            print(f"📊 Learning rate: {current_lr:.2e}")
-        
-        print("✅ Training completed!")
-        return True
+            model.train()
     
-    def evaluate(self, val_loader):
-        """Evaluate the model"""
-        self.query_model.eval()
-        total_loss = 0
-        count = 0
-        
-        with torch.no_grad():
-            for queries, pos_api_texts in val_loader:
-                try:
-                    # Get query embeddings
-                    query_emb = self.get_query_embedding(queries)
-                    
-                    # Get positive API embeddings
-                    all_pos_apis = []
-                    for apis in pos_api_texts:
-                        all_pos_apis.extend(apis)
-                    
-                    pos_api_emb = self.get_api_embedding(all_pos_apis)
-                    
-                    # Reshape positive embeddings
-                    pos_embeddings = []
-                    start_idx = 0
-                    for apis in pos_api_texts:
-                        end_idx = start_idx + len(apis)
-                        pos_embeddings.append(pos_api_emb[start_idx:end_idx])
-                        start_idx = end_idx
-                    
-                    # Pad to same length
-                    max_len = max(len(emb) for emb in pos_embeddings)
-                    padded_pos_embeddings = []
-                    for emb in pos_embeddings:
-                        if len(emb) < max_len:
-                            padding = torch.zeros(max_len - len(emb), emb.shape[1], device=self.device)
-                            emb = torch.cat([emb, padding], dim=0)
-                        padded_pos_embeddings.append(emb)
-                    
-                    pos_api_embs = torch.stack(padded_pos_embeddings)
-                    
-                    # Calculate loss
-                    loss = self.simplified_loss_function(query_emb, pos_api_embs)
-                    
-                    total_loss += loss.item() * len(queries)
-                    count += len(queries)
-                    
-                except RuntimeError as e:
-                    if "out of memory" in str(e):
-                        continue
-                    else:
-                        raise e
-        
-        return total_loss / count if count > 0 else 0
-
+    print(f"Training completed! Best validation direction loss: {best_score:.4f}")
+    
+    # Save final training summary
+    summary_log = f"\nTraining Summary:\nBest validation direction loss: {best_score:.4f}\nTotal epochs: {args.num_epochs}\n"
+    with open(log_file, 'a') as f:
+        f.write(summary_log)
 
 def main():
-    """Main training function"""
-    print("🚀 Query Embedding Model Training (Improved)")
-    print("=" * 50)
+    parser = argparse.ArgumentParser(description='Train dynamic direction-focused query embedding model')
     
-    # Check for resume argument
-    import sys
-    resume_from = None
-    if len(sys.argv) > 1:
-        resume_from = sys.argv[1]
-        print(f"Will resume from: {resume_from}")
+    # Data arguments
+    parser.add_argument('--train_data_path', type=str, default=TRAIN_DATA_PATH)
+    parser.add_argument('--val_data_path', type=str, default=VAL_DATA_PATH)
+    parser.add_argument('--output_dir', type=str, default=OUTPUT_DIR)
+    parser.add_argument('--checkpoint_dir', type=str, default=CHECKPOINT_DIR)
     
-    trainer = QueryEmbeddingTrainer()
-    trainer.train(resume_from=resume_from)
-
+    # Model arguments
+    parser.add_argument('--max_length', type=int, default=256)
+    parser.add_argument('--dropout', type=float, default=0.1)
+    
+    # Training arguments
+    parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--num_epochs', type=int, default=15)  # Stable training
+    parser.add_argument('--learning_rate', type=float, default=2e-5)  # Higher LR for better convergence
+    parser.add_argument('--weight_decay', type=float, default=0.01)
+    parser.add_argument('--direction_weight', type=float, default=2.0)  # Balanced weight on direction
+    parser.add_argument('--magnitude_weight', type=float, default=1.0)  # Balanced weight on magnitude
+    parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--num_workers', type=int, default=0)
+    
+    # Logging arguments
+    parser.add_argument('--log_steps', type=int, default=100)
+    parser.add_argument('--eval_steps', type=int, default=1)
+    
+    # Checkpoint arguments
+    parser.add_argument('--resume_from_checkpoint', type=str, default=None)
+    parser.add_argument('--start_epoch', type=int, default=0)
+    
+    args = parser.parse_args()
+    
+    print("🚀 Starting dynamic direction-focused query embedding model training...")
+    print(f"Arguments: {args}")
+    
+    train_model(args)
+    
+    print("✅ Dynamic training completed!")
 
 if __name__ == "__main__":
     main() 

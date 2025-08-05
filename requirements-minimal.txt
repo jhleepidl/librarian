@@ -1,0 +1,16 @@
+# Core ML Libraries
+torch>=2.7.1
+
+# Transformers and NLP
+transformers>=4.53.3
+sentence-transformers>=5.0.0
+
+# Vector Search
+faiss-cpu>=1.11.0
+
+# Data Processing
+numpy>=1.26.4
+pandas>=2.1.4
+
+# Progress Bars
+tqdm>=4.65.0 

@@ -1,0 +1,45 @@
+# Core ML Libraries
+torch>=2.7.1
+torchvision>=0.18.0
+torchaudio>=2.7.1
+
+# Transformers and NLP
+transformers>=4.53.3
+sentence-transformers>=5.0.0
+tokenizers>=0.15.0
+
+# Vector Search and Similarity
+faiss-cpu>=1.11.0
+# faiss-gpu>=1.11.0  # Uncomment for GPU support
+
+# Data Processing and Analysis
+numpy>=1.26.4
+pandas>=2.1.4
+scikit-learn>=1.2.2
+
+# Progress Bars and Utilities
+tqdm>=4.65.0
+
+# File and Data Handling
+pickle5>=0.0.11  # For Python < 3.8
+# pickle  # Built-in for Python >= 3.8
+
+# Optional: Visualization (for analysis scripts)
+matplotlib>=3.8.0
+seaborn>=0.12.2
+
+# Optional: Jupyter support
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# Development and Testing
+pytest>=7.0.0
+black>=22.0.0
+flake8>=4.0.0
+
+# Type checking
+mypy>=0.950
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0 

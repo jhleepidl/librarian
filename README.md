@@ -1,332 +1,63 @@
-# 🛠️ Librarian - Tool Recommendation System
+# 🛠️ Librarian of Tools - Compositional Tool Recommendation System
 
-A comprehensive tool recommendation system based on ToolBench's retriever technology. Librarian helps users find the most suitable tools for their needs using semantic similarity, keyword matching, and advanced machine learning techniques.
+A compositional tool recommendation system based on ToolBench's retriever with advanced query embedding models. Librarian helps users find the most suitable tool combination for their NL query using semantic similarity, dynamic scale prediction, and beam search algorithm.
 
 ## 📋 Table of Contents
 
-- [Features](#-features)
 - [Architecture](#-architecture)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
 - [Data Preparation](#-data-preparation)
-- [Training Methods](#-training-methods)
-- [Experimental Design](#-experimental-design)
-- [Quick Start](#-quick-start)
-- [Usage](#-usage)
 - [Model Training](#-model-training)
-- [Development](#-development)
-- [Contributing](#-contributing)
+- [Performance Analysis](#-performance-analysis)
 
-## ✨ Features
-
-- **Advanced ML-Based Retrieval**: Fine-tuned Sentence Transformers for semantic similarity
-- **ToolBench Integration**: Built on ToolBench's proven retriever technology
-- **Custom Training**: Train models with your own data
-- **Evaluation Metrics**: NDCG, precision, recall for model performance
-- **Dataset Management**: Tools for building and managing training datasets
-- **Pre-trained Models**: Ready-to-use trained models
 
 ## 🏗️ Architecture
 
-### Core Components
+### Components
 
-1. **NewDatasetTrainer** (`train_new_retriever.py`): Advanced ML-based training system
-2. **Data Preparation** (`prepare_toolbench_instruction_data.py`): ToolBench data processing
-3. **Trained Models**: Pre-trained models in `trained_toolbench_retriever_best/`
-4. **Checkpoints**: Training checkpoints for model recovery
+1. **Dataset Preparation** (`build_training_dataset.py`): Training dataset preparation
+2. **Query Embedding Training** (`train_query_embedding.py`): Dynamic direction-focused model training
+3. **Vector Database Building** (`build_vector_db.py`, `build_multiple_vector_dbs.py`): FAISS-based vector database construction
+4. **Performance Analysis** (`performance_analysis_local.py`, `performance_analysis_hf.py`): Comprehensive evaluation tools
+5. **Beam Search Analysis** (`beam_size_analysis.py`): Search algorithm optimization
+6. **Vector Database Analysis** (`compare_multiple_vector_dbs.py`): Compare search accuracy between different DB size
 
-### Project Structure
+## 🔧 Prerequisites
 
-```
-librarian/
-├── data/                           # Training datasets
-│   ├── train.json                 # Training data (1.8GB)
-│   ├── eval.json                  # Evaluation data (233MB)
-│   └── test.json                  # Test data (235MB)
-├── checkpoints/                   # Model checkpoints
-│   ├── best_checkpoint.pt         # Best model checkpoint (1.2GB)
-│   └── checkpoint_epoch_1.pt      # Epoch 1 checkpoint (1.2GB)
-├── trained_toolbench_retriever_best/  # Pre-trained model
-│   ├── model.safetensors          # Trained model weights (418MB)
-│   ├── config.json                # Model configuration
-│   ├── tokenizer.json             # Tokenizer configuration
-│   └── README.md                  # Model documentation
-├── train_new_retriever.py         # Main training script
-├── prepare_toolbench_instruction_data.py  # Data preparation
-├── requirements.txt               # Dependencies
-└── README.md                     # This file
-```
+### ToolBench Data Requirements
 
-## 📊 Data Preparation
+**Important**: This project requires ToolBench data to function properly. You need to download and set up ToolBench data in the following location:
 
-### 1. ToolBench Instruction Data
+You can download the ToolBench data from the official repository:
 
-The system uses ToolBench's instruction data from three groups:
-- **G1**: Basic tool usage queries
-- **G2**: Complex multi-step queries  
-- **G3**: Advanced reasoning queries
+[ToolBench Data Release](https://github.com/OpenBMB/ToolBench/tree/master?tab=readme-ov-file#data-release)
 
-### 2. Dataset Construction Process
-
-#### Step 1: Prepare ToolBench Data
-```python
-# Run data preparation script
-python prepare_toolbench_instruction_data.py
-```
-
-This script:
-- Loads ToolBench instruction data from `/home/jhlee/ToolBench/data/instruction`
-- Processes G1, G2, G3 query files
-- Extracts relevant and irrelevant APIs for each query
-- Splits data into train/eval/test (8:1:1 ratio)
-- Saves processed data to `data/` directory
-
-#### Step 2: Data Format
-```python
-# Each sample format
-{
-    "query": "user query text",
-    "relevant_apis": [{"tool_name": "...", "api_name": "...", ...}],
-    "irrelevant_apis": [{"tool_name": "...", "api_name": "...", ...}],
-    "api_list": [all available APIs],
-    "query_id": "unique identifier"
-}
-```
-
-### 3. Dataset Statistics
-
-- **Training Samples**: ~100,000 queries
-- **Evaluation Samples**: ~20,000 queries  
-- **Test Samples**: ~20,000 queries
-- **Data Size**: 
-  - Train: 1.8GB
-  - Eval: 233MB
-  - Test: 235MB
-
-## 🎯 Training Methods
-
-### 1. Advanced ML-Based Training
-
-#### Model Architecture
-- **Base Model**: Sentence Transformers (all-MiniLM-L6-v2)
-- **Loss Function**: Custom cosine similarity loss
-- **Training Strategy**: Contrastive learning with positive/negative pairs
-
-#### Training Configuration
-```python
-def train_retriever(self, 
-                   model_name: str = "sentence-transformers/all-MiniLM-L6-v2",
-                   loss_type: str = "cosine_similarity",
-                   batch_size: int = 4,
-                   epochs: int = 10,
-                   learning_rate: float = 2e-5,
-                   scale_factor: float = 1.0,
-                   save_path: str = "/home/jhlee/librarian/trained_model"):
-```
-
-#### Loss Function Implementation
-```python
-def custom_retriever_loss(query_emb, pos_api_embs, neg_api_embs):
-    # Calculate positive similarities
-    pos_sim = F.cosine_similarity(query_emb.unsqueeze(1), pos_api_embs, dim=2)
-    
-    # Calculate negative similarities  
-    neg_sim = F.cosine_similarity(query_emb.unsqueeze(1), neg_api_embs, dim=2)
-    
-    # Contrastive loss
-    loss = -torch.log(torch.exp(pos_sim) / 
-                      (torch.exp(pos_sim) + torch.exp(neg_sim).sum(dim=1, keepdim=True)))
-    
-    return loss.mean()
-```
-
-#### Training Pipeline
-```python
-def train(resume_from=None):
-    # 1. Load dataset
-    trainer = NewDatasetTrainer()
-    trainer.load_dataset()
-    
-    # 2. Prepare data loaders
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, 
-                            shuffle=True, collate_fn=collate_fn)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, 
-                           shuffle=False, collate_fn=collate_fn)
-    
-    # 3. Initialize model
-    model = SentenceTransformer(model_name)
-    
-    # 4. Training loop
-    for epoch in range(epochs):
-        for batch in train_loader:
-            loss = custom_retriever_loss(query_emb, pos_embs, neg_embs)
-            loss.backward()
-            optimizer.step()
-            
-        # Evaluate on validation set
-        val_metrics = evaluate(model, val_loader, device)
-        
-        # Save checkpoint
-        torch.save(model.state_dict(), f"checkpoints/checkpoint_epoch_{epoch}.pt")
-```
-
-### 2. Evaluation Metrics
-
-#### NDCG (Normalized Discounted Cumulative Gain)
-```python
-def calculate_ndcg(recommendations, relevant_items, k=5):
-    dcg = 0
-    idcg = 0
-    
-    for i, item in enumerate(recommendations[:k]):
-        if item in relevant_items:
-            dcg += 1 / math.log2(i + 2)
-    
-    for i in range(min(len(relevant_items), k)):
-        idcg += 1 / math.log2(i + 2)
-    
-    return dcg / idcg if idcg > 0 else 0
-```
-
-#### Precision and Recall
-```python
-def calculate_precision_recall(recommendations, relevant_items, k=5):
-    relevant_recommended = len(set(recommendations[:k]) & set(relevant_items))
-    precision = relevant_recommended / k
-    recall = relevant_recommended / len(relevant_items) if relevant_items else 0
-    return precision, recall
-```
-
-## 🔬 Experimental Design
-
-### 1. Training Experiments
-
-### 2. Model Performance Comparison
-
-The system includes comprehensive performance comparison tools to evaluate the trained retriever against the original ToolBench model.
-
-#### Performance Comparison Scripts
-
-**Main Comparison Script**: `compare_new_retriever_performance.py`
-- Compares ToolBench model vs trained retriever model
-- Supports multiple similarity thresholds and top-k values
-- Generates detailed performance metrics (precision, recall, F1-score)
-- Saves results to JSON files for further analysis
-
-**Execution Script**: `run_performance_comparison.sh`
-- Easy-to-use shell script for running comparisons
-- Supports different comparison modes (default, multi, quick, detailed, custom)
-- Provides GPU memory information and status updates
-
-#### Usage Examples
+Follow the instructions in the linked section to obtain and extract the required data files.
 
 ```bash
-# Run default comparison (threshold=0.5, top_k=10, max_samples=100)
-./run_performance_comparison.sh
-
-# Run multi-threshold comparison
-./run_performance_comparison.sh multi
-
-# Run quick comparison (threshold=0.5, top_k=5, max_samples=50)
-./run_performance_comparison.sh quick
-
-# Run detailed comparison (threshold=0.3, top_k=20, max_samples=200)
-./run_performance_comparison.sh detailed
-
-# Run custom comparison
-./run_performance_comparison.sh custom 0.7 15 150
+../ToolBench/
+├── data/
+│   ├── instruction/           # For training data
+│   │   ├── G1_instruction.json
+│   │   ├── G2_instruction.json
+│   │   └── G3_instruction.json
+│   └── test_instruction/      # For test data
+│       ├── G1_test_instruction.json
+│       ├── G2_test_instruction.json
+│       └── G3_test_instruction.json
 ```
 
-#### Direct Python Usage
+### Python Dependencies
 
-```python
-# Single comparison
-python compare_new_retriever_performance.py 0.5 10 100
+- Python 3.11+
+- PyTorch 1.12+
+- Transformers 4.20+
+- Sentence Transformers 2.2+
+- FAISS-CPU or FAISS-GPU
+- NumPy, Pandas, tqdm
 
-# Multi-threshold comparison
-python compare_new_retriever_performance.py multi
-```
-
-#### Output Files
-
-- `new_retriever_comparison_results_single.json`: Single comparison results
-- `new_retriever_comparison_results.json`: Multi-threshold comparison results
-
-#### Comparison Metrics
-
-The comparison evaluates:
-- **Precision**: Accuracy of predicted APIs
-- **Recall**: Coverage of relevant APIs
-- **F1-Score**: Harmonic mean of precision and recall
-- **Average Predicted Count**: Number of APIs returned per query
-- **Average Intersection Count**: Number of correctly predicted APIs
-
-#### Model Loading Strategy
-
-The comparison script automatically loads:
-1. **Best Model**: `trained_toolbench_retriever_best/` (if available)
-2. **Final Model**: `trained_toolbench_retriever/` (fallback)
-3. **ToolBench Model**: Original ToolBench IR model for baseline
-4. **Vector Database**: FAISS index and API metadata for similarity search
-
-#### Experiment 1: Baseline Training
-- **Method**: Fine-tuned Sentence Transformers
-- **Model**: all-MiniLM-L6-v2
-- **Metrics**: NDCG@5, Precision@5, Recall@5
-- **Dataset**: ToolBench instruction data
-- **Expected Results**: Baseline performance for comparison
-
-#### Experiment 2: Advanced Training
-- **Method**: Custom contrastive learning
-- **Loss**: Custom cosine similarity loss
-- **Training Data**: ToolBench instruction data
-- **Validation**: 10% holdout set
-- **Expected Results**: Improved semantic understanding
-
-### 2. Evaluation Protocol
-
-#### Test Set Evaluation
-```python
-def evaluate_model(model, test_loader):
-    model.eval()
-    all_ndcg = []
-    all_precision = []
-    all_recall = []
-    
-    with torch.no_grad():
-        for batch in test_loader:
-            # Get predictions
-            predictions = model(batch)
-            
-            # Calculate metrics
-            ndcg = calculate_ndcg(predictions, batch['relevant'])
-            precision, recall = calculate_precision_recall(predictions, batch['relevant'])
-            
-            all_ndcg.append(ndcg)
-            all_precision.append(precision)
-            all_recall.append(recall)
-    
-    return {
-        'ndcg@5': np.mean(all_ndcg),
-        'precision@5': np.mean(all_precision),
-        'recall@5': np.mean(all_recall)
-    }
-```
-
-### 3. Hyperparameter Optimization
-
-#### Search Space
-```python
-hyperparameters = {
-    'learning_rate': [1e-5, 2e-5, 5e-5],
-    'batch_size': [4, 8, 16],
-    'epochs': [5, 10, 15],
-    'model_name': ['all-MiniLM-L6-v2', 'all-mpnet-base-v2'],
-    'scale_factor': [0.5, 1.0, 2.0]
-}
-```
-
-## 🚀 Quick Start
-
-### Installation
+## 🚀 Installation
 
 1. **Clone the repository**:
 ```bash
@@ -335,223 +66,132 @@ cd librarian
 ```
 
 2. **Install dependencies**:
+
+**Option 1: Full installation (recommended for development)**
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Prepare data** (if not already done):
+**Option 2: Minimal installation (for basic usage)**
 ```bash
-python prepare_toolbench_instruction_data.py
+pip install -r requirements-minimal.txt
 ```
 
-### Basic Usage
+3. **Set up ToolBench data** (see Prerequisites section above)
 
-#### Training New Model
+## 📊 Data Preparation
+
+### Training Dataset Preparation
+
+The system uses ToolBench's instruction data to build training datasets for query embedding models.
+
+#### Step 1: Build Training Dataset
 ```bash
-python train_new_retriever.py
+python build_training_dataset.py
 ```
 
-#### Using Pre-trained Model
+This script:
+- Loads ToolBench instruction data from `../ToolBench/data/instruction/`
+- Processes G1, G2, G3 query files
+- Extracts relevant and irrelevant APIs for each query
+- Creates training dataset with query-label vector pairs
+- Saves processed data to `training_data/` directory
+
+#### Step 2: Dataset Format
 ```python
-from sentence_transformers import SentenceTransformer
-
-# Load pre-trained model
-model = SentenceTransformer('trained_toolbench_retriever_best')
-
-# Get embeddings
-query_embedding = model.encode("I need to translate text")
+# Each sample format
+{
+    "query_text": "user query text",
+    "label_vector": [0.1, 0.2, 0.3, ...],  # 768-dimensional vector
+    "query_id": "unique identifier"
+}
 ```
 
-## 📖 Usage
+### Vector Database Construction
 
-### Data Preparation
-
-#### Step 1: Prepare ToolBench Data
+#### Basic Vector Database
 ```bash
-python prepare_toolbench_instruction_data.py
+python build_vector_db.py
+```
+This creates multiple vector databases:
+- `vector_db_base/` - 2,024 APIs
+
+#### Multiple Vector Databases (Different Sizes)
+```bash
+python build_multiple_vector_dbs.py
 ```
 
-This will:
-- Load ToolBench instruction data
-- Process and format the data
-- Split into train/eval/test sets
-- Save to `data/` directory
+This creates multiple vector databases:
+- `vector_db_5k/` - 5,000 APIs
+- `vector_db_7k5/` - 7,500 APIs  
+- `vector_db_10k/` - 10,000 APIs
+- `vector_db_all/` - 13,865 APIs (All available APIs)
 
-#### Step 2: Verify Data
-```python
-import json
+## 🎯 Model Training
 
-# Check training data
-with open('data/train.json', 'r') as f:
-    train_data = json.load(f)
-print(f"Training samples: {len(train_data)}")
+### Dynamic Query Embedding Model
 
-# Check evaluation data
-with open('data/eval.json', 'r') as f:
-    eval_data = json.load(f)
-print(f"Evaluation samples: {len(eval_data)}")
+The system features an advanced query embedding model with dynamic scale prediction.
+
+#### Training Configuration
+```bash
+python train_query_embedding.py \
+    --batch_size 32 \
+    --num_epochs 15 \
+    --learning_rate 2e-5 \
+    --direction_weight 2.0 \
+    --magnitude_weight 1.0
 ```
 
-### Model Training
+#### Model Architecture
+- **Base Model**: ToolBench/ToolBench_IR_bert_based_uncased
+- **Dynamic Scale Predictor**: Multi-layer network for query-specific scaling
+- **Loss Function**: Combined direction and magnitude loss
+- **Training Strategy**: Dynamic direction-focused learning
 
-#### Step 1: Initialize Trainer
-```python
-from train_new_retriever import NewDatasetTrainer
+### Use Pretrained Model
 
-trainer = NewDatasetTrainer()
-trainer.load_dataset()
+If you prefer not to train from scratch, you can use the pretrained dynamic query embedding model from HuggingFace:
+
+- [jhleepidl/librarian](https://huggingface.co/jhleepidl/librarian)
+
+
+## 📈 Performance Analysis
+
+### Performance Analysis (Use locally trained model)
+```bash
+python performance_analysis_local.py
 ```
 
-#### Step 2: Train Model
-```python
-trainer.train_retriever(
-    model_name="sentence-transformers/all-MiniLM-L6-v2",
-    batch_size=4,
-    epochs=10,
-    learning_rate=2e-5
-)
+### Performance Analysis (Use pretrained model from HuggingFace)
+```bash
+python performance_analysis_hf.py
 ```
 
-#### Step 3: Evaluate Model
-```python
-results = trainer.test_trained_model()
-print(f"NDCG@5: {results['ndcg@5']:.3f}")
-print(f"Precision@5: {results['precision@5']:.3f}")
-print(f"Recall@5: {results['recall@5']:.3f}")
+### Beam Search Analysis (Use pretrained model from HuggingFace)
+```bash
+python beam_size_analysis.py
 ```
 
-## 🔧 Configuration
-
-### Model Configuration
-
-```python
-# Change base model
-trainer = NewDatasetTrainer()
-trainer.train_retriever(model_name="sentence-transformers/all-mpnet-base-v2")
-
-# Adjust training parameters
-trainer.train_retriever(
-    batch_size=8,
-    epochs=15,
-    learning_rate=5e-5,
-    scale_factor=2.0
-)
+### Database Size Comparison (Use pretrained model from HuggingFace)
+```bash
+python compare_multiple_vector_dbs.py
 ```
 
-### Data Configuration
+This script compares performance across different database sizes and provides detailed analysis.
 
-```python
-# Custom data directory
-trainer = NewDatasetTrainer(dataset_dir="/path/to/custom/data")
-trainer.load_dataset()
-```
-
-## 📊 Results and Performance
-
-### Pre-trained Model Performance
-
-| Metric | Value |
-|--------|-------|
-| NDCG@5 | 0.623 |
-| Precision@5 | 0.345 |
-| Recall@5 | 0.456 |
-
-### Training Progress
-
-- **Epoch 1-5**: Rapid improvement in NDCG@5
-- **Epoch 6-10**: Gradual convergence
-- **Best Model**: Saved at epoch 8
-- **Final Performance**: NDCG@5 = 0.623
-
-### Model Files
-
-- **Pre-trained Model**: `trained_toolbench_retriever_best/`
-  - `model.safetensors`: Model weights (418MB)
-  - `config.json`: Model configuration
-  - `tokenizer.json`: Tokenizer configuration
-
-- **Checkpoints**: `checkpoints/`
-  - `best_checkpoint.pt`: Best model checkpoint (1.2GB)
-  - `checkpoint_epoch_1.pt`: Epoch 1 checkpoint (1.2GB)
-
-## 🛠️ Development
-
-### Adding New Features
-
-1. **New Training Methods**:
-```python
-class CustomTrainer(NewDatasetTrainer):
-    def __init__(self):
-        super().__init__()
-        
-    def custom_training_method(self):
-        # Implement custom training logic
-        pass
-```
-
-2. **New Evaluation Metrics**:
-```python
-def custom_evaluation_metric(predictions, ground_truth):
-    # Implement custom metric
-    return metric_value
-```
-
-3. **New Data Processing**:
-```python
-def process_custom_data(data_path):
-    # Load and process custom data format
-    return processed_data
-```
-
-### Extending the System
-
-1. **Add new model architectures**:
-```python
-def create_custom_model(model_name):
-    # Initialize custom model
-    return model
-```
-
-2. **Add new loss functions**:
-```python
-def custom_loss_function(query_emb, pos_embs, neg_embs):
-    # Implement custom loss
-    return loss
-```
-
-3. **Add new data sources**:
-```python
-def load_custom_dataset(data_path):
-    # Load custom dataset
-    return dataset
-```
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-### Development Guidelines
-
-- Follow PEP 8 style guidelines
-- Add docstrings for all functions
-- Include type hints
-- Write unit tests for new features
-- Update documentation
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- Built on [ToolBench](https://github.com/OpenBMB/ToolBench) technology
-- Uses [Sentence Transformers](https://www.SBERT.net) for semantic similarity
-- Powered by [PyTorch](https://pytorch.org/) and [Transformers](https://huggingface.co/transformers/)
+- Built on [ToolBench](https://github.com/OpenBMB/ToolBench) dataset and retriever model
+- Uses [Sentence Transformers](https://www.sbert.net) for semantic similarity
+- Vector search powered by [FAISS](https://github.com/facebookresearch/faiss)
 
 ## 📞 Support
 
-For questions and support, please open an issue on GitHub.
+For questions and support:
+- Open an issue on GitHub
